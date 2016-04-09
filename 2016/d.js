@@ -19,7 +19,7 @@ function solve(line) {
     return fSmall(k, c);
 }
 function fSmall(k, c) {
-    if (k == 1) return 0;
+    if (k == 1) return 1; // starts from 1
 
     var x = (Math.pow(k, c) - 1) / (k - 1);
     var pos = [];
