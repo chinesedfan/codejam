@@ -1,5 +1,6 @@
 var fs = require('fs');
 var _ = require('lodash');
+var BigInteger = require('biginteger').BigInteger;
 
 var args = process.argv.slice(2);
 
@@ -21,10 +22,11 @@ function solve(line) {
 function fSmall(k, c) {
     if (k == 1) return 1; // starts from 1
 
-    var x = (Math.pow(k, c) - 1) / (k - 1);
+    var bigK = BigInteger(k);
+    var bigX = bigK.pow(c).subtract(1).divide(k - 1);
     var pos = [];
     for (var i = 0; i < k; i++) {
-        pos.push(i * x + 1); // starts from 1
+        pos.push(bigX.multiply(i).add(1).toString()); // starts from 1
     }
     return pos.join(' ');
 }
