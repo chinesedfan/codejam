@@ -47,7 +47,8 @@ function leftPad(str, len) {
 }
 function findDivisor(x) {
     // FIXME: no BigInteger.sqrt
-    for (var i = BigInteger(2), limit = x.divide(2); i.compare(limit) <= 0; i = i.next()) {
+    var limit = BigInteger(100000);
+    for (var i = BigInteger(2); i.compare(limit) <= 0; i = i.next()) {
         if (x.remainder(i).compare(0) != 0) continue;
 
         return i.toJSValue();
