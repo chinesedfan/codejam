@@ -5,10 +5,14 @@ var BigInteger = require('biginteger').BigInteger;
 var args = process.argv.slice(2);
 
 var lines = fs.readFileSync(args[0]).toString().split('\n');
+var t;
 _.each(lines, function(line, i) {
-    if (i == 0) return;
-
-    console.log('Case #%d: %s', i, solve(line));
+    if (i == 0) {
+        t = parseInt(line);
+        return;
+    } else if (i <= t) {
+        console.log('Case #%d: %s', i, solve(line));
+    }
 });
 
 function solve(line) {
