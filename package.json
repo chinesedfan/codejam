@@ -1,0 +1,21 @@
+{
+  "name": "codejam",
+  "version": "0.1.0",
+  "description": "Solutions for Google Codejam",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.9.0",
+    "biginteger": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solution",
+    "google",
+    "codejam"
+  ],
+  "author": "chinesedfan",
+  "license": "MIT"
+}
