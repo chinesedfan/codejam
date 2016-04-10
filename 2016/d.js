@@ -23,42 +23,31 @@ _.each(lines, function(line, i) {
  * Suppose L = 1, G = 0, the origin artwork is [T0, T1, ..., Tk-1]
  * If c = 1, and present the position as `a`(base k), then the tile is `Ta`
  * If c = 2, and present the position as `ab`(base k), then the tile is `Ta & Tb`
- * So it requires to check `k + 1 - c` tiles at least
+ * So it requires to check `k / c` tiles at least
  */
 function solve(k, c, s) {
-    if (s < k + 1 - c) {
+    if (s * c < k) {
         return 'IMPOSSIBLE';
     }
 
     var result = [];
-    result.push(posForMost(k, c));
-    for (var i = c; i < k; i++) {
-        result.push(posForSingle(k, c, i));
+    for (var i = 0; i < k; i += c) {
+        result.push(posForArr(k, c, _.range(i, Math.min(i + c, k))));
     }
     return result.join(' ');
 }
-/**
- * @return {String} the position which only affected by tile i
- */
-function posForSingle(k, c, i) {
-    if (k == 1) return 1; // starts from 1
 
-    var bigK = BigInteger(k);
-    var bigX = bigK.pow(c).subtract(1).divide(k - 1);
-    // the sum of i*k^0 + i*k^1 + ... + i*k^(c-1) = i*(k^c - 1)/(k - 1)
-    return bigX.multiply(i).add(1).toString();
-}
 /**
- * @return {String} the position which contains tiles 0 to c - 1
+ * @return {String} the position which contains tiles arr[0] to arr[arr.length - 1]
  */
-function posForMost(k, c) {
-    // the sum of 0*k^0 + 1*k^1 + ... + (c-1)*k^(c-1)
+function posForArr(k, c, arr) {
+    // the sum of arr[0]*k^0 + arr[1]*k^1 + ... + arr[c-1]*k^(c-1)
     var i = 0, x = BigInteger(1),
-        limit = Math.min(k, c),
+        limit = arr.length,
         sum = BigInteger(0);
 
     while (i < limit) {
-        sum = sum.add(x.multiply(i));
+        sum = sum.add(x.multiply(arr[i]));
         i++;
         x = x.multiply(k);
     }
