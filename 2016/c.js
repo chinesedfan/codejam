@@ -27,8 +27,8 @@ function solve(n, j) {
         jamcoin = '1' + leftPad(Number(mid).toString(2), n - 2) + '1';
         ds = [];
         for (var base = 2; base <= 10; base++) {
-            var x = parseInt(jamcoin, base);
-            var d = findDivisor(x);
+            var bigX = BigInteger.parse(jamcoin, base);
+            var d = findDivisor(bigX);
             if (d <= 0) break; // prime
 
             ds.push(d);
@@ -46,10 +46,12 @@ function leftPad(str, len) {
     return str;
 }
 function findDivisor(x) {
-    for (var i = 2, limit = Math.sqrt(x); i <= limit; i++) {
-        if (x % i) continue;
+    // FIXME: no BigInteger.sqrt
+    var limit = BigInteger(100000);
+    for (var i = BigInteger(2); i.compare(limit) <= 0; i = i.next()) {
+        if (x.remainder(i).compare(0) != 0) continue;
 
-        return i;
+        return i.toJSValue();
     }
     return -1;
 }
