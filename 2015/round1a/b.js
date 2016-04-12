@@ -1,6 +1,5 @@
 var fs = require('fs');
 var _ = require('lodash');
-var BigInteger = require('biginteger').BigInteger;
 
 var args = process.argv.slice(2);
 
@@ -16,53 +15,44 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(costs, n) {
-    var arr = _(costs.slice(0, n)).map(function(c, i) {
-        return {
-            index: i,
-            cost: 0
-        };
-    }).sortBy(function(item) {
-        return item.cost;
-    }).value();
-
-    _.each(costs, function(c, i) {
-        var cost = c, pos;
-        while (1) {
-            pos = findInsertPosition(arr, cost, i); 
-            arr.splice(pos, 0, {
-                index: i,
-                cost: cost
-            });
-            if (pos >= n - 1) break;
-
-            cost += c;
-        }
-        arr = arr.slice(0, n);
-    });
-    return arr[n - 1].index + 1; // starts from 1
-}
-function findInsertPosition(arr, c, i) {
-    var left = 0, right = arr.length - 1, mid;
-    if (c < arr[left].cost) return left;
-    if (c > arr[right].cost) return right + 1;
-
+    var left = 0, right = 1, mid, count;
+    // the done count should be less or equal to n - 1
+    n--;
+    // find the upper bound
+    while (getDoneCount(costs, right) < n) right *= 2;
+    // binary search
     while (left < right) {
         mid = Math.floor((left + right) / 2);
-        if (c > arr[mid].cost) {
-            left = mid + 1;
-        } else if (c < arr[mid].cost) {
+        count = getDoneCount(costs, mid);
+        if (count < n) {
+            left = mid + 1
+        } else if (count > n) {
             right = mid - 1;
         } else {
-            return (i < arr[mid].index) ? mid : mid + 1;
+            return 1;
         }
     }
 
-    if (arr[left].cost < c) {
-        return left + 1;
-    } else if (arr[left].cost > c) {
-        return left;
-    } else {
-        return (i < arr[left].index) ? left : left + 1;
-    }
-}
+    count = getDoneCount(costs, left);
+    if (count == n) return 1;
+    if (count > n) count = getDoneCount(costs, --left);
 
+    var result;
+    _.some(costs, function(c, i) {
+        if ((left + 1) % c) return false;
+
+        // available at the next time
+        count++;
+        if (count == n + 1) {
+            result = i + 1;
+            return true;
+        }
+    });
+    return result;
+}
+function getDoneCount(costs, time) {
+    return _.reduce(costs, function(sum, c) {
+        sum += Math.floor(time / c);
+        return sum;
+    }, 0);
+}
