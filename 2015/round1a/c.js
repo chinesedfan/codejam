@@ -22,36 +22,58 @@ for (var i = 0; i < t; i++) {
 function solve(points) {
     var result = [];
     _.each(points, function(p1) {
-        var min = points.length, count;
-        _.every(points, function(p2) {
-            count = findCount(p1, p2, points);
-            if (count < min) min = count;
-            if (count == 0) return false;
-            return true;
+        var others = _(points).filter(function(p2) {
+            return !(p1.x == p2.x && p1.y == p2.y);
+        }).sortBy(function(p2) {
+            p2.angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+            return p2.angle;
+        }).value();
+
+        var group1 = [], group2 = [];
+        _.each(others, function(p2) {
+            if (p2.angle > 0 && p2.angle <= Math.PI) {
+                group1.push(p2);
+            } else {
+                group2.push(p2);
+            }
         });
+
+        var min = Math.min(group1.length, group2.length);
+        if (min == 0) { result.push(min); return; }
+
+        var i = 0, j = 0, n1, n2, angle;
+        while (i < group1.length) {
+            // suppose 0 to i - 1 of group1 are in the same side with j to the end of group2
+            // suppose 0 to j - 1 of group2 are in the same side with i + 1 to the end of group2
+            n1 = i + (group2.length - j);
+            n2 = j + (group1.length - i - 1);
+
+            // adjust the separator line in group1
+            while (i + 1 < group1.length && group1[i + 1].angle == group1[i].angle) {
+                i++;
+                n2--;
+            }
+
+            // adjust the separator line in group2
+            angle = -Math.PI + group1[i].angle;
+            while (j < group2.length) {
+                if (group2[j].angle > angle) break;
+
+                n1--;
+                if (group2[j].angle < angle) {
+                    n2++;
+                }
+
+                j++;
+            }
+
+            // done
+            min = Math.min(min, n1, n2);
+
+            i++;
+        }
         result.push(min);
     });
     return result.join('\n');
 }
 
-function findCount(p1, p2, points) {
-    var fn;
-    if (p1.x == p2.x) {
-        fn = function(p) { return p.x - p1.x; };
-    } else if (p1.y == p2.y) {
-        fn = function(p) { return p.y - p1.y; };
-    } else {
-        fn = function(p) { return (p1.y - p2.y) * p.x + (p1.x * p2.y - p2.x * p1.y) - (p1.x - p2.x) * p.y; };
-    }
-
-    var group1 = [], group2 = [];
-    _.each(points, function(p) {
-        var x = fn(p);
-        if (x > 0) {
-            group1.push(p);
-        } else if (x < 0) {
-            group2.push(p);
-        }
-    });
-    return Math.min(group1.length, group2.length);
-}
