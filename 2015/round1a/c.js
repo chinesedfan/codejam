@@ -25,6 +25,8 @@ function solve(points) {
         var others = _(points).filter(function(p2) {
             return !(p1.x == p2.x && p1.y == p2.y);
         }).sortBy(function(p2) {
+            p2.deltaX = p2.x - p1.x;
+            p2.deltaY = p2.y - p1.y;
             p2.angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
             return p2.angle;
         }).value();
@@ -41,7 +43,7 @@ function solve(points) {
         var min = Math.min(group1.length, group2.length);
         if (min == 0) { result.push(min); return; }
 
-        var i = 0, j = 0, n1, n2, angle;
+        var i = 0, j = 0, n1, n2, compareResult;
         while (i < group1.length) {
             // suppose 0 to i - 1 of group1 are in the same side with j to the end of group2
             // suppose 0 to j - 1 of group2 are in the same side with i + 1 to the end of group2
@@ -55,12 +57,15 @@ function solve(points) {
             }
 
             // adjust the separator line in group2
-            angle = -Math.PI + group1[i].angle;
             while (j < group2.length) {
-                if (group2[j].angle > angle) break;
+                compareResult = compare(group2[j], {
+                    deltaX: -group1[i].deltaX,
+                    deltaY: -group1[i].deltaY
+                });
+                if (compareResult > 0) break;
 
                 n1--;
-                if (group2[j].angle < angle) {
+                if (compareResult < 0) {
                     n2++;
                 }
 
@@ -77,3 +82,25 @@ function solve(points) {
     return result.join('\n');
 }
 
+/**
+ * Compare based their angles (less than 0)
+ *
+ * @return {Number} the compare result
+ */
+function compare(p1, p2) {
+    if (p1.deltaX > 0) {
+        if (p2.deltaX <= 0) {
+            return 1;
+        } else {
+            return p2.deltaX * p1.deltaY - p1.deltaX * p2.deltaY;
+        }
+    } else if (p1.deltaX < 0) {
+        if (p2.deltaX >= 0) {
+            return -1;
+        } else {
+            return p2.deltaX * p1.deltaY - p1.deltaX * p2.deltaY;
+        }
+    } else {
+        return -p2.deltaX;
+    } 
+}
