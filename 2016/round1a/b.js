@@ -23,17 +23,17 @@ function solve(n, lists) {
     var min = _.min(lists, function(list) {
         return list[0];
     })[0];
-    var minLists = findLists(min, lists);
+    var minLists = findLists(0, min, lists);
     rows[0] = minLists[0];
 
     // fill
-    var missing = -1;
+    var missingCol = -1, missingRow = -1;
     _.each(rows[0], function(height, i) {
-        minLists = findLists(rows[0][height], lists);
+        minLists = findLists(0, height, lists);
         if (minLists.length == 1) {
             cols[i] = minLists[0];
         } else if (minLists.length > 1) {
-            var p = findCross(minLists[0], minLists[1]);
+            var p = findCross(i, minLists[0], minLists[1]);
             if (p.row != p.col) {
                 if (p.row == i) {
                     cols[i] = minLists[1];
@@ -48,7 +48,7 @@ function solve(n, lists) {
                 if (i == 0) {
                     cols[i] = minLists[1];
                 } else {
-                    var isOK = _.all(cols[i - 1], function(x, j) {
+                    var isOK = _.every(cols[i - 1], function(x, j) {
                         return minLists[0][j] > x;
                     });
                     cols[i] = minLists[isOK ? 0 : 1];
@@ -58,39 +58,65 @@ function solve(n, lists) {
                 throw new Error('invalid cross', p);
             }
         } else {
-            if (missing >= 0) throw new Error('duplicate missing column', missing);
-            missing = i;
+            if (missingCol >= 0) throw new Error('duplicate missingCol column', missingCol);
+            missingCol = i;
         }
     });
 
-    if (missing < 0) {
-        _.some(_.range(n), function(i) {
-            if (!rows[i]) {
-                missing = i;
-                return true;
+    var startCol = missingCol == 0 ? 1 : 0;
+    _.each(cols[startCol], function(height, i) {
+        if (rows[i]) return;
+
+        minLists = findLists(startCol, height, lists);
+        if (minLists.length == 1) {
+            rows[i] = minLists[0];
+        } else if (minLists.length > 1) {
+            var p = findCross(i, minLists[0], minLists[1]);
+            if (p.row != p.col) {
+                if (p.row == i) {
+                    rows[i] = minLists[1];
+                } else if (p.col == i) {
+                    rows[i] = minLists[0];
+                } else {
+                    throw new Error('invalid cross', p);
+                }
+            } else if (p.row == i) {
+                throw new Error('already handled', i);
+            } else {
+                throw new Error('invalid cross', p);
             }
-            return false;
-        });
-        if (missing < 0) throw new Error('not found missing row');
+        } else {
+            if (missingCol >= 0) throw new Error('duplicate missingRow column', missingRow);
+            if (missingRow >= 0) throw new Error('duplicate missingRow column', missingRow);
+            missingRow = i;
+        }
+    });
+
+    if (missingCol < 0) {
         return _.map(cols, function(c) {
-            return c[missing];
+            return c[missingRow];
         }).join(' ');
     } else {
         return _.map(rows, function(r) {
-            return r[missing];
+            return r[missingCol];
         }).join(' ');
     }
 }
 
 /**
- * @return {Array} 1 or 2 list(s) whose min is the target
+ * @return {Array} 1 or 2 list(s) whose element i is the target (they will be removed from the original list)
  */
-function findLists(target, lists) {
+function findLists(index, target, lists) {
     var minLists = [];
-    _.each(lists, function(list) {
-        if (list[0] == target) {
+    var indexes = [];
+    _.each(lists, function(list, i) {
+        if (list[index] == target) {
             minLists.push(list);
+            indexes.push(i);
         }
+    });
+    _.each(indexes, function(i) {
+        lists.splice(i, 1);
     });
     return minLists;
 }
@@ -98,8 +124,8 @@ function findLists(target, lists) {
 /**
  * @return {Object} the cross point of the 2 lists that share the same min
  */
-function findCross(list1, list2) {
-    var i = 0, j = 0;
+function findCross(index, list1, list2) {
+    var i = index, j = index;
     while (i < list1.length && j < list2.length) {
         if (list1[i] < list2[j]) {
             i++;
