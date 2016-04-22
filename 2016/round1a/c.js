@@ -13,38 +13,41 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(arr) {
-    var bffs = {};
-    _.each(arr, function(j, i) {
-        if (!bffs[i]) bffs[i] = {ins: [], outs: []};
-        if (!bffs[j]) bffs[j] = {ins: [], outs: []};
-        bffs[i].outs.push(j);
-        bffs[j].ins.push(i);
-    });
-
     var root = {
+        ancestors: {}, // index -> node
         prev: null,
         index: 0,
         level: 0
     };
-    var q = [root], node, other;
+    var q = [root], node, index;
     var max = 0;
     while (q.length) {
         node = q.shift();
-        _.each(bffs[node.index].ins.concat(bffs[node.index].outs), function(i) {
-            other = node;
-            while (other.prev && other.index != i) other = other.prev;
-            if (other.index == i) {
-                max = Math.max(max, node.level - other.level + 1);
+        // whether the current node is satisfied
+        if (node.prev && node.prev.index == arr[node.index]) {
+            _.each(arr, function(j, i) {
+                if (i == node.index || node.ancestors[i]) return;
+                q.push(createChildNode(node, i));
+            });
+        } else {
+            index = arr[node.index];
+            if (node.ancestors[index]) {
+                max = Math.max(max, node.level - node.ancestors[index].level + 1);
             } else {
-                other = {
-                    prev: node,
-                    index: i,
-                    level: node.level + 1
-                };
-                q.push(other);
+                q.push(createChildNode(node, index));
             }
-        });
+        }
     }
     return max;
 }
 
+function createChildNode(node, index) {
+     var child = {
+         ancestors: _.clone(node.ancestors),
+         prev: node,
+         index: index,
+         level: node.level + 1
+     };
+     child.ancestors[node.index] = node;
+     return child;
+}
