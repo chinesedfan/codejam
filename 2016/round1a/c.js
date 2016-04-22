@@ -19,24 +19,24 @@ function solve(arr) {
         index: 0,
         level: 0
     };
-    var q = [root], node, index;
+    var q = [root], node, children;
     var max = 0;
     while (q.length) {
         node = q.shift();
         // whether the current node is satisfied
         if (node.prev && node.prev.index == arr[node.index]) {
-            _.each(arr, function(j, i) {
-                if (i == node.index || node.ancestors[i]) return;
-                q.push(createChildNode(node, i));
-            });
+            children = _.range(arr.length);
         } else {
-            index = arr[node.index];
-            if (node.ancestors[index]) {
-                max = Math.max(max, node.level - node.ancestors[index].level + 1);
-            } else {
-                q.push(createChildNode(node, index));
-            }
+            children = [arr[node.index]];
         }
+
+        _.each(children, function(i) {
+            if (node.ancestors[i]) {
+                max = Math.max(max, node.level - node.ancestors[i].level + 1);
+            } else {
+                q.push(createChildNode(node, i));
+            }
+        });
     }
     return max;
 }
