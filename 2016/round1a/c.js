@@ -13,12 +13,25 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(arr) {
+    var max = 0;
+    var visited = {};
+    _.each(arr, function(bff, i) {
+        if (visited[i]) return;
+
+        max = Math.max(max, bfs(arr, i, visited));
+    });
+    return max;
+}
+
+function bfs(arr, index, visited) {
     var root = {
         ancestors: {}, // index -> node
         prev: null,
-        index: 0,
+        index: index,
         level: 0
     };
+    visited[index] = true;
+
     var q = [root], node, children;
     var max = 0;
     while (q.length) {
@@ -35,6 +48,7 @@ function solve(arr) {
                 max = Math.max(max, node.level - node.ancestors[i].level + 1);
             } else {
                 q.push(createChildNode(node, i));
+                visited[i] = true;
             }
         });
     }
