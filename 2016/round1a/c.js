@@ -14,13 +14,20 @@ for (var i = 0; i < t; i++) {
 
 function solve(arr) {
     var max = 0;
-    var visited = {};
+    var visited = {
+        circles: [] // whose `realSize` is 2
+    };
     _.each(arr, function(bff, i) {
         if (visited[i]) return;
 
         max = Math.max(max, dfs(arr, i, visited));
     });
-    return max;
+
+    // connected all pair circles
+    var sum = _.reduce(visited.circles, function(sum, c) {
+        return sum + c.size;
+    }, 0);
+    return Math.max(max, sum);
 }
 
 function dfs(arr, index, visited) {
@@ -97,6 +104,9 @@ function dfs(arr, index, visited) {
         });
         visited[i].circle = circle;
 
+        if (circle.realSize == 2) {
+            visited.circles.push(circle);
+        }
         return circle.realSize == 2 ? circle.size : circle.realSize;
     }
 }
