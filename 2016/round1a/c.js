@@ -24,13 +24,14 @@ function solve(arr) {
 }
 
 function dfs(arr, index, visited) {
-    var i, count = 0;
+    var i, j, count = 0;
 
     i = index;
     while (!visited[i]) {
         visited[i] = {};
         count++;
 
+        j = i;
         i = arr[i];
     }
 
@@ -39,34 +40,61 @@ function dfs(arr, index, visited) {
         // end in a existed circle
         circle = visited[i].circle;
         updateInfo(arr, index, i, visited, {
+            endpoint: visited[i].chains ? i : visited[i].endpoint,
             circle: circle
         });
-        
+
         if (circle.realSize == 2) {
-            circle.size += count;
+            i = visited[index].endpoint;
+
+            j = index;
+            count = 0;
+            while (1) {
+                count++;
+
+                if (arr[j] == i) break;
+                j = arr[j];
+            }
+            visited[i].chains[j] = count;
+
+            circle.size = circle.realSize
+                    + (_.max(_.values(visited[i].chains)) || 0) + (_.max(_.values(visited[arr[i]].chains)) || 0);
             return circle.size;
         }
         return 0;
     } else {
         // find a new circle
         circle = {
+            realSize: count,
             size: count // if `realSize` is 2, it contains the 2 chains; otherwise, ignore this field
         };
 
-        var j = arr[i];
-        count = 0;
-        while (j != i) {
-            visited[j].circle = circle;
-            count++;
+        if (i != index) {
+            // find the real `j`
+            j = index;
+            count = 0;
+            while (1) {
+                visited[j] = {
+                    endpoint: i,
+                    circle: circle
+                };
+                count++;
 
-            j = arr[j];
-        } 
-        circle.realSize = count + 1; // include i
-        visited[i].circle = circle;
+                if (arr[j] == i) break;
+                j = arr[j];
+            }
 
-        updateInfo(arr, index, i, visited, {
+            visited[i].chains = {};
+            visited[i].chains[j] = count; // prev -> length
+            circle.realSize = circle.size - count;
+        }
+
+        updateInfo(arr, arr[i], i, visited, {
+            chains: {},
             circle: circle
         });
+        visited[i].circle = circle;
+
         return circle.realSize == 2 ? circle.size : circle.realSize;
     }
 }
