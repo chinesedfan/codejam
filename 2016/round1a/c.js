@@ -55,7 +55,7 @@ function dfs(arr, index, visited) {
                 if (arr[j] == i) break;
                 j = arr[j];
             }
-            visited[i].chains[j] = count;
+            visited[i].chains[j] = Math.max(visited[i].chains[j] || 0, count);
 
             circle.size = circle.realSize
                     + (_.max(_.values(visited[i].chains)) || 0) + (_.max(_.values(visited[arr[i]].chains)) || 0);
@@ -87,6 +87,8 @@ function dfs(arr, index, visited) {
             visited[i].chains = {};
             visited[i].chains[j] = count; // prev -> length
             circle.realSize = circle.size - count;
+        } else {
+            visited[i].chains = {};
         }
 
         updateInfo(arr, arr[i], i, visited, {
