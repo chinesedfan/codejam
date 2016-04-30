@@ -1,5 +1,6 @@
 var fs = require('fs');
 var _ = require('lodash');
+var BigInteger = require('biginteger').BigInteger;
 
 var args = process.argv.slice(2);
 
@@ -11,15 +12,47 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(s1, s2) {
-    var compare = 0, diffPos = -1;
+    var diffPos = -1;
     _.some(s1, function(c, i) {
         if (s1[i] != s2[i] && s1[i] != '?' && s2[i] != '?') {
-            compare = compareChar(s1[i], s2[i]);
             diffPos = i;
             return true;
         }
     });
 
+    var results = _.map([-1, 0, 1], function(compare) {
+        var arr = tryWithCompare(s1, s2, diffPos, compare);
+        //console.log(arr.toString())
+        var item = {
+            cstr: arr[0],
+            jstr: arr[1],
+            c: BigInteger(arr[0]),
+            j: BigInteger(arr[1])
+        };
+        item.abs = item.c.subtract(item.j).abs();
+        //console.log(item.abs.toString())
+        return item;
+    });
+
+    var min = results[0];
+    _.each(results, function(item, i) {
+        if (i == 0) return;
+
+        if (item.abs < min.abs) {
+            min = item;
+        } else if (item.abs == min.abs) {
+            var x = item.c.compare(min.c);
+            if (x < 0) {
+                min = item;
+            } else if (x == 0 && item.j.compare(min.j) < 0) {
+                min = item;
+            }
+        }
+    });
+    return min.cstr + ' ' + min.jstr;
+}
+
+function tryWithCompare(s1, s2, diffPos, compare) {
     var x1 = [], x2= [];
     _.each(s1, function(c, i) {
         if (s1[i] != '?' && s2[i] != '?') {
@@ -63,7 +96,7 @@ function solve(s1, s2) {
             x1.push(s1[i]);
         }
     });
-    return x1.join('') + ' ' + x2.join('');
+    return [x1.join(''), x2.join('')];
 }
 
 function compareChar(a, b) {
