@@ -62,7 +62,7 @@ function tryWithCompare(s1, s2, diffPos, compare, reverse) {
     var x1 = [], x2 = [], v1, v2;
     var onePos = -1;
     if (reverse) {
-        _.some(s1, function(c, i) {
+        _.some(_.range(diffPos - 1, -1, -1), function(i) {
             if (s1[i] == '?' && s2[i] != '?') {
                 if (compare < 0 && s2[i] != '0') { onePos = i; return true; }
                 if (compare > 0 && s2[i] != '9') { onePos = i; return true; }
@@ -71,11 +71,10 @@ function tryWithCompare(s1, s2, diffPos, compare, reverse) {
                 if (compare < 0 && s1[i] != '9') { onePos = i; return true; }
                 if (compare > 0 && s1[i] != '0') { onePos = i; return true; }
             }
-            if (s1[i] == s2[i] && s1[i] == '?' && onePos < 0) {
-                onePos = i;
-            }
+            if (s1[i] == s2[i] && s1[i] == '?') { onePos = i; return true; }
         });
     }
+    //console.log(onePos, diffPos)
     _.each(s1, function(c, i) {
         if (s1[i] != '?' && s2[i] != '?') {
             x1.push(s1[i]);
