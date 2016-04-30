@@ -43,9 +43,9 @@ function solve(s1, s2) {
     _.each(results, function(item, i) {
         if (i == 0) return;
 
-        if (item.abs < min.abs) {
+        if (item.abs.compare(min.abs) < 0) {
             min = item;
-        } else if (item.abs == min.abs) {
+        } else if (item.abs.compare(min.abs) == 0) {
             var x = item.c.compare(min.c);
             if (x < 0) {
                 min = item;
@@ -54,6 +54,7 @@ function solve(s1, s2) {
             }
         }
     });
+    //console.log(min.abs.toString())
     return min.cstr + ' ' + min.jstr;
 }
 
