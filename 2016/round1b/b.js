@@ -20,9 +20,13 @@ function solve(s1, s2) {
         }
     });
 
-    var results = _.map([-1, 0, 1], function(compare) {
+    if (diffPos < 0) {
+        return tryWithCompare(s1, s2, diffPos, 0, false).join(' ');
+    }
+
+    var results = _.map([-1, 1], function(compare) {
         reverse = false;
-        if (diffPos >= 0 && compareChar(s1[diffPos], s2[diffPos]) != compare) {
+        if (compareChar(s1[diffPos], s2[diffPos]) != compare) {
             reverse = true;
         }
 
