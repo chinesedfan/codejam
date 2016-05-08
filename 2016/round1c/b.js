@@ -39,5 +39,6 @@ function solve(b, m) {
             grid[i][j] = '1';
         }
     }
+    grid[b - 1][b - 1] = '0';
     return 'POSSIBLE' + '\n' + _.map(grid, function(row) { return row.join(' '); }).join('\n');
 }
