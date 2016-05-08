@@ -14,7 +14,7 @@ for (var i = 0; i < t; i++) {
 function solve(b, m) {
     b = parseInt(b);
     m = BigInteger(m);
-    if (m.compare(BigInteger(2).pow(b - 1)) > 0) return 'IMPOSSIBLE';
+    if (m.compare(BigInteger(2).pow(b - 2)) > 0) return 'IMPOSSIBLE';
 
     var grid = [];
     for (var i = 0; i < b; i++) {
@@ -27,7 +27,7 @@ function solve(b, m) {
     var pow = 0;
     while (m.isPositive()) {
         if (m.isOdd()) {
-            grid[pow][b - 1] = '1';
+            grid[pow + 1][b - 1] = '1';
         }
         m = m.divide(2);
         pow++;
