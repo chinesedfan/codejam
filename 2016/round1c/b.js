@@ -40,5 +40,5 @@ function solve(b, m) {
         }
     }
     grid[b - 1][b - 1] = '0';
-    return 'POSSIBLE' + '\n' + _.map(grid, function(row) { return row.join(' '); }).join('\n');
+    return 'POSSIBLE' + '\n' + _.map(grid, function(row) { return row.join(''); }).join('\n');
 }
