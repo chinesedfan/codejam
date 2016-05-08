@@ -43,21 +43,7 @@ function solve(s1, s2) {
         return item;
     });
 
-    var min = results[0];
-    _.each(results, function(item, i) {
-        if (i == 0) return;
-
-        if (item.abs.compare(min.abs) < 0) {
-            min = item;
-        } else if (item.abs.compare(min.abs) == 0) {
-            var x = item.c.compare(min.c);
-            if (x < 0) {
-                min = item;
-            } else if (x == 0 && item.j.compare(min.j) < 0) {
-                min = item;
-            }
-        }
-    });
+    var min = compareResult(results[0], results[1]) < 0 ? results[0] : results[1];
     //console.log(min.abs.toString())
     return min.cstr + ' ' + min.jstr;
 }
@@ -158,4 +144,14 @@ function compareChar(a, b) {
     } else {
         return 0;
     }
+}
+
+function compareResult(a, b) {
+    var result = a.abs.compare(b.abs);
+    if (result) return result;
+
+    result = a.c.compare(b.c);
+    if (result) return result;
+
+    return a.j.compare(b.j);
 }
