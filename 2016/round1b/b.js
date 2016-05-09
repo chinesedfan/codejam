@@ -20,52 +20,43 @@ function solve(s1, s2) {
         }
     });
 
+    var min;
     if (diffPos < 0) {
-        return tryWithCompare(s1, s2, diffPos, 0, false).join(' ');
+        min = tryWithCompare(s1, s2, diffPos, 0, false);
+        return min.cstr + ' ' + min.jstr;
     }
 
-    var results = _.map([-1, 1], function(compare) {
+    var results = _([-1, 1]).map(function(compare) {
         reverse = false;
         if (compareChar(s1[diffPos], s2[diffPos]) != compare) {
             reverse = true;
         }
 
-        var arr = tryWithCompare(s1, s2, diffPos, compare, reverse);
-        //console.log(arr.toString())
-        var item = {
-            cstr: arr[0],
-            jstr: arr[1],
-            c: BigInteger(arr[0]),
-            j: BigInteger(arr[1])
-        };
-        item.abs = item.c.subtract(item.j).abs();
-        //console.log(item.abs.toString())
-        return item;
-    });
-
-    var min = compareResult(results[0], results[1]) < 0 ? results[0] : results[1];
+        return tryWithCompare(s1, s2, diffPos, compare, reverse);
+    }).filter().value();
+    if (results.length > 1) {
+        min = compareResult(results[0], results[1]) < 0 ? results[0] : results[1];
+    } else {
+        min = results[0];
+    }
     //console.log(min.abs.toString())
     return min.cstr + ' ' + min.jstr;
 }
 
 function tryWithCompare(s1, s2, diffPos, compare, reverse) {
-    var x1 = [], x2 = [], v1, v2;
-    var onePos = -1;
-    if (reverse) {
-        _.some(_.range(diffPos - 1, -1, -1), function(i) {
-            if (s1[i] == '?' && s2[i] != '?') {
-                if (compare < 0 && s2[i] != '0') { onePos = i; return true; }
-                if (compare > 0 && s2[i] != '9') { onePos = i; return true; }
-            }
-            if (s1[i] != '?' && s2[i] == '?') {
-                if (compare < 0 && s1[i] != '9') { onePos = i; return true; }
-                if (compare > 0 && s1[i] != '0') { onePos = i; return true; }
-            }
-            if (s1[i] == s2[i] && s1[i] == '?') { onePos = i; return true; }
-        });
+    if (reverse && diffPos > 0) {
+        return _(_.range(diffPos)).map(function(i) {
+            return tryWithOnePos(s1, s2, diffPos, i, compare);
+        }).filter().value().sort(compareResult)[0];
+    } else {
+        return tryWithOnePos(s1, s2, diffPos, -1, compare);
     }
+}
+
+function tryWithOnePos(s1, s2, diffPos, onePos, compare) {
+    var x1 = [], x2 = [], v1, v2;
     //console.log(onePos, diffPos)
-    _.each(s1, function(c, i) {
+    var flag = _.some(s1, function(c, i) {
         if (s1[i] != '?' && s2[i] != '?') {
             x1.push(s1[i]);
             x2.push(s2[i]);
@@ -96,8 +87,14 @@ function tryWithCompare(s1, s2, diffPos, compare, reverse) {
             if (i < diffPos) {
                 v1 = s2[i];
                 if (i == onePos) {
-                    if (compare < 0) v1 = (parseInt(s2[i]) - 1);
-                    if (compare > 0) v1 = (parseInt(s2[i]) + 1);
+                    if (compare < 0) {
+                        if (s2[i] == '0') return true;
+                        v1 = (parseInt(s2[i]) - 1);
+                    }
+                    if (compare > 0) {
+                        if (s2[i] == '9') return true;
+                        v1 = (parseInt(s2[i]) + 1);
+                    }
                 } else if (onePos >= 0 && i > onePos) {
                     if (compare < 0) v1 = '9';
                     if (compare > 0) v1 = '0';
@@ -115,8 +112,14 @@ function tryWithCompare(s1, s2, diffPos, compare, reverse) {
             if (i < diffPos) {
                 v2 = s1[i];
                 if (i == onePos) {
-                    if (compare < 0) v2 = (parseInt(s1[i]) + 1);
-                    if (compare > 0) v2 = (parseInt(s1[i]) - 1);
+                    if (compare < 0) {
+                        if (s1[i] == '9') return true;
+                        v2 = (parseInt(s1[i]) + 1);
+                    }
+                    if (compare > 0) {
+                        if (s1[i] == '0') return true;
+                        v2 = (parseInt(s1[i]) - 1);
+                    }
                 } else if (onePos >= 0 && i > onePos) {
                     if (compare < 0) v2 = '0';
                     if (compare > 0) v2 = '9';
@@ -132,8 +135,18 @@ function tryWithCompare(s1, s2, diffPos, compare, reverse) {
             x1.push(s1[i]);
         }
     });
+    if (flag) return null;
     if (x1.length != x2.length) throw new Error('different length');
-    return [x1.join(''), x2.join('')];
+
+    var item = {
+        cstr: x1.join(''),
+        jstr: x2.join('')
+    };
+    item.c = BigInteger(item.cstr);
+    item.j = BigInteger(item.jstr);
+    item.abs = item.c.subtract(item.j).abs();
+    //console.log(item.cstr, item.jstr)
+    return item;
 }
 
 function compareChar(a, b) {
