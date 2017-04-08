@@ -13,20 +13,42 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(n, k) {
-    var result = n2maxmin(n);
-    var bin = n2bin(k);
-    debug('n2bin: ' + bin);
-    for (var i = 1; i < bin.length; i++) {
-        if (n & 1) {
-            result = n2maxmin(result.max);
-        } else if (!bin[i]) {
-            result = n2maxmin(result.max);
+    var status = n2maxmin(n);
+    status.maxCount = 1;
+    status.minCount = 1;
+
+    var i = 1;
+    var maxResult, minResult;
+    while (i < k) {
+        maxResult = n2maxmin(status.max);
+        minResult = n2maxmin(status.min);
+        if (status.max == status.min) {
+            status.max = maxResult.max;
+            status.min = maxResult.min;
+            status.maxCount = status.maxCount + status.minCount;
+            status.minCount = status.maxCount;
+        } else if (status.max & 1) {
+            status.max = minResult.max;
+            status.min = minResult.min;
+            status.maxCount = status.maxCount * 2 + status.minCount;
         } else {
-            result = n2maxmin(result.min);
+            status.max = maxResult.max;
+            status.min = maxResult.min;
+            status.minCount = status.maxCount + status.minCount * 2;
         }
-        debug('result: ' + result.max + ' ' + result.min);
+        debug(`${status.max}: ${status.maxCount}, ${status.min}: ${status.minCount}`);
+
+        if (i + status.maxCount >= k) {
+            status = maxResult;
+            break;
+        }
+        i += status.maxCount + status.minCount;
+        if (i >= k) {
+            status = minResult;
+            break;
+        }
     }
-    return result.max + ' ' + Math.max(0, result.min);
+    return status.max + ' ' + status.min;
 }
 
 function n2maxmin(n) {
@@ -37,12 +59,4 @@ function n2maxmin(n) {
         max: n / 2,
         min: (n - 2) / 2
     };
-}
-function n2bin(n) {
-    var result = [];
-    while (n) {
-        result.unshift(n & 1);
-        n >>= 1;
-    }
-    return result;
 }
