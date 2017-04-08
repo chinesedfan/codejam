@@ -1,5 +1,6 @@
 var fs = require('fs');
 var _ = require('lodash');
+var BigInteger = require('biginteger').BigInteger;
 var debug = require('debug')('debug');
 
 var args = process.argv.slice(2);
@@ -9,42 +10,43 @@ var t = parseInt(lines[0]);
 var l = 1;
 for (var i = 0; i < t; i++) {
     var tokens = lines[l++].split(' ');
-    console.log('Case #%d: %s', i + 1, solve(parseInt(tokens[0]), parseInt(tokens[1])));
+    console.log('Case #%d: %s', i + 1, solve(BigInteger(tokens[0]), BigInteger(tokens[1])));
 }
 
 function solve(n, k) {
     var status = n2maxmin(n);
-    status.maxCount = 1;
-    status.minCount = 1;
+    status.maxCount = BigInteger(1);
+    status.minCount = BigInteger(1);
 
-    var i = 1;
+    var i = BigInteger(1);
     var maxResult, minResult;
-    while (i < k) {
+    while (i.compare(k) < 0) {
         maxResult = n2maxmin(status.max);
         minResult = n2maxmin(status.min);
-        if (i + status.maxCount >= k) {
+        i = i.add(status.maxCount);
+        if (i.compare(k) >= 0) {
             status = maxResult;
             break;
         }
-        i += status.maxCount + status.minCount;
-        if (i >= k) {
+        i = i.add(status.minCount);
+        if (i.compare(k) >= 0) {
             status = minResult;
             break;
         }
 
-        if (status.max == status.min) {
+        if (status.max.compare(status.min) == 0) {
             status.max = maxResult.max;
             status.min = maxResult.min;
-            status.maxCount = status.maxCount + status.minCount;
+            status.maxCount = status.maxCount.add(status.minCount);
             status.minCount = status.maxCount;
-        } else if (status.max & 1) {
+        } else if (status.max.isOdd()) {
             status.max = minResult.max;
             status.min = minResult.min;
-            status.maxCount = status.maxCount * 2 + status.minCount;
+            status.maxCount = status.maxCount.multiply(2).add(status.minCount);
         } else {
             status.max = maxResult.max;
             status.min = maxResult.min;
-            status.minCount = status.maxCount + status.minCount * 2;
+            status.minCount = status.minCount.multiply(2).add(status.maxCount);
         }
         debug(`${status.max}: ${status.maxCount}, ${status.min}: ${status.minCount}`);
     }
@@ -52,11 +54,11 @@ function solve(n, k) {
 }
 
 function n2maxmin(n) {
-    return (n & 1) ? {
-        max: (n - 1) / 2,
-        min: (n - 1) / 2
+    return n.isOdd() ? {
+        max: n.subtract(1).divide(2),
+        min: n.subtract(1).divide(2)
     } : {
-        max: n / 2,
-        min: (n - 2) / 2
+        max: n.divide(2),
+        min: n.subtract(2).divide(2)
     };
 }
