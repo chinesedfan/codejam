@@ -1,5 +1,6 @@
 var fs = require('fs');
 var _ = require('lodash');
+var debug = require('debug')('debug');
 
 var args = process.argv.slice(2);
 
@@ -14,6 +15,7 @@ for (var i = 0; i < t; i++) {
 function solve(n, k) {
     var result = n2maxmin(n);
     var bin = n2bin(k);
+    debug('n2bin: ' + bin);
     for (var i = 1; i < bin.length; i++) {
         if (n & 1) {
             result = n2maxmin(result.max);
@@ -22,6 +24,7 @@ function solve(n, k) {
         } else {
             result = n2maxmin(result.min);
         }
+        debug('result: ' + result.max + ' ' + result.min);
     }
     return result.max + ' ' + Math.max(0, result.min);
 }
