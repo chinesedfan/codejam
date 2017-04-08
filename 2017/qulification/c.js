@@ -22,6 +22,16 @@ function solve(n, k) {
     while (i < k) {
         maxResult = n2maxmin(status.max);
         minResult = n2maxmin(status.min);
+        if (i + status.maxCount >= k) {
+            status = maxResult;
+            break;
+        }
+        i += status.maxCount + status.minCount;
+        if (i >= k) {
+            status = minResult;
+            break;
+        }
+
         if (status.max == status.min) {
             status.max = maxResult.max;
             status.min = maxResult.min;
@@ -37,16 +47,6 @@ function solve(n, k) {
             status.minCount = status.maxCount + status.minCount * 2;
         }
         debug(`${status.max}: ${status.maxCount}, ${status.min}: ${status.minCount}`);
-
-        if (i + status.maxCount >= k) {
-            status = maxResult;
-            break;
-        }
-        i += status.maxCount + status.minCount;
-        if (i >= k) {
-            status = minResult;
-            break;
-        }
     }
     return status.max + ' ' + status.min;
 }
