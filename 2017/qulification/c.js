@@ -50,7 +50,7 @@ function solve(n, k) {
         }
         debug(`${status.max}: ${status.maxCount}, ${status.min}: ${status.minCount}`);
     }
-    return status.max + ' ' + status.min;
+    return status.max.toString() + ' ' + status.min.toString();
 }
 
 function n2maxmin(n) {
