@@ -18,15 +18,17 @@ while (i <= t && l < lines.length) {
 }
 
 function solve(grid) {
-    var emptyFirstRow = false;
+    var shouldUpdate = true;
+    var emptyRow = -1;
 
     _.each(grid, (r, i) => {
         var first = _.findIndex(r, (c) => c !== '?');
         if (first < 0) {
-            // the same with previous
-            if (!i) {
-                emptyFirstRow = true;
-            } else {
+            if (shouldUpdate) {
+                emptyRow = i;
+            }
+            // the same with previous, refer directly
+            if (i) {
                 grid[i] = grid[i - 1];
             }
         } else {
@@ -38,11 +40,15 @@ function solve(grid) {
                     cur = grid[i][j];
                 }
             });
+            shouldUpdate = false;
         }
     });
 
-    if (emptyFirstRow) {
-        grid[0] = grid[1]; // make sure by the input
+    if (emptyRow >= 0) {
+        // tricky, just update elements
+        _.each(grid[emptyRow + 1], (c, j) => {
+            grid[0][j] = c;
+        });
     }
 
     return _.map(grid, (r) => r.join('')).join('\n');
