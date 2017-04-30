@@ -19,7 +19,7 @@ while (i <= t && l < lines.length) {
             height: parseInt(token[1])
         });
     }
-    console.log('Case #%d:\n%s', i++, solve(n, k, arr));
+    console.log('Case #%d: %s', i++, solve(n, k, arr));
 }
 
 function solve(n, k, arr) {
