@@ -38,7 +38,7 @@ function solve(arr1, arr2) {
     if (arr1.length == 0) {
         if (arr2.length < 2) return 2;
 
-        return arr2[1].end - arr2[0].start > 720 ? 4 : 2;
+        return (arr2[1].end - arr2[0].start > 720 && arr2[0].end + 1440 - arr2[1].start > 720) ? 4 : 2;
     } else { // arr1.length == 1
         return 2;
     }
