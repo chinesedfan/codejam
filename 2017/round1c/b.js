@@ -46,16 +46,19 @@ function solve(arr1, arr2) {
         var duration = item.end - item.start;
         if (prev.type == item.type) {
             duration += delta;
+            if (item.type == 'a') {
+                gap1.push(delta);
+            } else {
+                gap2.push(delta);
+            }
         } else {
             gaps.push(delta);
         }
 
         if (item.type == 'a') {
             total1 += duration;
-            gap1.push(delta);
         } else {
             total2 += duration;
-            gap2.push(delta);
         }
     });
 
