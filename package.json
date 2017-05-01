@@ -4,8 +4,9 @@
   "description": "Solutions for Google Codejam",
   "main": "index.js",
   "dependencies": {
-    "lodash": "^4.9.0",
-    "biginteger": "^1.0.3"
+    "biginteger": "^1.0.3",
+    "debug": "^2.6.3",
+    "lodash": "^4.9.0"
   },
   "devDependencies": {},
   "scripts": {
