@@ -19,21 +19,21 @@ rl.on('close', function() {
 });
 
 function solve(arr) {
-    while (1) {
-        var swap = false;
-        for (var j = 0; j < arr.length - 2; j++) {
-            if (arr[j] > arr[j + 2]) {
-                var temp = arr[j];
-                arr[j] = arr[j + 2];
-                arr[j + 2] = temp;
-                swap = true;
-            }
+    var a1 = [], a2 = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (i & 1) {
+            a2.push(arr[i]);
+        } else {
+            a1.push(arr[i]);
         }
-        if (!swap) break;
     }
+    var f = function(a, b) { return a - b; };
+    a1.sort(f); // even
+    a2.sort(f); // odd
 
-    for (var i = 1; i < arr.length; i++) {
-        if (arr[i] < arr[i - 1]) return i - 1;
+    for (var i = 0; i < a1.length; i++) {
+        if (i < a2.length && a1[i] > a2[i]) return i * 2;
+        if (i > 0 && a1[i] < a2[i - 1]) return i * 2 - 1;
     }
     return 'OK';
 }
