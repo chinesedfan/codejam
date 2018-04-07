@@ -1,18 +1,26 @@
-var fs = require('fs');
-var _ = require('lodash');
+var readline = require('readline');
 
-var args = process.argv.slice(2);
-
-var lines = fs.readFileSync(args[0]).toString().split('\n');
-var t = parseInt(lines[0]);
-var l = 1;
-for (var i = 0; i < t; i++) {
-    var tokens = lines[l++].split(' ');
-    console.log('Case #%d: %s', i + 1, solve(parseInt(tokens[0]), tokens[1]));
-}
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+var lines = [];
+rl.on('line', function(input) {
+    lines.push(input);
+});
+rl.on('close', function() {
+    var t = parseInt(lines[0]);
+    var l = 1;
+    for (var i = 0; i < t; i++) {
+        var tokens = lines[l++].split(' ');
+        console.log('Case #%d: %s', i + 1, solve(parseInt(tokens[0]), tokens[1]));
+    }
+});
 
 function solve(limit, str) {
-    var {d, countC} = getDamage(str);
+    var res = getDamage(str);
+    var d = res.d;
+    var countC = res.countC;
 
     var swap = 0;
     var chs = str.split('');
@@ -54,5 +62,5 @@ function getDamage(str) {
             d += s;
         }
     }
-    return {d, countC};
+    return {d: d, countC: countC};
 }
