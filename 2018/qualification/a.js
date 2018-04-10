@@ -41,6 +41,7 @@ function solve(limit, str) {
                 swap++;
 
                 found = true;
+                break;
             }
         }
 
