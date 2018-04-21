@@ -9,10 +9,7 @@ var t;
 var c;
 var a;
 
-var candidates = [
-    [2, 2], [2, 3], [2, 4],
-    [3, 2], [3, 3], [3, 4]
-];
+var candidates;
 var index;
 var grid;
 
@@ -24,10 +21,15 @@ rl.on('line', function(input) {
     } else if (typeof a === 'undefined') {
         c++;
         a = parseInt(input);
-        // FIXME: ingore `a`, always try to make 4 * 5
-        grid = Array(4 + 1).fill(0).map(function() { return Array(5 + 1); });
+        // always try to make 3 * 3 * x
+        var x = Math.ceil(a / 3 / 3);
+        grid = Array(3 + 1).fill(0).map(function() { return Array(3 * x + 1); });
         index = 0;
-
+        // centers are [2, 2 + 3 * i], where i = 0 ~ x - 1
+        candidates = [];
+        for (var i = 0; i < x; i++) {
+            candidates.push([2, 2 + 3 * i]);
+        }
         var center = candidates[index];
         console.log(center[0], center[1]);
         return;
