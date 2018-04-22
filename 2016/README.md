@@ -1,5 +1,23 @@
 ## 2016
 
+### Qulification
+
+#### Problem A. Counting Sheep
+
+Trivial.
+
+#### Problem B. Revenge of the Pancakes
+
+If the current item is different with the previous, flip. Remember to flip once more if the result is all blank sides.
+
+#### Problem C. Coin Jam
+
+Handle big numbers carefully.
+
+#### Problem D. Fractiles
+
+Check comments in the code.
+
 ### Round 1a
 
 #### Problem A. The Last Word
