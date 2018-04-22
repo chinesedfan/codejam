@@ -18,17 +18,33 @@ rl.on('close', function() {
 });
 
 function solve(area) {
-    // FIXME: only consider small data sets
-    // sin + cos = area
-    var a = 1;
-    var b = -area;
-    var c = (area * area - 1) / 2;
-    var delta = Math.sqrt(b * b - 4 * a * c);
+    // suppose the bottom clockwise are ABCD, and the top are EFGH
+    // rotate about y-axis from +x towards +z 45 degree first
+    // and notice the height difference is equal to the shadow area
+    // refer to https://www.youtube.com/watch?v=rAHcZGjKVvg
 
-    var sin = (-b + delta) / (2 * a);
-    var cos = (-b - delta) / (2 * a);
+    // the angle between BH and y-axis
+    var bhAngle = Math.acos(1 / Math.sqrt(3));
+    // the angle between FD and z-axis
+    var fdAngle = Math.PI / 2 - bhAngle;
 
-    console.log(0.5 * cos, 0.5 * sin, 0);
-    console.log(-0.5 * sin, 0.5 * cos, 0);
-    console.log(0, 0, 0.5);
+    // focus on HFBD now, try to rotate about x-axis from +z towards +y
+    // area = Math.sqrt(3) * cos(bhAngle - t)
+    var t = bhAngle - Math.acos(area / Math.sqrt(3));
+    // for the new bhAngle
+    var cos = area / Math.sqrt(3);
+    var sin = Math.sqrt((3 - area * area) / 3);
+    // for the new fdAngle
+    fdAngle = fdAngle - t;
+
+    var h = [0, Math.sqrt(3) / 2 * cos, Math.sqrt(3) / 2 * sin];
+    var f = [0, Math.sqrt(3) / 2 * Math.sin(fdAngle), -Math.sqrt(3) / 2 * Math.cos(fdAngle)];
+    var c = [Math.sqrt(2) / 2, -1 / 2 * Math.cos(t), 1 / 2 * Math.sin(t)];
+
+    printCenter(h, f);
+    printCenter(h, c);
+    printCenter(f, c);
+}
+function printCenter(a, b) {
+    console.log((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2);
 }
