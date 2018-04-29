@@ -31,6 +31,11 @@ function solve(n, lang, count) {
     });
 
     var sum = 0;
+    if (getAdd(getRate(1, n)) >= 0.5) {
+        sum += getRound(getRate(1, n)) * rest;
+        rest = 0;
+    }
+
     for (var i = 0; i < sorted.length; i++) {
         var x = sorted[i]; // count
         while (rest && getAdd(getRate(x, n)) < 0.5) {
