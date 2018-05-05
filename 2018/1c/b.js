@@ -33,7 +33,7 @@ rl.on('line', function(input) {
         lst.forEach((x) => {
             count[x] = count[x] || 0;
             count[x]++;
-            if (!given[x] && count[x] < min) min = x;
+            if (!given[x] && (!Number.isFinite(min) || count[x] < count[min])) min = x;
         });
         // give the less valid frequent one
         if (Number.isFinite(min)) {
