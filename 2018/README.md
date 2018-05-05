@@ -18,3 +18,17 @@ For hidden tests, always try to make a 3x(3xN) rectangle.
 #### Problem D. Cubic UFO
 
 For visible tests, keep one center at `(0, 0, 0.5)` and rotate the xy plane.
+
+### Round 1c
+
+#### Problem A. A Whole New Word
+
+Trivial. Collect all possiable characters for each position and loop them.
+
+#### Problem B. Lollipop Shop
+
+Always try to output the less frequent and valid one.
+
+#### Problem C. Ant Stack
+
+(TODO)
