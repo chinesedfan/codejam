@@ -31,4 +31,4 @@ Always try to output the less frequent and valid one.
 
 #### Problem C. Ant Stack
 
-(TODO)
+Dynamic programming. g(x, y) means the minimal weight sum when only consider the first x ants and form a y-height stack. The maximum possible stack height should be determined in advance.

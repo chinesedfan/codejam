@@ -26,11 +26,18 @@ function solve(ws) {
     for (var x = 0; x < ws.length; x++) {
         g[x] = [];
         for (var y = 0; y <= k; y++) {
-            var g1 = x ? g[x - 1][y] : (y == 1 ? ws[x] : Infinity);
-            var g2 = Infinity;
-            if (x && y && g[x - 1][y - 1] <= 6 * ws[x]) g2 = g[x - 1][y - 1] + ws[x];
+            if (y == 0) {
+                g[x][y] = 0;
+            } else if (x == 0) {
+                g[x][y] = y == 1 ? ws[x] : Infinity;
+            } else {
+                var g1 = g[x - 1][y];
+                var g2 = Infinity;
+                if (x && y && g[x - 1][y - 1] <= 6 * ws[x]) g2 = g[x - 1][y - 1] + ws[x];
 
-            g[x][y] = Math.min(g1, g2);
+                g[x][y] = Math.min(g1, g2);
+            }
+
             if (Number.isFinite(g[x][y]) && y > s) s = y;
         }
     }
