@@ -1,6 +1,6 @@
 ## 2018
 
-### Qulification
+### Qualification
 
 #### Problem A. Saving The Universe Again
 

@@ -1,6 +1,6 @@
 ## 2016
 
-### Qulification
+### Qualification
 
 #### Problem A. Counting Sheep
 

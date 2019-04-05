@@ -1,6 +1,6 @@
 ## 2017
 
-### Qulification
+### Qualification
 
 #### Problem A. Oversized Pancake Flipper
 
