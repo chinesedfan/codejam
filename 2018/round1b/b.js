@@ -23,44 +23,57 @@ rl.on('close', function() {
 });
 
 function solve(signs) {
-    var max = 1;
-    var count = 0;
+    var subs = [];
 
     var prev;
     for (var i = 0; i < signs.length; i++) {
         var m = signs[i][0] + signs[i][1];
         var n = signs[i][0] - signs[i][2];
-        if (!prev) {
-            prev = {
-                length: 1,
-                lockm: false, // did confirm or not
-                lockn: false,
+        var cur = {
+            m: {
                 m: m,
-                n: n
-            };
-            count++;
-        } else {
-            var okm = !prev.lockm || prev.m == m;
-            var okn = !prev.lockn || prev.n == n;
-            if (okm || okn) {
-                prev.length++;
-                prev.lockm = prev.lockm || prev.n != n;
-                prev.lockn = prev.lockn || prev.m != m;
-                prev.m = m;
-                prev.n = n;
-                if (prev.length > max) max = prev.length;
+                n: n,
+                len: 1, // valid length that have the same `m` or `n`
+                rlen: 1 // pure length that have the same `m`
+            },
+            n: {
+                m: m,
+                n: n,
+                len: 1,
+                rlen: 1
+            }
+        };
+        if (prev) {
+            if (prev.m.m == m) {
+                cur.m = Object.assign({}, prev.m);
+                cur.m.len++;
+                cur.m.rlen++;
             } else {
-                prev = {
-                    length: 1,
-                    lockm: false,
-                    lockn: false,
-                    m: m,
-                    n: n
-                };
-                count++;
+                cur.m.m = m;
+                cur.m.n = prev.n.n;
+                cur.m.len = (prev.n.n == n ? prev.n.len : prev.n.rlen) + 1; // connected by coincidence
+                cur.m.rlen = 1;
+            }
+
+            if (prev.n.n == n) {
+                cur.n = Object.assign({}, prev.n);
+                cur.n.len++;
+                cur.n.rlen++;
+            } else {
+                cur.n.n = n;
+                cur.n.m = prev.m.m;
+                cur.n.len = (prev.m.m == m ? prev.m.len : prev.m.rlen) + 1;
+                cur.n.rlen = 1;
             }
         }
+        prev = cur;
+        subs.push({
+            length: Math.max(prev.m.len, prev.n.len)
+        });
     }
+
+    var max = Math.max.apply(Math, subs.map((item) => item.length));
+    var count = subs.filter((item) => item.length === max).length;
 
     return max + ' ' + count;
 }

@@ -24,3 +24,7 @@ For visible tests, keep one center at `(0, 0, 0.5)` and rotate the xy plane.
 #### Problem A. Rounding Error
 
 Greedy. Try to create round-up as much as possible.
+
+#### Problem B. Mysterious Road Signs
+
+Construct two chains: M-fixed and N-fixed. Try to connect directly if M/N equals the chain, or switch to the other chain. If connected by coincidence, inherit the chain length.
