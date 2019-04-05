@@ -33,3 +33,7 @@ Total surface equals to `PI * maxRadius * maxRadius + sumOfBorders`. So find K l
 #### Problem B. Parenting Partnering
 
 Small dataset can be solved case by case. The general solution is: 1) sort all activities by the start time; 2) consider continuous activities that belong to the same person as a big activity, and gaps between different person's activities as candidates; 3) give all candidates to the less time person; 4) if the less time one reaches 720, then the exchange times are the length of gaps; otherwise, move gaps between the more time person to the less time person until it reaches 720, and each move increase 2 exchange times.
+
+### Problem C.Core Training
+
+For small set, sort from high to low and try to train the lowest one as high as possible.
