@@ -31,6 +31,7 @@ function solve(n, lang, count) {
     });
 
     var sum = 0;
+    // 1 can donate round up, so everyone in the rest is unknown
     if (getAdd(getRate(1, n)) >= 0.5) {
         sum += getRound(getRate(1, n)) * rest;
         rest = 0;
@@ -42,15 +43,20 @@ function solve(n, lang, count) {
             x++;
             rest--;
         }
+        sorted[i] = x;
         sum += getRound(getRate(x, n));
     }
 
-    var unit = Math.max(1, 0.5 * n / 100);
-    // console.log(count, sorted, rest, unit);
+    var unit = 1;
+    while (unit < rest && getAdd(getRate(unit, n)) < 0.5) {
+        unit++;
+    }
+// console.log(sorted, `sum=${sum} rest=${rest} unit=${unit}`);
     while (rest >= unit) {
         sum += getRound(getRate(unit, n));
         rest -= unit;
     }
+    sum += getRound(getRate(rest, n));
 
     return sum;
 }

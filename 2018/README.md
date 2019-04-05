@@ -18,3 +18,9 @@ For hidden tests, always try to make a 3x(3xN) rectangle.
 #### Problem D. Cubic UFO
 
 For visible tests, keep one center at `(0, 0, 0.5)` and rotate the xy plane.
+
+### Round 1b
+
+#### Problem A. Rounding Error
+
+Greedy. Try to create round-up as much as possible.
