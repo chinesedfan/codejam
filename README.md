@@ -8,7 +8,13 @@ My dream is just to win a T-shirt. :)
 
 Before 2018, `node a.js a.in > a.out`.
 
-Start from 2018, `cat a.in | node a.js > a.out`. And it must obey syntax rules in Node.js 4.8.2.
+Start from 2018, `node a.js < a.in > a.out`. And it must obey syntax rules in Node.js 4.8.2.
+
+For interactive problem,
+
+- First appeared in 2018, `python testing_tool.py node a.js`
+
+- Since 2019, `python interactive_runner.py python testing_tool.py 0 -- node a.js`
 
 ### Status
 

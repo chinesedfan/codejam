@@ -5,3 +5,4 @@
 *.in
 *.out
 testing_tool.py
+interactive_runner.py
