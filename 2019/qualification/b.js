@@ -47,34 +47,26 @@ function solve(n, p) {
         });
     }
 
-    var more = ce > cs ? 'E' : 'S';
-    var cut = -1;
-    for (var i = 0; i < ps.length; i++) {
-        if (ps[i].ch != more && ps[i].length > 1) {
-            cut = i;
-            break;
-        }
-    }
-
-    var ret = []; // parts
-    for (var i = 0; i < ps.length;) {
-        if (cut < 0) {
-            // simple reverse
-            ret.push(Array(ps[i + 1].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
-            ret.push(Array(ps[i].length).fill(ps[i].ch).join(''));
-            i += 2;
-        } else {
-            if (i == cut - 1) {
-                ret.push(ps[i].ch == 'E' ? 'S' : 'E'); // offset 1
-                ret.push(Array(ps[i].length + ps[i + 2].length).fill(ps[i].ch).join(''));
-                ret.push(Array(ps[i + 1].length - 1).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
-                i += 3;
-            } else {
-                ret.push(Array(ps[i + 1].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
-                ret.push(Array(ps[i].length).fill(ps[i].ch).join(''));
-                i += 2;
+    var start = p[0] === 'E' ? 'S' : 'E';
+    if (ce == cs) {
+        return Array(n - 1).fill(start)
+            .concat(Array(n - 1).fill(p[0]))
+            .join('');
+    } else {
+        var x = 0;
+        for (var i = 0; i < ps.length; i++) {
+            if (ps[i].ch == start) {
+                if (ps[i].length > 1) {
+                    x++;
+                    break;
+                } else {
+                    x += ps[i].length;
+                }
             }
         }
+        return Array(x).fill(start)
+            .concat(Array(n - 1).fill(p[0]))
+            .concat(Array(n - 1 - x).fill(start))
+            .join('');
     }
-    return ret.join('');
 }
