@@ -66,6 +66,7 @@ while c < t:
             print ' '.join(ret)
             sys.stdout.flush()
 
+            raw_input() # skip the code
             break
         else:
             print createMsg(parts)
