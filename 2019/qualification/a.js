@@ -22,6 +22,15 @@ function solve(str) {
         if (ch === '4') {
             s1.push(2);
             s2.push(2);
+        } else if (ch === '7') {
+            s1.push(2);
+            s2.push(5);
+        } else if (ch === '8') {
+            s1.push(3);
+            s2.push(5);
+        } else if (ch === '9') {
+            s1.push(3);
+            s2.push(6);
         } else {
             var n = +ch;
             s1.push(Math.floor(n / 2));
