@@ -13,7 +13,7 @@ If they are the same, find a chance to start with X the other direction steps, t
 
 #### Problem C. Cryptopangrams
 
-(TODO)
+For small set, print all primes no greater than 10k and extract them from the product. But be careful with ABA/BAB. We should confirm other characters first and return back to distinguish them.
 
 #### Problem D. Dat Bae
 

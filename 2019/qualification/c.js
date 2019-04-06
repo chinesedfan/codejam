@@ -17,7 +17,7 @@ rl.on('close', function() {
         var tokens = lines[l++].split(' ');
         var n = +tokens[0];
         var len = +tokens[1];
-        console.log('Case #%d: %s', i + 1, solve(n, len, lines[l++].split(' ')));
+        console.log('Case #%d: %s', i + 1, solve(n, len, lines[l++].split(' ').map((x) => +x)));
     }
 });
 
@@ -25,7 +25,6 @@ function solve(n, len, s) {
     var map = {}; // p -> 1
     var items = s.map((m) => {
         var obj = [];
-        m = +m;
         ps.some((p) => {
             if (!(m % p)) {
                 map[p] = 1;
@@ -37,8 +36,10 @@ function solve(n, len, s) {
         return obj;
     });
 
+    var rchs = {}; // ch -> p
     var chs = Object.keys(map).sort((a, b) => (+a) - (+b)).reduce((o, k, i) => {
         o[k] = String.fromCharCode('A'.charCodeAt(0) + i);
+        rchs[o[k]] = +k;
         return o;
     }, {}); // p -> ch
 
@@ -52,20 +53,30 @@ function solve(n, len, s) {
             var b = items[i - 1][1];
             var c = items[i][0];
             var d = items[i][1];
+            if (s[i - 1] == s[i]) return; // ABA or BAB -> ab ab
 
             var p = d;
             if (c == a || c == b) p = c;
-            if (i == 1) {
-                first = (a == c || a == d) ? b : a;
-            }
-            if (i == items.length - 1) {
-                last = (c == a || c == b) ? d : c;
-            }
-            msg.push(chs[p]);
+            msg[i] = chs[p];
         }
     });
 
-    msg.unshift(chs[first]);
-    msg.push(chs[last]);
+    for (var i = 0; i < len; i++) {
+        if (msg[i]) {
+            // fill backward
+            var j = i - 1;
+            while (j >= 0 && !msg[j]) {
+                msg[j] = chs[s[j] / rchs[msg[j + 1]]];
+                j--;
+            }
+            // fill forward
+            j = i + 1;
+            while (j <= len && !msg[j]) {
+                msg[j] = chs[s[j - 1] / rchs[msg[j - 1]]];
+                j++;
+            }
+        }
+    }
+
     return msg.join('');
 }
