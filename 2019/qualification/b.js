@@ -57,18 +57,22 @@ function solve(n, p) {
     }
 
     var ret = []; // parts
-    for (var i = 0; i < ps.length; i++) {
+    for (var i = 0; i < ps.length;) {
         if (cut < 0) {
             // simple reverse
-            ret.push(Array(ps[i].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
+            ret.push(Array(ps[i + 1].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
+            ret.push(Array(ps[i].length).fill(ps[i].ch).join(''));
+            i += 2;
         } else {
             if (i == cut - 1) {
                 ret.push(ps[i].ch == 'E' ? 'S' : 'E'); // offset 1
                 ret.push(Array(ps[i].length + ps[i + 2].length).fill(ps[i].ch).join(''));
                 ret.push(Array(ps[i + 1].length - 1).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
-                i += 2;
+                i += 3;
             } else {
-                ret.push(Array(ps[i].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
+                ret.push(Array(ps[i + 1].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
+                ret.push(Array(ps[i].length).fill(ps[i].ch).join(''));
+                i += 2;
             }
         }
     }
