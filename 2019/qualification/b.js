@@ -47,16 +47,25 @@ function solve(n, p) {
         });
     }
 
+    var more = ce > cs ? 'E' : 'S';
+    var cut = -1;
+    for (var i = 0; i < ps.length; i++) {
+        if (ps[i].ch != more && ps[i].length > 1) {
+            cut = i;
+            break;
+        }
+    }
+
     var ret = []; // parts
     for (var i = 0; i < ps.length; i++) {
-        if (ce == cs) {
+        if (cut < 0) {
             // simple reverse
             ret.push(Array(ps[i].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
         } else {
-            if (i == 0) {
-                ret.push(Array(ps[i].length - 1).fill(ps[i].ch == 'E' ? 'S' : 'E').join('')); // offset 1
-                ret.push(Array(ps[i + 1].length).fill(ps[i].ch).join(''));
-                ret.push(Array(ps[i + 2].length + 1).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
+            if (i == cut - 1) {
+                ret.push(ps[i].ch == 'E' ? 'S' : 'E'); // offset 1
+                ret.push(Array(ps[i].length + ps[i + 2].length).fill(ps[i].ch).join(''));
+                ret.push(Array(ps[i + 1].length - 1).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
                 i += 2;
             } else {
                 ret.push(Array(ps[i].length).fill(ps[i].ch == 'E' ? 'S' : 'E').join(''));
