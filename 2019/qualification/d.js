@@ -29,16 +29,17 @@ rl.on('line', function(input) {
         ipts = [];
         console.log(msgs[m]);
     } else {
-        ipts.unshift(input);
+        ipts.push(input);
 
         f--;
         if (!f) {
             var ret = [];
             var pos = 0;
             for (var i = 0; i < n; i++) {
+                var check = i % 16;
                 if (pos < ipts[0].length) {
-                    var str = ipts.map((s) => s[pos]).join('');
-                    if (parseInt(str, 2) == i) {
+                    var str = ipts.map((s, j) => j < msgs.length ? s[pos] : '0');
+                    if (parseInt(str.reverse().join(''), 2) == check) {
                         pos++;
                     } else {
                         ret.push(i);
@@ -54,7 +55,7 @@ rl.on('line', function(input) {
             if (c == t) process.exit();
         } else {
             m++;
-            console.log(msgs[m]);
+            console.log(msgs[m] || msgs[0]);
         }
     }
 });
@@ -65,15 +66,15 @@ function createMsg(num) {
         var bits = [];
         var x = i;
         while (x) {
-            bits.unshift(x & 1);
+            bits.push(x & 1);
             x >>= 1;
         }
-        while (bits.length < 10) bits.unshift(0);
+        while (bits.length < 10) bits.push(0);
         grid.push(bits);
     }
 
     var ret = [];
-    for (var i = 9; i >= 0; i--) {
+    for (var i = 0; i < 4; i++) { // even F = 4!
         var msg = [];
         for (var j = 0; j < grid.length; j++) {
             msg.push(grid[j][i]);
