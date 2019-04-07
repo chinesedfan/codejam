@@ -1,24 +1,9 @@
-def mcmp(a, b):
-    if len(a) == len(b):
-        for i in len(a):
-            if not a[i] == b[i]:
-                return a[i] - b[i]
-        return 0
-    else:
-        return len(a) - len(b)
-
 def gcd(a, b):
-    while True:
-        if a > b:
-            a = a - b
-        elif a < b:
-            b = b - a
-        else:
-            return a
-
-def rd(o, k, i):
-    o[k] = 'A' + i
-    return o
+    while b > 0:
+        r = a % b
+        a = b
+        b = r
+    return a
 
 def solve(n, length, s):
     m = {} # p -> 1
