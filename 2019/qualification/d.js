@@ -7,10 +7,14 @@ var rl = readline.createInterface({
 
 var t, c;
 var n, b, f;
-var parts;
+var msgs, m;
+var ipts = [];
+var skip = false;
 
 rl.on('line', function(input) {
-    if (typeof t === 'undefined') {
+    if (skip) {
+        skip = false;
+    } else if (typeof t === 'undefined') {
         t = +input;
         c = 0;
     } else if (typeof n === 'undefined') {
@@ -20,61 +24,62 @@ rl.on('line', function(input) {
         b = +tokens[1];
         f = +tokens[2];
 
-        parts = [{len: Math.ceil(n / 2)}, {len: Math.floor(n / 2)}];
-        console.log(createMsg(parts));
+        msgs = createMsg(n);
+        m = 0;
+        ipts = [];
+        console.log(msgs[m]);
     } else {
-        var all = parts.every((p) => p.len == 1); // divided into units
-        var beg = 0;
-        var ch = '1';
-        var nparts = [];
-        // check results
-        parts.forEach((p) => {
-            var left = p.miss ? 0 : count(input, ch, beg, beg + p.len);
-            beg += left;
-
-            // only records all-missing part, other part can be counted
-            if (p.len > 1) {
-                nparts.push(
-                    {len: Math.ceil(p.len / 2), miss: !left},
-                    {len: Math.floor(p.len / 2), miss: !left}
-                );
-            } else {
-                nparts.push({len: p.len, miss: !left});
-            }
-            ch = ch == '1' ? '0' : '1';
-        });
-        parts = nparts;
+        ipts.unshift(input);
 
         f--;
-        if (!f || all) {
-            var ret = parts.reduce((arr, x, i) => {
-                if (x.miss) arr.push(i);
-                return arr;
-            }, []).join(' ');
-            console.log(ret);
+        if (!f) {
+            var ret = [];
+            var pos = 0;
+            for (var i = 0; i < n; i++) {
+                if (pos < ipts[0].length) {
+                    var str = ipts.map((s) => s[pos]).join('');
+                    if (parseInt(str, 2) == i) {
+                        pos++;
+                    } else {
+                        ret.push(i);
+                    }
+                } else {
+                    ret.push(i);
+                }
+            }
+            console.log(ret.join(' '));
 
             n = undefined; // next case;
+            skip = true; // skip result code
+            if (c == t) process.exit();
         } else {
-            console.log(createMsg(parts));
+            m++;
+            console.log(msgs[m]);
         }
     }
 });
 
-function createMsg(parts) {
-    var m = [];
-    var ch = '1';
-    for (var i = 0; i < parts.length; i++) {
-        for (var j = 0; j < parts[i].len; j++) {
-            m.push(ch);
+function createMsg(num) {
+    var grid = [];
+    for (let i = 0; i < num; i++) {
+        var bits = [];
+        var x = i;
+        while (x) {
+            bits.unshift(x & 1);
+            x >>= 1;
         }
-        ch = ch == '1' ? '0' : '1';
+        while (bits.length < 10) bits.unshift(0);
+        grid.push(bits);
     }
-    return m.join('');
-}
-function count(str, ch, beg, end) { // [i, j)
-    var rc = 0;
-    for (var i = beg; i < end; i++) {
-        if (str[i] === ch) rc++; else break;
+
+    var ret = [];
+    for (var i = 9; i >= 0; i--) {
+        var msg = [];
+        for (var j = 0; j < grid.length; j++) {
+            msg.push(grid[j][i]);
+        }
+        ret.push(msg.join(''));
     }
-    return rc;
+
+    return ret;
 }
