@@ -4,5 +4,6 @@
 
 *.in
 *.out
+*.log
 testing_tool.py
 interactive_runner.py
