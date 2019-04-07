@@ -1,3 +1,4 @@
+// TLE due to gcd is not effective
 var readline = require('readline');
 var rl = readline.createInterface({
   input: process.stdin,
