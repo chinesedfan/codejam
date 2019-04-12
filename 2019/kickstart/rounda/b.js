@@ -21,40 +21,73 @@ rl.on('close', function() {
 });
 
 function solve(row, col, ls) {
-    var min = cal(ls);
-    for (var i = 0; i < ls.length; i++) {
-        for (var j = 0; j < ls[i].length; j++) {
-            if (ls[i][j] === '1') continue;
-
-            var cur = cal(ls.map((l, n) => n === i ? l.substr(0, j) + '1' + l.substr(j + 1) : l));
-            if (cur < min) min = cur;
+    var ds = cal(ls);
+    // binary search
+    var min = 0;
+    var max = 2 * ls.length;
+    while (max - min > 0) {
+        var middle = Math.floor((min + max) / 2);
+        if (check(ds, middle)) {
+            if (max - min === 1) break;
+            max = middle;
+        } else {
+            if (max - min === 1) { min = max; break; }
+            min = middle;
         }
     }
     return min;
 }
 
+function check(ds, k) {
+    var mins = Infinity;  // min x + y
+    var maxs = -Infinity; // max x + y
+    var minm = Infinity;  // min x - y
+    var maxm = -Infinity; // max x - y
+    for (var d in ds) {
+        if (+d > k) {
+            ds[d].forEach((node) => {
+                var s = node.r + node.c;
+                var m = node.r - node.c;
+                if (s > maxs) maxs = s;
+                if (s < mins) mins = s;
+                if (m > maxm) maxm = m;
+                if (m < minm) minm = m;
+            });
+        }
+    }
+
+    if (mins === Infinity) return true;
+
+    // add the new office in the center
+    var x = Math.max(maxs - mins, maxm - minm);
+    return Math.ceil(x / 2) <= k;
+}
 function cal(ls) {
-    var t = -Infinity;
+    var ds = {}; // d -> [{r, c}]
+    ds[0] = [];
     for (var i = 0; i < ls.length; i++) {
         for (var j = 0; j < ls[i].length; j++) {
             if (ls[i][j] === '1') {
-                t = Math.max(t, 0);
-            } else {
-                t = Math.max(t, distance(i, j, ls));
+                ds[0].push({r: i, c: j, d: 0});
             }
         }
     }
-    return t;
+
+    distance(ds, ls);
+    return ds;
 }
 
-function distance(row, col, ls) {
-    var q = [{r: row, c: col, d: 0}];
+function distance(ds, ls) {
+    var q = ds[0];
     var visited = {};
     while (q.length) {
         var node = q.shift();
         if (visited[key(node)]) continue;
         visited[key(node)] = 1;
-        if (ls[node.r][node.c] === '1') return node.d;
+        if (node.d) {
+            ds[node.d] = ds[node.d] || [];
+            ds[node.d].push(node);
+        }
 
         push({r: node.r + 1, c: node.c, d: node.d + 1}, q, visited, ls);
         push({r: node.r - 1, c: node.c, d: node.d + 1}, q, visited, ls);
