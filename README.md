@@ -30,7 +30,7 @@ For interactive problem,
 |      | 1c            | 2/3, not solve c large          |
 | 2018 | qualification | 4/4                             |
 |      | 1c            | 3/3                             |
-| 2019 | kickstart - a | 1/3, not solve b large/c        |
+| 2019 | kickstart - a | 2/3, not solve c.               |
 |      | qualification | 4/4                             |
 
 ### Related Websites

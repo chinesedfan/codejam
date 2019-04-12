@@ -96,20 +96,29 @@ function cal(ls) {
 
 function distance(ds, ls) {
     var q = ds[0];
+    var nq = [];
     var visited = {};
-    while (q.length) {
-        var node = q.shift();
-        if (visited[key(node)]) continue;
-        visited[key(node)] = 1;
-        if (node.d) {
-            ds[node.d] = ds[node.d] || [];
-            ds[node.d].push(node);
+    var d = 0;
+    while (1) {
+        for (var i = 0; i < q.length; i++) {
+            var node = q[i];
+            if (visited[key(node)]) continue;
+            visited[key(node)] = 1;
+            if (d) {
+                ds[d].push(node);
+            }
+
+            push({r: node.r + 1, c: node.c}, nq, visited, ls);
+            push({r: node.r - 1, c: node.c}, nq, visited, ls);
+            push({r: node.r, c: node.c + 1}, nq, visited, ls);
+            push({r: node.r, c: node.c - 1}, nq, visited, ls);
         }
 
-        push({r: node.r + 1, c: node.c, d: node.d + 1}, q, visited, ls);
-        push({r: node.r - 1, c: node.c, d: node.d + 1}, q, visited, ls);
-        push({r: node.r, c: node.c + 1, d: node.d + 1}, q, visited, ls);
-        push({r: node.r, c: node.c - 1, d: node.d + 1}, q, visited, ls);
+        if (!nq.length) break;
+        d++;
+        ds[d] = [];
+        q = nq;
+        nq = [];
     }
 }
 function key(node) {
