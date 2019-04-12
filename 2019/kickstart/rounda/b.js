@@ -22,12 +22,13 @@ rl.on('close', function() {
 
 function solve(row, col, ls) {
     var ds = cal(ls);
+    var mcache = prepare(ds);
     // binary search
     var min = 0;
     var max = ls.length + ls[0].length;
     while (max - min > 0) {
         var middle = Math.floor((min + max) / 2);
-        if (check(ds, middle)) {
+        if (check(ds, mcache, middle)) {
             if (max - min === 1) break;
             max = middle;
         } else {
@@ -38,13 +39,17 @@ function solve(row, col, ls) {
     return min;
 }
 
-function check(ds, k) {
+function prepare(ds) {
     var mins = Infinity;  // min x + y
     var maxs = -Infinity; // max x + y
     var minm = Infinity;  // min x - y
     var maxm = -Infinity; // max x - y
-    for (var d in ds) {
-        if (+d > k) {
+    var ret = {}; // d -> {mins, maxs, minm, maxm}
+    Object.keys(ds)
+        .map((x) => +x)
+        .sort((a, b) => b - a)
+        .map((d) => {
+            ret[d] = {mins: mins, maxs: maxs, minm: minm, maxm: maxm};
             ds[d].forEach((node) => {
                 var s = node.r + node.c;
                 var m = node.r - node.c;
@@ -53,9 +58,17 @@ function check(ds, k) {
                 if (m > maxm) maxm = m;
                 if (m < minm) minm = m;
             });
-        }
-    }
+        });
+    return ret;
+}
 
+function check(ds, mcache, k) {
+    if (!mcache[k]) return true;
+
+    var mins = mcache[k].mins;
+    var maxs = mcache[k].maxs;
+    var minm = mcache[k].minm;
+    var maxm = mcache[k].maxm;
     if (mins === Infinity) return true;
 
     // add the new office in the center
