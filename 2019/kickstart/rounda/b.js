@@ -24,7 +24,7 @@ function solve(row, col, ls) {
     var ds = cal(ls);
     // binary search
     var min = 0;
-    var max = 2 * ls.length;
+    var max = ls.length + ls[0].length;
     while (max - min > 0) {
         var middle = Math.floor((min + max) / 2);
         if (check(ds, middle)) {
@@ -60,6 +60,10 @@ function check(ds, k) {
 
     // add the new office in the center
     var x = Math.max(maxs - mins, maxm - minm);
+    if (maxs - mins == maxm - minm
+        && (((maxs + mins + maxm + minm) / 2) & 1)) {
+        return Math.ceil((x + 1) / 2) <= k;
+    }
     return Math.ceil(x / 2) <= k;
 }
 function cal(ls) {
