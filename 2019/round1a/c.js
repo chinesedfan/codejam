@@ -19,50 +19,29 @@ rl.on('close', function() {
 });
 
 function solve(n, ws) {
-    var r = {ch: '', c: 0, children: { /* ch -> node */ }};
+    var r = {ch: '', isw: false, children: { /* ch -> node */ }};
     ws.forEach((w) => {
         var p = r;
         for (var i = w.length - 1; i >= 0; i--) {
             if (!p.children[w[i]]) {
-                p.children[w[i]] = {ch: w[i], c: 0, children: {}};
+                p.children[w[i]] = {ch: w[i], isw: false, children: {}};
             }
-            p.children[w[i]].c++;
+            if (i == 0) {
+                p.children[w[i]].isw = true;
+            }
             p = p.children[w[i]];
         }
     });
 
-    var pair = 0;
-    var q = Object.keys(r.children)
-        .map((ch) => r.children[ch]);
-    while (q.length) {
-        var node = q.shift();
-        var sorted = Object.keys(node.children)
-            .map((ch) => node.children[ch])
-            .sort((a, b) => a.c - b.c);
+    return ws.length - cal(r, true);
+}
 
-        var ignore = false;
-        var rest = false;
-        sorted.forEach((child) => {
-            switch (child.c) {
-            case 1:
-                if (!ignore) {
-                    if (rest) {
-                        pair++;
-                        rest = false;
-                        ignore = true;
-                    } else {
-                        rest = true;
-                    }
-                }
-                break;
-            case 2:
-                pair++;
-                break;
-            default:
-                q.push(child);
-            }
-        });
-    }
+function cal(node, r) {
+    var keys = Object.keys(node.children);
+    if (!keys.length) return 1;
 
-    return pair * 2;
+    var sum = keys.reduce((s, k) => s + cal(node.children[k]), 0);
+    if (node.isw) sum++;
+    if (!r && sum >= 2) sum -= 2;
+    return sum;
 }
