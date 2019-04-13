@@ -9,6 +9,9 @@ var t, c;
 var n, m;
 var ipts = [];
 var skip = false;
+
+var ps = [2,3,5,7,11,13,17];
+var pi = 0;
 var cache = mcache();
 
 rl.on('line', function(input) {
@@ -21,20 +24,22 @@ rl.on('line', function(input) {
         m = +tokens[2];
 
         c = 0;
-        console.log(printSame(2));
+        pi = 0;
+        console.log(printSame(ps[pi++]));
     } else {
         ipts.push(input.split(' ').map((x) => +x));
-        if (ipts.length < 18 - 1) {
+        if (ipts.length < ps.length) {
             console.log(printSame(ipts.length + 2));
         } else {
-            var key = ipts.map(countRet).map((bc, bi) => bc % (bi + 2)).join('#');
+            var key = ipts.map(countRet).map((bc, bi) => bc % ps[bi]).join('#');
             console.log(cache[key]);
 
             ipts = [];
+            pi = 0;
             skip = true; // skip result code
             if (++c == t) process.exit();
 
-            console.log(printSame(2));
+            console.log(printSame(ps[pi++]));
         }
     }
 });
@@ -47,10 +52,10 @@ function countRet(bs) {
 }
 function mcache() {
     var m = {};
-    for (var i = 1; i <= 365; i++) {
+    for (var i = 1; i <= 100000; i++) {
         var rs = [];
-        for (var j = 2; j <= 18; j++) {
-            rs.push(i % j);
+        for (var j = 0; j < ps.length; j++) {
+            rs.push(i % ps[j]);
         }
 
         var k = rs.join('#');
