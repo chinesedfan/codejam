@@ -12,7 +12,6 @@ var skip = false;
 
 var ps = [2,3,5,7,11,13,17];
 var pi = 0;
-var cache = mcache();
 
 rl.on('line', function(input) {
     if (skip) {
@@ -31,8 +30,8 @@ rl.on('line', function(input) {
         if (ipts.length < ps.length) {
             console.log(printSame(ipts.length + 2));
         } else {
-            var key = ipts.map(countRet).map((bc, bi) => bc % ps[bi]).join('#');
-            console.log(cache[key]);
+            var key = ipts.map(countRet).map((bc, bi) => bc % ps[bi]);
+            console.log(find(key));
 
             ipts = [];
             pi = 0;
@@ -50,17 +49,17 @@ function printSame(b) {
 function countRet(bs) {
     return bs.reduce((sum, b) => sum + b, 0);
 }
-function mcache() {
-    var m = {};
+function find(key) {
     for (var i = 1; i <= 100000; i++) {
-        var rs = [];
+        var ok = true;
         for (var j = 0; j < ps.length; j++) {
-            rs.push(i % ps[j]);
+            if ((i % ps[j]) != key[j]) {
+                ok = false;
+                break;
+            }
         }
 
-        var k = rs.join('#');
-        // if (m[k]) throw Error(i);
-        m[k] = i;
+        if (ok) return i;
     }
-    return m;
+    return -1;
 }
