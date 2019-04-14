@@ -10,7 +10,7 @@ var n, m;
 var ipts = [];
 var skip = false;
 
-var ps = [2,3,5,7,11,13,17];
+var ps = [5,7,9,11,13,16,17];
 var pi = 0;
 
 rl.on('line', function(input) {
@@ -28,7 +28,7 @@ rl.on('line', function(input) {
     } else {
         ipts.push(input.split(' ').map((x) => +x));
         if (ipts.length < ps.length) {
-            console.log(printSame(ipts.length + 2));
+            console.log(printSame(ps[pi++]));
         } else {
             var key = ipts.map(countRet).map((bc, bi) => bc % ps[bi]);
             console.log(find(key));
@@ -50,7 +50,7 @@ function countRet(bs) {
     return bs.reduce((sum, b) => sum + b, 0);
 }
 function find(key) {
-    for (var i = 1; i <= 100000; i++) {
+    for (var i = 1; i <= 1000000; i++) {
         var ok = true;
         for (var j = 0; j < ps.length; j++) {
             if ((i % ps[j]) != key[j]) {

@@ -29,7 +29,7 @@ What's more, divide N into blocks with size 32, then we can use only 5 inputs, w
 
 #### Problem B. Golf Gophers
 
-(TODO)
+Distingush by reminders. Notice dividers only require to be relatively prime.
 
 #### Problem C. Alien Rhyme
 
