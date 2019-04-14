@@ -25,7 +25,7 @@ What's more, divide N into blocks with size 32, then we can use only 5 inputs, w
 
 #### Problem A. Pylons
 
-(TODO)
+Greedy but hard to proof. In each step, select the one that leaves most available nodes.
 
 #### Problem B. Golf Gophers
 
