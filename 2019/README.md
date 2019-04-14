@@ -20,3 +20,17 @@ For larget set, gcd means the prime.
 
 Rotate 10 * N inputs, then each row can stand for a number. Missing rows mean broken bits.
 What's more, divide N into blocks with size 32, then we can use only 5 inputs, which means 5 bits, to encode and find. Because it is impossible that a whole block is missing (B < 15).
+
+### Round 1a
+
+#### Problem A. Pylons
+
+Greedy but hard to proof. In each step, select the one that leaves most available nodes.
+
+#### Problem B. Golf Gophers
+
+Distingush by reminders. Notice dividers only require to be relatively prime.
+
+#### Problem C. Alien Rhyme
+
+Create Tie. Then calculate unused strings under each node.
