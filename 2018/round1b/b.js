@@ -51,7 +51,7 @@ function solve(signs) {
             } else {
                 cur.m.m = m;
                 cur.m.n = prev.n.n;
-                cur.m.len = (prev.n.n == n ? prev.n.len : prev.n.rlen) + 1; // connected by coincidence
+                cur.m.len = (prev.n.m == m ? prev.n.len : prev.n.rlen) + 1; // connected by coincidence
                 cur.m.rlen = 1;
             }
 
@@ -62,7 +62,7 @@ function solve(signs) {
             } else {
                 cur.n.n = n;
                 cur.n.m = prev.m.m;
-                cur.n.len = (prev.m.m == m ? prev.m.len : prev.m.rlen) + 1;
+                cur.n.len = (prev.m.n == n ? prev.m.len : prev.m.rlen) + 1;
                 cur.n.rlen = 1;
             }
         }
