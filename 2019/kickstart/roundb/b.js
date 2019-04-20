@@ -22,12 +22,19 @@ rl.on('close', function() {
 
 function solve(n, rocks) {
     var mt = -Infinity;
+    var rs = [];
+    var fs = []; // rocks that always there
     for (var i = 0; i < rocks.length; i++) {
-        mt = Math.max(mt, Math.ceil(rocks[i][1] / rocks[i][2]));
+        if (rocks[i][2] == 0) {
+            fs.push(rocks[i]);
+        } else {
+            rs.push(rocks[i]);
+            mt = Math.max(mt, Math.ceil(rocks[i][1] / rocks[i][2]));
+        }
     }
 
     var ts = []; // i,j means total energy that use stones [0,i] and after j seconds
-    for (var i = 0; i < rocks.length; i++) {
+    for (var i = 0; i < rs.length; i++) {
         ts.push([]);
         var r = rocks[i];
         var s = r[0];
@@ -43,5 +50,5 @@ function solve(n, rocks) {
         }
     }
 
-    return ts[n - 1][0];
+    return ts[ts.length - 1][0] + fs.reduce((sum, r) => sum + r[1], 0);
 }
