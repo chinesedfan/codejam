@@ -50,5 +50,5 @@ function solve(n, rocks) {
         }
     }
 
-    return ts[ts.length - 1][0] + fs.reduce((sum, r) => sum + r[1], 0);
+    return (ts.length ? ts[ts.length - 1][0] : 0) + fs.reduce((sum, r) => sum + r[1], 0);
 }
