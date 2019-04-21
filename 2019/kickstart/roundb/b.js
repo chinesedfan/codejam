@@ -47,16 +47,22 @@ function solve(n, rocks) {
                 if (i == 0) {
                     ts[i][k][j] = cur;
                 } else {
-                    var rk = Math.min(k, i - 1); // get real k
-                    ts[i][k][j] = Math.max(ts[i - 1][rk][j], ts[i - 1][rk][Math.min(j + s, mt)] + cur);
+                    ts[i][k][j] = Math.max(
+                        getMax(ts, i - 1, j),
+                        getMax(ts, i - 1, Math.min(j + s, mt)) + cur
+                    );
                 }
             }
         }
     }
-    var fm = -Infinity;
-    for (var k = 0; k < rs.length; k++) {
-        fm = Math.max(fm, ts[ts.length - 1][k][0]);
-    }
 
-    return (ts.length ? fm : 0) + fs.reduce((sum, r) => sum + r[1], 0);
+    return (ts.length ? getMax(ts, ts.length - 1, 0) : 0) + fs.reduce((sum, r) => sum + r[1], 0);
+}
+
+function getMax(ts, i, j) {
+    var fm = -Infinity;
+    for (var k = 0; k <= i; k++) {
+        fm = Math.max(fm, ts[i][k][j]);
+    }
+    return fm;
 }
