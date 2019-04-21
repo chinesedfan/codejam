@@ -33,12 +33,15 @@ function solve(n, rocks) {
         }
     }
 
-    rs.sort((a, b) => b[2] - a[2]); // eat the faster one first
+    // compare s1 * l2 with s2 * l1, lose less, eat first
+    // but in every iteration, we try to eat new stone first, so reverse here
+    rs.sort((a, b) => a[0] * b[2] - b[0] * a[2]);
+    rs.reverse();
 
     var ts = []; // i,j means total energy that use stones [0,i] and after j seconds
     for (var i = 0; i < rs.length; i++) {
         ts.push([]);
-        var r = rocks[i];
+        var r = rs[i];
         var s = r[0];
         var e = r[1];
         var l = r[2];
