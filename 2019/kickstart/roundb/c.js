@@ -26,11 +26,13 @@ function solve(n, s, ts) {
         var sum = 0;
         for (var j = i; j < ts.length; j++) {
             var type = ts[j];
+            if (count[type] < 0) continue;
             count[type] = (count[type] || 0) + 1;
 
             sum++;
             if (count[type] > s) {
                 sum -= count[type];
+                count[type] = -1; // forbidden
             }
 
             mx = Math.max(mx, sum);
