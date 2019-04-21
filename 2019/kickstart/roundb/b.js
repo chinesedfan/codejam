@@ -21,34 +21,22 @@ rl.on('close', function() {
 });
 
 function solve(n, rocks) {
-    var mt = -Infinity;
-    var rs = [];
-    var fs = []; // rocks that always there
-    for (var i = 0; i < rocks.length; i++) {
-        if (rocks[i][2] == 0) {
-            fs.push(rocks[i]);
+    rocks.sort((a, b) => {
+        if (a[2] != b[2]) {
+            return b[2] - a[2]; // eat the faster one first
         } else {
-            rs.push(rocks[i]);
-            mt = Math.max(mt, Math.ceil(rocks[i][1] / rocks[i][2]));
+            return a[1] - b[1]; // eat the small one first
         }
-    }
+    });
 
-    var ts = []; // i,j means total energy that use stones [0,i] and after j seconds
-    for (var i = 0; i < rs.length; i++) {
-        ts.push([]);
-        var r = rocks[i];
+    var total = 0;
+    var t = 0;
+    rocks.forEach((r) => {
         var s = r[0];
         var e = r[1];
         var l = r[2];
-        for (var j = 0; j <= mt; j++) {
-            var cur = Math.max(0, e - j * l);
-            if (i == 0) {
-                ts[i][j] = cur;
-            } else {
-                ts[i][j] = Math.max(ts[i - 1][j], ts[i - 1][Math.min(j + s, mt)] + cur);
-            }
-        }
-    }
-
-    return (ts.length ? ts[ts.length - 1][0] : 0) + fs.reduce((sum, r) => sum + r[1], 0);
+        total += Math.max(0, e - t * l);
+        t += s;
+    });
+    return total;
 }
