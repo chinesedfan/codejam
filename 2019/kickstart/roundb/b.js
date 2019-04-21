@@ -25,7 +25,7 @@ function solve(n, rocks) {
         if (a[2] != b[2]) {
             return b[2] - a[2]; // eat the faster one first
         } else {
-            return a[1] - b[1]; // eat the small one first
+            return b[1] - a[1]; // eat the larger one first
         }
     });
 
@@ -35,8 +35,11 @@ function solve(n, rocks) {
         var s = r[0];
         var e = r[1];
         var l = r[2];
-        total += Math.max(0, e - t * l);
-        t += s;
+        var cur = Math.max(0, e - t * l);
+        if (cur) {
+            total += cur;
+            t += s;
+        }
     });
     return total;
 }
