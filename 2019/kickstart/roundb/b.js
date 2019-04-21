@@ -33,33 +33,27 @@ function solve(n, rocks) {
         }
     }
 
-    var ts = []; // i,k,j means total energy that use stones [0,i], with k as last and after j seconds
-    var max = [];
+    // compare s1 * l2 with s2 * l1, lose less, eat first
+    // but in every iteration, we try to eat new stone first, so reverse here
+    rs.sort((a, b) => a[0] * b[2] - b[0] * a[2]);
+    rs.reverse();
+
+    var ts = []; // i,j means total energy that use stones [0,i] and after j seconds
     for (var i = 0; i < rs.length; i++) {
         ts.push([]);
-        max.push([]);
+        var r = rs[i];
+        var s = r[0];
+        var e = r[1];
+        var l = r[2];
         for (var j = 0; j <= mt; j++) {
-            ts[i].push([]);
-            max[i][j] = -Infinity;
-            for (var k = 0; k <= i; k++) {
-                var r = rocks[k];
-                var s = r[0];
-                var e = r[1];
-                var l = r[2];
-
-                var cur = Math.max(0, e - j * l);
-                if (i == 0) {
-                    ts[i][j][k] = cur;
-                } else {
-                    ts[i][j][k] = Math.max(
-                        max[i - 1][j],
-                        max[i - 1][Math.min(j + s, mt)] + cur
-                    );
-                }
-                max[i][j] = Math.max(max[i][j], ts[i][j][k]);
+            var cur = Math.max(0, e - j * l);
+            if (i == 0) {
+                ts[i][j] = cur;
+            } else {
+                ts[i][j] = Math.max(ts[i - 1][j], ts[i - 1][Math.min(j + s, mt)] + cur);
             }
         }
     }
 
-    return (ts.length ? max[ts.length - 1][0] : 0) + fs.reduce((sum, r) => sum + r[1], 0);
+    return (ts.length ? ts[ts.length - 1][0] : 0) + fs.reduce((sum, r) => sum + r[1], 0);
 }
