@@ -33,22 +33,30 @@ function solve(n, rocks) {
         }
     }
 
-    var ts = []; // i,j means total energy that use stones [0,i] and after j seconds
+    var ts = []; // i,k,j means total energy that use stones [0,i], with k as last and after j seconds
     for (var i = 0; i < rs.length; i++) {
         ts.push([]);
-        var r = rocks[i];
-        var s = r[0];
-        var e = r[1];
-        var l = r[2];
-        for (var j = 0; j <= mt; j++) {
-            var cur = Math.max(0, e - j * l);
-            if (i == 0) {
-                ts[i][j] = cur;
-            } else {
-                ts[i][j] = Math.max(ts[i - 1][j], ts[i - 1][Math.min(j + s, mt)] + cur);
+        for (var k = 0; k <= i; k++) {
+            ts[i].push([]);
+            var r = rocks[k];
+            var s = r[0];
+            var e = r[1];
+            var l = r[2];
+            for (var j = 0; j <= mt; j++) {
+                var cur = Math.max(0, e - j * l);
+                if (i == 0) {
+                    ts[i][k][j] = cur;
+                } else {
+                    var rk = Math.min(k, i - 1); // get real k
+                    ts[i][k][j] = Math.max(ts[i - 1][rk][j], ts[i - 1][rk][Math.min(j + s, mt)] + cur);
+                }
             }
         }
     }
+    var fm = -Infinity;
+    for (var k = 0; k < rs.length; k++) {
+        fm = Math.max(fm, ts[ts.length - 1][k][0]);
+    }
 
-    return (ts.length ? ts[ts.length - 1][0] : 0) + fs.reduce((sum, r) => sum + r[1], 0);
+    return (ts.length ? fm : 0) + fs.reduce((sum, r) => sum + r[1], 0);
 }
