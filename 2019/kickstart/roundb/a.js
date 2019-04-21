@@ -23,26 +23,30 @@ rl.on('close', function() {
 });
 
 function solve(n, q, str, qs) {
-    var m = []; // i,j -> ok
+    var cs = [];
+    var count = {}; // ch -> count
     for (var i = 0; i < str.length; i++) {
-        m.push([]);
-        var odd = 0;
-        var count = {}; // ch -> count
-        for (var j = i; j < str.length; j++) {
-            var ch = str[j];
-            count[ch] = (count[ch] || 0) + 1;
-            if (count[ch] & 1) {
-                odd++;
-            } else {
-                odd--;
-            }
-            m[i][j] = odd < 2;
-        }
+        count[str[i]] = (count[str[i]] || 0) + 1;
+        cs.push(Object.assign({}, count));
     }
 
     var qc = 0;
     qs.forEach((ts) => {
-        if (m[ts[0] - 1][ts[1] - 1]) qc++;
+        var beg = cs[ts[0] - 2];
+        var end = cs[ts[1] - 1];
+        var hasOdd = false;
+        for (var key in end) {
+            var before = beg ? (+beg[key] || 0) : 0;
+            var after = +end[key];
+            if ((after - before) & 1) {
+                if (!hasOdd) {
+                    hasOdd = true;
+                } else {
+                    return;
+                }
+            }
+        }
+        qc++;
     });
 
     return qc;
