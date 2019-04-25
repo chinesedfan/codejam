@@ -31,7 +31,8 @@ For interactive problem,
 | 2018 | qualification | 4/4                             |
 |      | 1b            | 2/3, not solve c                |
 |      | 1c            | 3/3                             |
-| 2019 | kickstart - a | 2/3, not solve c.               |
+| 2019 | kickstart - a | 2/3, not solve c                |
+|      |           - b | 3/3                             |
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 
