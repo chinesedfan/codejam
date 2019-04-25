@@ -20,24 +20,77 @@ rl.on('close', function() {
 });
 
 function solve(n, s, ts) {
-    var mx = -Infinity;
-    for (var i = 0; i < ts.length; i++) {
-        var count = {}; // ch -> count
-        var sum = 0;
-        for (var j = i; j < ts.length; j++) {
-            var type = ts[j];
-            if (count[type] < 0) continue;
-            count[type] = (count[type] || 0) + 1;
+    var count = {};
+    var init = [];
+    ts.forEach((t, i) => {
+        count[t] = count[t] || [];
+        count[t].push(i);
 
-            sum++;
-            if (count[type] > s) {
-                sum -= count[type];
-                count[type] = -1; // forbidden
-            }
-
-            mx = Math.max(mx, sum);
+        if (count[t].length <= s) {
+            init[i] = 1;
+        } else if (count[t].length == s + 1) {
+            init[i] = -s;
+        } else {
+            init[i] = 0;
         }
+    });
+    var mx = -Infinity;
+    var root = createTree(init, 0, ts.length - 1);
+    mx = Math.max(mx, root.max);
+
+    for (var i = 1; i < ts.length; i++) {
+        // change left from i - 1 to i
+        updateTree(root, i - 1, 0);
+
+        var t = ts[i - 1];
+        if (count[t].length > s) {
+            updateTree(root, count[t][s], 1);
+        }
+        if (count[t].length > s + 1) {
+            updateTree(root, count[t][s + 1], -s);
+        }
+        count[t].shift();
+
+        mx = Math.max(mx, root.max);
     }
 
     return mx;
+}
+
+function createTree(init, l, r) {
+    var root = {
+        l: l,
+        r: r,
+        sum: 0, // sum of this segment
+        max: -Infinity
+    };
+    if (r > l) {
+        var len = Math.ceil((r - l + 1) / 2);
+        root.left = createTree(init, l, l + len - 1);
+        root.right = createTree(init, l + len, r);
+        merge(root);
+    } else {
+        root.sum = init[l];
+        root.max = root.sum;
+    }
+    return root;
+}
+function merge(p) {
+    var c1 = p.left;
+    var c2 = p.right;
+
+    p.sum = c1.sum + c2.sum;
+    p.max = Math.max(c1.max, c1.sum + c2.max);
+}
+function updateTree(root, index, value) {
+    if (index < root.l || index > root.r) return;
+
+    if (root.r > root.l) {
+        updateTree(root.left, index, value);
+        updateTree(root.right, index, value);
+        merge(root);
+    } else {
+        root.sum = value;
+        root.max = value;
+    }
 }
