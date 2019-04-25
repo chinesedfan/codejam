@@ -32,7 +32,7 @@ For interactive problem,
 |      | 1b            | 2/3, not solve c                |
 |      | 1c            | 3/3                             |
 | 2019 | kickstart - a | 2/3, not solve c                |
-|      |           - b | 3/3                             |
+|      | kickstart - b | 3/3                             |
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 
