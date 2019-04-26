@@ -20,15 +20,20 @@ rl.on('close', function() {
 });
 
 function solve(r, b, c, cs) {
-    cs = cs.map((x) => ({
-        m: x[0],
-        s: x[1],
-        p: x[2]
-    }));
+    var ms = -Infinity;
+    var mp = -Infinity;
+    cs = cs.map((x) => {
+        ms = Math.max(ms, x[1]);
+        mp = Math.max(mp, x[2]);
+        return {
+            m: x[0],
+            s: x[1],
+            p: x[2]
+        };
+    });
 
     var min = 0;
-    var max = b * Math.max.apply(Math, cs.map((x) => x.s))
-        + Math.max.apply(Math, cs.map((x) => x.p));
+    var max = b * ms + mp;
     while (min < max) {
         var middle = Math.floor((min + max) / 2);
         if (check(middle, cs, r, b)) {
@@ -42,11 +47,10 @@ function solve(r, b, c, cs) {
     return max;
 }
 function check(t, cs, r, b) {
-    cs.sort((c1, c2) => {
-        return getCap(t, c2) - getCap(t, c1);
-    });
+    cs.forEach((item) => item.cp = getCap(t, item));
+    cs.sort((c1, c2) => c2.cp - c1.cp);
 
-    return b <= cs.slice(0, r).reduce((s, item) => s += getCap(t, item), 0);
+    return b <= cs.slice(0, r).reduce((s, item) => s += item.cp, 0);
 }
 function getCap(t, item) {
     return Math.max(0, Math.min(item.m, Math.floor((t - item.p) / item.s)));
