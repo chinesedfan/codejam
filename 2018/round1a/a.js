@@ -48,7 +48,7 @@ function solve(r, c, h, v, ss) {
 
     i = 0;
     x = 0;
-    while (x < h) {
+    while (x < v) {
         while (i < c && sum < ev) sum += countCol(ss, i++);
         if (sum == ev) {
             sum = 0;
