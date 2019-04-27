@@ -10,13 +10,15 @@ def getCap(t, item):
     return ret
 
 def check(t, cs, r, b):
-    for item in cs:
-        item[3] = getCap(t, item)
-    cs = sorted(cs, lambda c1, c2: int(c2[3] - c1[3]))
+    caps = [0] * len(cs)
+    for i in xrange(len(cs)):
+        caps[i] = getCap(t, cs[i])
+    caps.sort(reverse=True) # much faster than `sorted(iterable, cmp)`
+                            # learned from https://github.com/kamyu104/GoogleCodeJam-2018/blob/master/Round%201A/bit-party.py
 
     s = 0
     for x in xrange(r):
-        s = s + cs[x][3]
+        s = s + caps[x]
     return b <= s
 
 def solve(r, b, c, cs, ms, mp):
