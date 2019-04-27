@@ -2,23 +2,24 @@ import math
 
 def getCap(t, item):
     [m, s, p, _] = item
-    return max(0, min(m, math.floor((float(t) - p) / s)))
+    ret = (t - p) / s
+    if ret > m:
+        ret = m
+    if ret < 0:
+        ret = 0
+    return ret
 
 def check(t, cs, r, b):
     for item in cs:
         item[3] = getCap(t, item)
     cs = sorted(cs, lambda c1, c2: int(c2[3] - c1[3]))
-    return b <= sum(map(lambda item: item[3], cs[0:r]))
 
-def solve(r, b, c, cs):
-    ms = cs[0][1]
-    mp = cs[0][2]
-    for item in cs:
-        if item[1] > ms:
-            ms = item[1]
-        if item[2] > mp:
-            mp = item[2]
+    s = 0
+    for x in xrange(r):
+        s = s + cs[x][3]
+    return b <= s
 
+def solve(r, b, c, cs, ms, mp):
     tmin = 0
     tmax = b * ms + mp
     while tmin < tmax:
@@ -36,8 +37,14 @@ for i in xrange(1, t + 1):
     r, b, c = map(int, raw_input().split(' '))
 
     cs = []
+    ms = float('-inf')
+    mp = float('-inf')
     for j in xrange(c):
         m, s, p = map(int, raw_input().split(' '))
+        if s > ms:
+            ms = s
+        if p > mp:
+            mp = p
         cs.append([m, s, p, 0])
 
-    print 'Case #{}: {}'.format(i, solve(r, b, c, cs))
+    print 'Case #{}: {}'.format(i, solve(r, b, c, cs, ms, mp))
