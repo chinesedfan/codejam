@@ -20,24 +20,59 @@ rl.on('close', function() {
 });
 
 function solve(q, ps) {
-    var max = 0, x, y;
-    for (var i = 0; i <= q; i++) {
-        for (var j = 0; j <= q; j++) {
-            var pc = ps.filter((p) => {
-                switch (p[2]) {
-                case 'E': return i > p[0];
-                case 'W': return i < p[0];
-                case 'N': return j > p[1];
-                case 'S': return j < p[1];
-                }
-                return false;
-            }).length;
-            if (pc > max) {
-                max = pc;
-                x = i;
-                y = j;
-            }
+    ps.forEach((p) => {
+        p[0] = +p[0];
+        p[1] = +p[1];
+    });
+
+    var mh, mv;
+    for (var i = 0; i < ps.length; i++) {
+        var n = next(ps[i]);
+        var c = 0;
+        for (var j = 0; j < ps.length; j++) {
+            if (valid(n, ps[j])) c++;
+        }
+        n.c = c;
+
+        if (isH(ps[i])) {
+            if (!mh || c > mh.c) mh = n;
+        } else {
+            if (!mv || c > mv.c) mv = n;
         }
     }
+    var x = mh ? mh[0] : 0;
+    var y = mv ? mv[1] : 0;
     return x + ' ' + y;
+}
+
+function next(p) {
+    switch (p[2]) {
+    case 'E':
+        return [p[0] + 1, p[1]];
+    case 'W':
+        return [p[0] - 1, p[1]];
+    case 'N':
+        return [p[0], p[1] + 1];
+    case 'S':
+        return [p[0], p[1] - 1];
+    }
+    throw new Error('invalid dir');
+}
+
+function isH(p) {
+    return p[2] == 'W' || p[2] == 'E';
+}
+
+function valid(p1, p2) {
+    switch (p2[2]) {
+    case 'E':
+        return p1[0] < p2[0];
+    case 'W':
+        return p1[0] > p2[0];
+    case 'N':
+        return p1[1] > p2[1];
+    case 'S':
+        return p1[1] < p2[1];
+    }
+    return false;
 }
