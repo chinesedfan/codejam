@@ -35,9 +35,9 @@ function solve(q, ps) {
         n.c = c;
 
         if (isH(ps[i])) {
-            if (!mh || c > mh.c) mh = n;
+            if (!mh || c > mh.c || (c == mh.c && (n[0] < mh[0] || n[1] < mh[1]))) mh = n;
         } else {
-            if (!mv || c > mv.c) mv = n;
+            if (!mv || c > mv.c || (c == mv.c && (n[0] < mv[0] || n[1] < mv[1]))) mv = n;
         }
     }
     var x = mh ? mh[0] : 0;
