@@ -25,7 +25,10 @@ function solve(q, ps) {
         p[1] = +p[1];
     });
 
-    var mh, mv;
+    var mh = [0, 0, 'E'], mv = [0, 0, 'N'];
+    mh.c = ps.filter((p) => valid(mh, p)).length;
+    mv.c = ps.filter((p) => valid(mv, p)).length;
+
     for (var i = 0; i < ps.length; i++) {
         var n = next(ps[i]);
         var c = 0;
@@ -35,9 +38,9 @@ function solve(q, ps) {
         n.c = c;
 
         if (isH(ps[i])) {
-            if (!mh || c > mh.c || (c == mh.c && (n[0] < mh[0] || n[1] < mh[1]))) mh = n;
+            if (c > mh.c) mh = n;
         } else {
-            if (!mv || c > mv.c || (c == mv.c && (n[0] < mv[0] || n[1] < mv[1]))) mv = n;
+            if (c > mv.c) mv = n;
         }
     }
     var x = mh ? mh[0] : 0;
@@ -48,13 +51,13 @@ function solve(q, ps) {
 function next(p) {
     switch (p[2]) {
     case 'E':
-        return [p[0] + 1, p[1]];
+        return [p[0] + 1, p[1], p[2]];
     case 'W':
-        return [p[0] - 1, p[1]];
+        return [p[0] - 1, p[1], p[2]];
     case 'N':
-        return [p[0], p[1] + 1];
+        return [p[0], p[1] + 1, p[2]];
     case 'S':
-        return [p[0], p[1] - 1];
+        return [p[0], p[1] - 1, p[2]];
     }
     throw new Error('invalid dir');
 }
@@ -64,6 +67,8 @@ function isH(p) {
 }
 
 function valid(p1, p2) {
+    if (isH(p1) != isH(p2)) return false;
+
     switch (p2[2]) {
     case 'E':
         return p1[0] > p2[0];
