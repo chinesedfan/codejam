@@ -66,9 +66,9 @@ function isH(p) {
 function valid(p1, p2) {
     switch (p2[2]) {
     case 'E':
-        return p1[0] < p2[0];
-    case 'W':
         return p1[0] > p2[0];
+    case 'W':
+        return p1[0] < p2[0];
     case 'N':
         return p1[1] > p2[1];
     case 'S':
