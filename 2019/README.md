@@ -34,3 +34,20 @@ Distingush by reminders. Notice dividers only require to be relatively prime.
 #### Problem C. Alien Rhyme
 
 Create Tie. Then calculate unused strings under each node.
+
+### Round 1b
+
+#### Problem A. Manhattan Crepe Cart
+
+Brute force for small test.
+Consider each dimension separately. Use 0 and each next cell.
+
+#### Problem B. Draupnir
+
+When W = 6, we can solve a group of equations.
+When W = 2, notice after i * 63 days, Ri became Ri * 2^63. The returned sums are values modulo by 2^63, so as long as we make sure don't overlap each other, the original Ri can be calculated.
+
+#### Problem C. Fair Fight
+
+For small test, count for each intervals.
+For large test, divide the problem into 3 parts: select Ci, Ci is good enough and not too good. Determine [L, R] of each part by binary search. And prepare RMQ data structures.
