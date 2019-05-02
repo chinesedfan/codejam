@@ -35,6 +35,7 @@ For interactive problem,
 |      | kickstart - b | 3/3                             |
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
+|      | 1b            | 3/3                             |
 
 ### Related Websites
 

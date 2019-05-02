@@ -20,32 +20,32 @@ rl.on('close', function() {
 });
 
 function solve(n, klimit, cs, ds) {
-    var rc = createTree(cs, 0, cs.length - 1);
-    var root = createTree(ds, 0, ds.length - 1);
+    var cq = prepareRMQ(cs);
+    var dq = prepareRMQ(ds);
 
     var count = 0;
     for (var i = 0; i < n; i++) {
         var cl = binarySearch(0, i, (x) => {
-            return x == 0 || cs[i] > findMax(rc, i - x, i - 1);
+            return x == 0 || cs[i] > findMax(cq, i - x, i - 1);
         });
         var cr = binarySearch(i, n - 1, (x) => {
             // if has ties, we choose the smallest index, which is i
-            return cs[i] >= findMax(rc, i, x);
+            return cs[i] >= findMax(cq, i, x);
         });
 
         // good enough
         var l1 = binarySearch(0, cl, (x) => {
-            return cs[i] >= findMax(root, i - x, i) - klimit;
+            return cs[i] >= findMax(dq, i - x, i) - klimit;
         });
         var r1 = binarySearch(i, cr, (x) => {
-            return cs[i] >= findMax(root, i, x) - klimit;
+            return cs[i] >= findMax(dq, i, x) - klimit;
         });
         // too good
         var l2 = binarySearch(0, cl, (x) => {
-            return cs[i] > findMax(root, i - x, i) + klimit;
+            return cs[i] > findMax(dq, i - x, i) + klimit;
         });
         var r2 = binarySearch(i, cr, (x) => {
-            return cs[i] > findMax(root, i, x) + klimit;
+            return cs[i] > findMax(dq, i, x) + klimit;
         });
 
         var c1 = (l1 + 1) * (r1 - i + 1);
@@ -55,33 +55,36 @@ function solve(n, klimit, cs, ds) {
     return count;
 }
 
-function createTree(ds, l, r) {
-    var root = {
-        l: l,
-        r: r
-    };
-    if (l < r) {
-        var middle = Math.floor((l + r) / 2);
-        root.left = createTree(ds, l, middle);
-        root.right = createTree(ds, middle + 1, r);
+function prepareRMQ(ds) {
+    var ret = [];
 
-        root.max = Math.max(root.left.max, root.right.max);
-    } else {
-        root.max = ds[l];
+    var p = 0;
+    var step = 1;
+    while (step <= ds.length) {
+        ret.push([]);
+
+        for (var i = 0; i < ds.length; i++) {
+            if (p == 0) {
+                ret[p][i] = ds[i];
+            } else {
+                ret[p][i] = Math.max(ret[p - 1][i], i + step / 2 < ds.length ? ret[p - 1][i + step / 2] : -Infinity);
+            }
+        }
+
+        p++;
+        step <<= 1;
     }
-    return root;
+
+    return ret;
 }
-function findMax(root, l, r) {
-    if (l == root.l && r == root.r) return root.max;
-
-    var middle = Math.floor((root.l + root.r) / 2);
-    if (r <= middle) {
-        return findMax(root.left, l, r);
-    } else if (l > middle) {
-        return findMax(root.right, l, r);
-    } else {
-        return Math.max(findMax(root.left, l, middle), findMax(root.right, middle + 1, r));
+function findMax(m, l, r) {
+    var p = 0;
+    var step = 1;
+    while (step * 2 <= r - l) {
+        p++;
+        step <<= 1;
     }
+    return Math.max(m[p][l], m[p][r - step + 1]);
 }
 
 function binarySearch(l, r, fn) { // for any [l, x], fn returns true

@@ -7,7 +7,7 @@ while c < t:
     c = c + 1
 
     s = []
-    for x in [56, 200]: # as well as their gaps are larger than 7, because 2^7 > 100
+    for x in [56, 200]: # as long as their gaps are larger than 7, because 2^7 > 100
         print x
         sys.stdout.flush()
 
