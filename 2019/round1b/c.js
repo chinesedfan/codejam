@@ -20,12 +20,18 @@ rl.on('close', function() {
 });
 
 function solve(n, klimit, cs, ds) {
+    var rc = createTree(cs, 0, cs.length - 1);
     var root = createTree(ds, 0, ds.length - 1);
 
     var count = 0;
     for (var i = 0; i < n; i++) {
-        var cl = binarySearch(0, i, (x) => x == 0 || cs[i - x] < cs[i]);
-        var cr = binarySearch(i, n - 1, (x) => cs[x] <= cs[i]); // if has ties, we can the smallest index, which is i
+        var cl = binarySearch(0, i, (x) => {
+            return x == 0 || cs[i] > findMax(rc, i - x, i - 1);
+        });
+        var cr = binarySearch(i, n - 1, (x) => {
+            // if has ties, we choose the smallest index, which is i
+            return cs[i] >= findMax(rc, i, x);
+        });
 
         // good enough
         var l1 = binarySearch(0, cl, (x) => {
