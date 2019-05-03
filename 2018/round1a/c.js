@@ -28,54 +28,62 @@ function solve(p, cs) {
         r: 2 * Math.sqrt(c[0] * c[0] + c[1] * c[1])
     }));
 
-    // as long as `base + l` doesn't exceed p
-    var prev, next;
+    var is = [{
+        l: 0,
+        r: 0
+    }];
     for (var i = 0; i < cs.length; i++) {
-        var item = cs[i];
-        next = [];
-        for (var j = 0; j <= p; j++) {
-            if (i == 0) {
-                // not add
-                next[j] = {l: 0, r: 0};
-                if (item.base <= j) {
-                    // add
-                    update(next[j], {l: item.base, r: item.base});
-                }
-                if (item.base + item.l <= j) {
-                    // add and cut
-                    update(next[j], {
-                        l: item.base + item.l,
-                        r: item.base + item.r
-                    });
-                }
-            } else {
-                // not add
-                next[j] = {l: prev[j].l, r: prev[j].r};
-                if (prev[j].l + item.base <= j) {
-                    // add
-                    update(next[j], {
-                        l: prev[j].l + item.base,
-                        r: prev[j].r + item.base
-                    });
-                }
-                if (prev[j].l + item.base + item.l <= j) {
-                    // add and cut
-                    update(next[j], {
-                        l: prev[j].l + item.base + item.l,
-                        r: prev[j].r + item.base + item.r
-                    });
-                }
-            }
+        var is2 = is.map((item) => ({
+            l: item.l + cs[i].base + cs[i].l,
+            r: item.r + cs[i].base + cs[i].r
+        }));
+        for (var j = 0; j < is2.length; j++) {
+            merge(p, is, is2[j]);
         }
-        prev = next;
     }
 
-    return prev[p].r > p ? p : prev[p].r;
+    return is[is.length - 1].r;
 }
 
-function update(s1, s2) {
-    if (s2.l > s1.l) {
-        s1.l = s2.l;
-        s1.r = s2.r;
+function merge(p, is, item) {
+    if (item.l > p) return;
+
+    var fin = (x, val) => {
+        // 2i means at the left of interval i
+        // 2i + 1 means in the middle of interval i
+        var i = Math.floor(x / 2);
+        if (x & 1) {
+            return val >= is[i].l;
+        } else {
+            return i == 0 || val > is[i - 1].r;
+        }
+    };
+
+    var l = binarySearch(0, 2 * is.length, (x) => {
+        return fin(x, item.l);
+    });
+    var r = binarySearch(0, 2 * is.length, (x) => {
+        return fin(x, item.r);
+    });
+    var il = Math.floor(l / 2);
+    var ir = Math.floor(r / 2);
+    var added = {
+        l: (l & 1) ? is[il].l : item.l,
+        r: (r & 1) ? is[ir].r : item.r
+    };
+    added.r = Math.min(p, added.r);
+
+    is.splice(il, ir - il + ((r & 1) ? 1 : 0), added);
+}
+
+function binarySearch(l, r, fn) { // for any [l, x], fn returns true
+    while (l <= r) {
+        var middle = Math.floor((l + r) / 2);
+        if (fn(middle)) {
+            l = middle + 1;
+        } else {
+            r = middle - 1;
+        }
     }
+    return r;
 }
