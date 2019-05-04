@@ -32,17 +32,19 @@ function solve(p, cs) {
         l: 0,
         r: 0
     }];
+    var total = 0;
     for (var i = 0; i < cs.length; i++) {
+        total += cs[i].base;
         var is2 = is.map((item) => ({
-            l: item.l + cs[i].base + cs[i].l,
-            r: item.r + cs[i].base + cs[i].r
+            l: item.l + cs[i].l,
+            r: item.r + cs[i].r
         }));
         for (var j = 0; j < is2.length; j++) {
-            merge(p, is, is2[j]);
+            merge(p - total, is, is2[j]);
         }
     }
 
-    return is[is.length - 1].r;
+    return total + is[is.length - 1].r;
 }
 
 function merge(p, is, item) {
