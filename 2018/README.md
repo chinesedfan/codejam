@@ -19,6 +19,20 @@ For hidden tests, always try to make a 3x(3xN) rectangle.
 
 For visible tests, keep one center at `(0, 0, 0.5)` and rotate the xy plane.
 
+### Round 1a
+
+#### Problem A. Waffle Choppers
+
+Scan by rows and columns, with a final check for each cells.
+
+#### Problem B. Bit Party
+
+Sort by capacity and binary search to determine the time.
+
+#### Problem C. Edgy Baking
+
+DP for cut additions: not cut or cut. But MLE. Change to do intervals merge.
+
 ### Round 1b
 
 #### Problem A. Rounding Error
