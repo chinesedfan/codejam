@@ -51,8 +51,9 @@ judge_args = sys.argv[1:sep_index]
 sol_args = sys.argv[sep_index + 1:]
 
 t_sol = SubprocessThread(sol_args)
-t_judge = SubprocessThread(judge_args, stdin_pipe=t_sol.p.stdout,
-                           stdout_pipe=t_sol.p.stdin)
+t_sol_tee = SubprocessThread(['tee', 'sol.log'], stdin_pipe=t_sol.p.stdout)
+t_judge = SubprocessThread(judge_args, stdin_pipe=t_sol_tee.p.stdout)
+t_judge_tee = SubprocessThread(['tee', 'judge.log'], stdin_pipe=t_judge.p.stdout, stdout_pipe=t_sol.p.stdin)
 t_sol.start()
 t_judge.start()
 t_sol.join()
