@@ -51,3 +51,17 @@ When W = 2, notice after i * 63 days, Ri became Ri * 2^63. The returned sums are
 
 For small test, count for each intervals.
 For large test, divide the problem into 3 parts: select Ci, Ci is good enough and not too good. Determine [L, R] of each part by binary search. And prepare RMQ data structures.
+
+### Round 1c
+
+#### Problem A. Robot Programming Strategy
+
+Try to beat every robot. If there are only 1 kind of move, choose the one that can beat it. If it is 2, choose the one that beats one and ties with the other. If 3, it is impossible.
+
+#### Problem B. Power Arrangers
+
+If we have N unknown letters, then check N! - 1 letters at the same position and will find the lost one. For next position, only check those sets that have the lost one at the current position.
+
+#### Problem C. Bacterial Tactics
+
+(TODO)

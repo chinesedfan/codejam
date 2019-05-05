@@ -19,13 +19,11 @@ rl.on('close', function() {
 });
 
 function solve(n, ps) {
-    var mlen = Math.max.apply(Math, ps.map((p) => p.length));
     var ret = [];
     var beats = {};
-    var stack = [];
 
     var i = 0;
-    while (i <= mlen) {
+    while (i < ps.length) {
         var chs = {R: [], P: [], S: []};
         for (var j = 0; j < ps.length; j++) {
             if (beats[j]) continue;
@@ -35,45 +33,24 @@ function solve(n, ps) {
             chs[other].push(j);
         }
 
-        var next = [];
-        if (!chs.P.length) next.push('R');
-        if (!chs.R.length) next.push('S');
-        if (!chs.S.length) next.push('P');
-
-        var all = true;
-        if (i == mlen) {
-            for (var j = 0; j < ps.length; j++) {
-                if (!beats[j]) {
-                    all = false;
-                    break;
-                }
-            }
-            if (all) break;
-        }
-
-        if (next.length == 0 || !all) {
-            if (!stack.length) return 'IMPOSSIBLE';
-
-            var state = stack.pop();
-            ret = state.ret;
-            beats = state.beats;
-            i = state.i;
-
-            chs[getCanBeat(state.other)].forEach((x) => beats[x] = 1);
-            ret.push(state.other);
+        var includes = Object.keys(chs).filter((ch) => chs[ch].length);
+        if (includes.length == 3) {
+            return 'IMPOSSIBLE';
+        } else if (includes.length == 0) {
+            // any one can be choosen
+            ret.push('R');
             i++;
         } else {
-            if (next.length == 2) {
-                stack.push({
-                    ret: ret.slice(0),
-                    beats: Object.assign(beats),
-                    i: i,
-                    other: next[1]
-                });
-            } // ignore if equals 3
+            var ch = getBeater(includes[0]);
+            if (includes.length == 2) {
+                // choose the one that ties with one and beats the other
+                if (getBeater(includes[1]) == includes[0]) {
+                    ch = includes[0];
+                }
+            }
 
-            chs[getCanBeat(next[0])].forEach((x) => beats[x] = 1);
-            ret.push(next[0]);
+            chs[getCanBeat(ch)].forEach((x) => beats[x] = 1);
+            ret.push(ch);
             i++;
         }
     }
@@ -81,6 +58,15 @@ function solve(n, ps) {
     return ret.join('');
 }
 
+// who can beat `ch`?
+function getBeater(ch) {
+    if (ch === 'R') return 'P';
+    if (ch === 'S') return 'R';
+    if (ch === 'P') return 'S';
+    throw new Error('unknown ch:', ch);
+}
+
+// who can be beaten by `ch`?
 function getCanBeat(ch) {
     if (ch === 'R') return 'S';
     if (ch === 'S') return 'P';
