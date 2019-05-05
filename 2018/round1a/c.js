@@ -28,54 +28,34 @@ function solve(p, cs) {
         r: 2 * Math.sqrt(c[0] * c[0] + c[1] * c[1])
     }));
 
-    // as long as `base + l` doesn't exceed p
+    var sum = cs.reduce((s, item) => s + item.base, 0);
+    p = p - sum;
+
+    // as long as doesn't exceed p
     var prev, next;
     for (var i = 0; i < cs.length; i++) {
         var item = cs[i];
         next = [];
         for (var j = 0; j <= p; j++) {
             if (i == 0) {
-                // not add
-                next[j] = {l: 0, r: 0};
-                if (item.base <= j) {
-                    // add
-                    update(next[j], {l: item.base, r: item.base});
-                }
-                if (item.base + item.l <= j) {
-                    // add and cut
-                    update(next[j], {
-                        l: item.base + item.l,
-                        r: item.base + item.r
-                    });
+                // not cut
+                next[j] = 0;
+                // cut
+                if (item.l <= j) {
+                    next[j] = Math.min(j, item.r);
                 }
             } else {
-                // not add
-                next[j] = {l: prev[j].l, r: prev[j].r};
-                if (prev[j].l + item.base <= j) {
-                    // add
-                    update(next[j], {
-                        l: prev[j].l + item.base,
-                        r: prev[j].r + item.base
-                    });
-                }
-                if (prev[j].l + item.base + item.l <= j) {
-                    // add and cut
-                    update(next[j], {
-                        l: prev[j].l + item.base + item.l,
-                        r: prev[j].r + item.base + item.r
-                    });
+                // not cut
+                next[j] = prev[j];
+                // cut
+                if (item.l <= j) {
+                    next[j] = Math.min(j, prev[j - item.l] + item.r);
+                    next[j] = Math.max(prev[j], next[j]);
                 }
             }
         }
         prev = next;
     }
 
-    return prev[p].r > p ? p : prev[p].r;
-}
-
-function update(s1, s2) {
-    if (s2.l > s1.l) {
-        s1.l = s2.l;
-        s1.r = s2.r;
-    }
+    return sum + prev[p];
 }
