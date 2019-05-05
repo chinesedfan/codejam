@@ -20,6 +20,10 @@ For interactive problem,
 
 | year | round         | problems                        |
 | ---- |:-------------:| -------------------------------:|
+| 2013 | qualification | 3/4, not solve d                |
+|      | 1a            | 0/3, only a small               |
+|      | 1b            | 1/3, not solve b/c              |
+|      | 1c            | 0/3, only a small               |
 | 2015 | 1a            | 3/3                             |
 | 2016 | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
