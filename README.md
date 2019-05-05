@@ -20,11 +20,15 @@ For interactive problem,
 
 | year | round         | problems                        |
 | ---- |:-------------:| -------------------------------:|
-| 2013 | qualification | 3/4, not solve d                |
+| 2013 | kickstart - p | 3/3                             |
+|      | kickstart - a | 3/5, not solve d/e              |
+|      | kickstart - b | 1/5, only a/b small             |
+|      | qualification | 3/4, not solve d                |
 |      | 1a            | 0/3, only a small               |
 |      | 1b            | 1/3, not solve b/c              |
 |      | 1c            | 0/3, only a small               |
-| 2014 | qualification | 4/4                             |
+| 2014 | kickstart - a | 1/3, not solve a/c              |
+|      | qualification | 4/4                             |
 |      | 1b            | 1/3, not solve b large/c        |
 |      | 1c            | 1/3, not solve b large/c large  |
 |      | 2             | 1/3, not solve b/c              |
