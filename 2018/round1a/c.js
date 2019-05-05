@@ -27,24 +27,24 @@ function solve(p, cs) {
         l: 2 * Math.min(c[0], c[1]),
         r: 2 * Math.sqrt(c[0] * c[0] + c[1] * c[1])
     }));
+    var sum = cs.reduce((s, item) => s + item.base, 0);
+    p = p - sum;
 
     var is = [{
         l: 0,
         r: 0
     }];
-    var total = 0;
     for (var i = 0; i < cs.length; i++) {
-        total += cs[i].base;
         var is2 = is.map((item) => ({
             l: item.l + cs[i].l,
             r: item.r + cs[i].r
         }));
         for (var j = 0; j < is2.length; j++) {
-            merge(p - total, is, is2[j]);
+            merge(p, is, is2[j]);
         }
     }
 
-    return total + is[is.length - 1].r;
+    return sum + is[is.length - 1].r;
 }
 
 function merge(p, is, item) {
