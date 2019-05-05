@@ -15,7 +15,7 @@ while c < t:
     answer = []
     allIndexes = xrange(120 - 1)
     expected = 24 # (unknown - 1)!
-    askedIndexes = xrange(97)
+    askedIndexes = xrange(119)
     for pos in xrange(1, 5):
         chs = {'A': [], 'B': [], 'C': [], 'D': [], 'E': []}
         for i in askedIndexes:
@@ -51,7 +51,7 @@ while c < t:
         for i in xrange(1, unknown):
             expected = expected * i
 
-        askedIndexes = xrange(expected * (unknown - 1) + 1)
+        askedIndexes = xrange(expected * unknown - 1)
         answer.append(lost)
 
     for ch in 'ABCDE':
