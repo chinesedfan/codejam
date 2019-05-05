@@ -24,6 +24,10 @@ For interactive problem,
 |      | 1a            | 0/3, only a small               |
 |      | 1b            | 1/3, not solve b/c              |
 |      | 1c            | 0/3, only a small               |
+| 2014 | qualification | 4/4                             |
+|      | 1b            | 1/3, not solve b large/c        |
+|      | 1c            | 1/3, not solve b large/c large  |
+|      | 2             | 1/3, not solve b/c              |
 | 2015 | 1a            | 3/3                             |
 | 2016 | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
