@@ -21,7 +21,7 @@ For interactive problem,
 | year | round         | problems                        |
 | ---- |:-------------:| -------------------------------:|
 | 2013 | kickstart - p | 3/3                             |
-|      | kickstart - a | 3/5, not solve d/e              |
+|      | kickstart - a | 5/5                             |
 |      | kickstart - b | 1/5, only a/b small             |
 |      | qualification | 3/4, not solve d                |
 |      | 1a            | 0/3, only a small               |
