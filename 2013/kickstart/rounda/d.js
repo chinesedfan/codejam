@@ -53,8 +53,8 @@ function solve(n, grid, xys) {
 function getStartDir(x, y) {
     if (x == 1 && y == 1) return 'E';
     if (x == 1) return 'S';
-    if (y == 1) return 'W';
-    return 'N';
+    if (y == 1) return 'N';
+    return 'W';
 }
 function getNextNode(node, dir) {
     var x = node.x;
