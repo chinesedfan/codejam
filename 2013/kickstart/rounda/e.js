@@ -35,27 +35,22 @@ function solve(rs, ts, ss) {
     }
 
     // floyd, i to j with only [0, k]
-    var f = [];
+    var f = Array(rs.length);
     for (var i = 0; i < rs.length; i++) {
-        f[i] = [];
-        for (var j = 0; j < rs.length; j++) {
-            f[i][j] = Array(rs.length);
-        }
+        f[i] = Array(rs.length);
     }
     for (var k = 0; k < rs.length; k++) {
         for (var i = 0; i < rs.length; i++) {
             for (var j = 0; j < rs.length; j++) {
-                if (k == 0) {
-                    f[i][j][k] = Math.min(ds[i][j], ds[i][0] + ds[0][j]);
-                } else {
-                    f[i][j][k] = Math.min(f[i][j][k - 1], f[i][k][k - 1] + f[k][j][k - 1]);
-                }
+                // ds means previous now
+                f[i][j] = Math.min(ds[i][j], ds[i][k] + ds[k][j]);
             }
         }
+        ds = f;
     }
 
     return ss.map((s) => {
-        var x = f[s[0] - 1][s[1] - 1][rs.length - 1];
+        var x = f[s[0] - 1][s[1] - 1];
         return x === Infinity ? -1 : x;
     }).join('\n');
 }
