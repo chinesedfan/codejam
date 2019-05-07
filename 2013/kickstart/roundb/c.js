@@ -33,7 +33,7 @@ function solve(grid) {
     }
     var rc = bfs(grid, rs, rv, 'R', (x) => x.x == grid.length - 1);
     if (rs.length && rc) {
-        if (rs.length == 1 || rc == 1) return 'Red wins';
+        if (rn >= bn && (rs.length == 1 || rc == 1)) return 'Red wins';
         else return 'Impossible';
     }
 
@@ -47,7 +47,7 @@ function solve(grid) {
     }
     var bc = bfs(grid, bs, bv, 'B', (x) => x.y == grid.length - 1);
     if (bs.length && bc) {
-        if (bs.length == 1 || bc == 1) return 'Blue wins';
+        if (bn >= rn && (bs.length == 1 || bc == 1)) return 'Blue wins';
         else return 'Impossible';
     }
 
