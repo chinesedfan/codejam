@@ -32,8 +32,10 @@ function solve(grid) {
         }
     }
     var rc = bfs(grid, rs, rv, 'R', (x) => x.x == grid.length - 1);
-    if (rc == 1) return 'Red wins';
-    else if (rc > 1) return 'Impossible';
+    if (rs.length && rc) {
+        if (rs.length == 1 || rc == 1) return 'Red wins';
+        else return 'Impossible';
+    }
 
     var bs = [];
     var bv = {};
@@ -44,22 +46,23 @@ function solve(grid) {
         }
     }
     var bc = bfs(grid, bs, bv, 'B', (x) => x.y == grid.length - 1);
-    if (bc == 1) return 'Blue wins';
-    else if (bc > 1) return 'Impossible';
+    if (bs.length && bc) {
+        if (bs.length == 1 || bc == 1) return 'Blue wins';
+        else return 'Impossible';
+    }
 
     return 'Nobody wins';
 }
 
 function bfs(grid, q, visited, color, fn) {
+    q = q.slice(0);
+
     var c = 0;
     while (q.length) {
         var n = q.shift();
         if (visited[key(n)]) continue;
         visited[key(n)] = 1;
-        if (fn(n)) {
-            c++;
-            continue;
-        }
+        if (fn(n)) c++;
 
         add(q, visited, grid, n.x, n.y - 1, color);
         add(q, visited, grid, n.x, n.y + 1, color);
