@@ -31,7 +31,7 @@ function solve(grid) {
             rs.push(n);
         }
     }
-    var rc = dfs(grid, rs, rv, 'R', (x) => x.x == grid.length - 1);
+    var rc = bfs(grid, rs, rv, 'R', (x) => x.x == grid.length - 1);
     if (rc == 1) return 'Red wins';
     else if (rc > 1) return 'Impossible';
 
@@ -43,14 +43,14 @@ function solve(grid) {
             bs.push(n);
         }
     }
-    var bc = dfs(grid, bs, bv, 'B', (x) => x.y == grid.length - 1);
+    var bc = bfs(grid, bs, bv, 'B', (x) => x.y == grid.length - 1);
     if (bc == 1) return 'Blue wins';
     else if (bc > 1) return 'Impossible';
 
     return 'Nobody wins';
 }
 
-function dfs(grid, q, visited, color, fn) {
+function bfs(grid, q, visited, color, fn) {
     var c = 0;
     while (q.length) {
         var n = q.shift();
