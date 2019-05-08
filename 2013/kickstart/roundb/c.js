@@ -31,10 +31,9 @@ function solve(grid) {
         }
     }
     var r1 = bfs(grid, rs, {}, 'R', (x) => x.x == grid.length - 1);
-    var r2 = bfs(grid, r1, {}, 'R', (x) => x.x == 0);
-    console.log(r1, r2)
-    if (r1.length && r2.length) {
-        if (rn >= bn && (r1.length == 1 || r2.length == 1)) return 'Red wins';
+    var r2 = bfs(grid, r1, {}, 'R', (x) => x.x == 0, true, 0);
+    if (r2.length) {
+        if (rn >= bn) return 'Red wins';
         else return 'Impossible';
     }
 
@@ -46,16 +45,16 @@ function solve(grid) {
         }
     }
     var b1 = bfs(grid, bs, {}, 'B', (x) => x.y == grid.length - 1);
-    var b2 = bfs(grid, b1, {}, 'B', (x) => x.y == 0);
-    if (b1.length && b2.length) {
-        if (bn >= rn && (b1.length == 1 || b2.length == 1)) return 'Blue wins';
+    var b2 = bfs(grid, b1, {}, 'B', (x) => x.y == 0, true, 1);
+    if (b2.length) {
+        if (bn >= rn) return 'Blue wins';
         else return 'Impossible';
     }
 
     return 'Nobody wins';
 }
 
-function bfs(grid, q, visited, color, fn) {
+function bfs(grid, q, visited, color, fn, twice, groupbyindex) {
     q = q.slice(0);
 
     var c = [];
@@ -72,6 +71,26 @@ function bfs(grid, q, visited, color, fn) {
         add(q, visited, grid, n.x + 1, n.y, color);
         add(q, visited, grid, n.x + 1, n.y - 1, color);
     }
+
+    if (twice) {
+        var m = {};
+        for (var str in visited) {
+            var fs = str.split('#');
+            var k = fs[groupbyindex];
+            var v = fs[groupbyindex ? 0 : 1];
+            m[k] = m[k] || [];
+            m[k].push(v);
+        }
+        var flag = false;
+        for (var k in m) {
+            if (m[k].length == 1) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) c = [];
+    }
+
     return c;
 }
 function add(q, visited, grid, x, y, color) {
