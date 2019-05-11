@@ -21,40 +21,48 @@ function solve(grid, points) {
     src.v = grid[src.x][src.y];
     var dst = {x: points[2], y: points[3]};
 
+    var max = {};
+    max[key(src.x, src.y)] = src.v;
     var visited = {};
-    visited[key(src.x, src.y)] = src.v;
+    visited[key(src.x, src.y)] = 1;
 
     var q = [src];
     while (1) {
-        var max = getMaxNext(q, grid, visited);
-        if (!max) break;
-        if (max.x == dst.x && max.y == dst.y) return max.v;
+        var nq = []; // next layer
+        for (var i = 0; i < q.length; i++) {
+            var node = q[i];
+            var v = max[key(node.x, node.y)];
+            add(nq, grid, visited, node.x - 1, node.y, v);
+            add(nq, grid, visited, node.x + 1, node.y, v);
+            add(nq, grid, visited, node.x, node.y - 1, v);
+            add(nq, grid, visited, node.x, node.y + 1, v);
+        }
+        if (!nq.length) break;
 
-        q.push(max);
-        visited[key(max.x, max.y)] = 1;
+        q = [];
+        var nv = {};
+        for (var i = 0; i < nq.length; i++) {
+            var node = nq[i];
+            var k = key(node.x, node.y);
+            max[k] = Math.max(max[k] || -Infinity, node.v);
+            visited[k] = 1;
+
+            if (!nv[k]) {
+                q.push(node);
+                nv[k] = 1;
+            }
+        }
+
+        var m = max[key(dst.x, dst.y)];
+        if (m) return m;
     }
 
     return 'Mission Impossible.';
 }
 
-function getMaxNext(q, grid, visited) {
-    var o = {
-        v: -Infinity
-    };
-    for (var i = 0; i < q.length; i++) {
-        var node = q[i];
-        add(o, grid, visited, node.x - 1, node.y, node.v);
-        add(o, grid, visited, node.x + 1, node.y, node.v);
-        add(o, grid, visited, node.x, node.y - 1, node.v);
-        add(o, grid, visited, node.x, node.y + 1, node.v);
-    }
-    return o.v === -Infinity ? null : o;
-}
-function add(o, grid, visited, x, y, v) {
-    if (valid(grid, visited, x, y) && v + grid[x][y] > o.v) {
-        o.x = x;
-        o.y = y;
-        o.v = v + grid[x][y];
+function add(nq, grid, visited, x, y, v) {
+    if (valid(grid, visited, x, y)) {
+        nq.push({x: x, y: y, v: v + grid[x][y]});
     }
 }
 function valid(grid, visited, x, y) {
