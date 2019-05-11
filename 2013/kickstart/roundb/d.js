@@ -17,59 +17,51 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(grid, points) {
-    var src = {x: points[0], y: points[1], l: 0, v: 0};
+    var src = {x: points[0], y: points[1]};
     src.v = grid[src.x][src.y];
     var dst = {x: points[2], y: points[3]};
 
-    var step = bfs(src, dst, grid, 10000);
-    if (step == Infinity) return 'Mission Impossible.';
-
-    return bfs(src, dst, grid, step, true);
-}
-
-function bfs(src, dst, grid, limit, returnPower) {
     var visited = {};
+    visited[key(src.x, src.y)] = src.v;
+
     var q = [src];
-    var step = Infinity;
-    var power = -Infinity;
-    while (q.length) {
-        var node = q.shift();
-        if (node.l > limit) continue;
-        var key = node.x + '#' + node.y;
+    while (1) {
+        var max = getMaxNext(q, grid, visited);
+        if (!max) break;
+        if (max.x == dst.x && max.y == dst.y) return max.v;
 
-        if (returnPower) {
-            if (visited[key] && node.v <= visited[key]) continue;
-            visited[key] = node.v;
-            if (node.x == dst.x && node.y == dst.y) {
-                power = Math.max(power, node.v);
-                continue;
-            }
-        } else {
-            if (visited[key]) continue;
-            visited[key] = 1;
-            if (node.x == dst.x && node.y == dst.y) {
-                step = node.l;
-                break;
-            }
-        }
-
-        add(q, grid, node.x - 1, node.y, node.l, node.v);
-        add(q, grid, node.x + 1, node.y, node.l, node.v);
-        add(q, grid, node.x, node.y - 1, node.l, node.v);
-        add(q, grid, node.x, node.y + 1, node.l, node.v);
+        q.push(max);
+        visited[key(max.x, max.y)] = 1;
     }
 
-    if (returnPower) {
-        return power;
-    } else {
-        return step;
+    return 'Mission Impossible.';
+}
+
+function getMaxNext(q, grid, visited) {
+    var o = {
+        v: -Infinity
+    };
+    for (var i = 0; i < q.length; i++) {
+        var node = q[i];
+        add(o, grid, visited, node.x - 1, node.y, node.v);
+        add(o, grid, visited, node.x + 1, node.y, node.v);
+        add(o, grid, visited, node.x, node.y - 1, node.v);
+        add(o, grid, visited, node.x, node.y + 1, node.v);
+    }
+    return o.v === -Infinity ? null : o;
+}
+function add(o, grid, visited, x, y, v) {
+    if (valid(grid, visited, x, y) && v + grid[x][y] > o.v) {
+        o.x = x;
+        o.y = y;
+        o.v = v + grid[x][y];
     }
 }
-function add(q, grid, x, y, l, v) {
-    if (valid(grid, x, y)) {
-        q.push({x: x, y: y, l: l + 1, v: v + grid[x][y]});
-    }
+function valid(grid, visited, x, y) {
+    return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length
+        && !visited[key(x, y)]
+        && grid[x][y] >= 0;
 }
-function valid(grid, x, y) {
-    return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] >= 0;
+function key(x, y) {
+    return x + '#' + y;
 }
