@@ -22,7 +22,7 @@ For interactive problem,
 | ---- |:-------------:| -------------------------------:|
 | 2013 | kickstart - p | 3/3                             |
 |      | kickstart - a | 5/5                             |
-|      | kickstart - b | 3/5, not solve b large/e        |
+|      | kickstart - b | 4/5, not solve b large          |
 |      | qualification | 3/4, not solve d                |
 |      | 1a            | 0/3, only a small               |
 |      | 1b            | 1/3, not solve b/c              |

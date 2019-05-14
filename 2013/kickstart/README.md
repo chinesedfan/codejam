@@ -53,3 +53,5 @@ BFS to check. Too much difference between stone counts is impossible. More impor
 Similar with max version of Dijkstra. But instead of adding one node each round, add one layer that shares with the same distance.
 
 #### Problem E. Ignore all my comments
+
+Use a stack to maintain matches. Ignore close mark if there has no begin mark.
