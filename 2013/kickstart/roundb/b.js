@@ -28,18 +28,28 @@ function solve(rs) {
             }
         }
     }
+    var sx = Object.keys(xm).reduce((o, k) => {
+        var sum = 0;
+        for (var x in xm) {
+            sum += xm[x] * Math.abs(+k - +x);
+        }
+        o[k] = sum;
+        return o;
+    }, {});
+    var sy = Object.keys(ym).reduce((o, k) => {
+        var sum = 0;
+        for (var y in ym) {
+            sum += ym[y] * Math.abs(+k - +y);
+        }
+        o[k] = sum;
+        return o;
+    }, {});
 
     var min = Infinity;
     var mx, my;
     for (var k in pm) {
         var p = pm[k];
-        var sum = 0;
-        for (var x in xm) {
-            sum += xm[x] * Math.abs(p.x - +x);
-        }
-        for (var y in ym) {
-            sum += ym[y] * Math.abs(p.y - +y);
-        }
+        var sum = sx[p.x] + sy[p.y];
 
         if (sum < min) {
             min = sum;
