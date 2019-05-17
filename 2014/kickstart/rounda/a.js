@@ -51,8 +51,12 @@ function solve(ss) {
         }
     }
 
-    if (cs.length === 1) {
-        return merge(goods[cs[0].n], cs[0].c);
+    if (cs.length) {
+        var ans = merge(goods[cs[0].n], cs[0].c);
+        for (var i = 1; i < cs.length; i++) {
+            if (merge(goods[cs[i].n], cs[i].c) != ans) return 'ERROR!';
+        }
+        return ans;
     } else {
         return 'ERROR!';
     }
