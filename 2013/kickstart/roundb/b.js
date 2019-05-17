@@ -18,6 +18,7 @@ function solve(rs) {
     var xm = {};
     var ym = {};
     var pm = {};
+    var c = 0;
     for (var i = 0; i < rs.length; i++) {
         var [x1, y1, x2, y2] = rs[i];
         for (var x = x1; x <= x2; x++) {
@@ -25,25 +26,13 @@ function solve(rs) {
                 xm[x] = (xm[x] || 0) + 1;
                 ym[y] = (ym[y] || 0) + 1;
                 pm[`${x}#${y}`] = {x: x, y: y};
+                c++;
             }
         }
     }
-    var sx = Object.keys(xm).reduce((o, k) => {
-        var sum = 0;
-        for (var x in xm) {
-            sum += xm[x] * Math.abs(+k - +x);
-        }
-        o[k] = sum;
-        return o;
-    }, {});
-    var sy = Object.keys(ym).reduce((o, k) => {
-        var sum = 0;
-        for (var y in ym) {
-            sum += ym[y] * Math.abs(+k - +y);
-        }
-        o[k] = sum;
-        return o;
-    }, {});
+
+    var sx = calAbs(xm, c);
+    var sy = calAbs(ym, c);
 
     var min = Infinity;
     var mx, my;
@@ -65,4 +54,25 @@ function solve(rs) {
         }
     }
     return [mx, my, min].join(' ');
+}
+
+function calAbs(xm, c) {
+    var xs = Object.keys(xm).map((x) => +x).sort((a, b) => a - b);
+
+    // sum(abs(xi - xj)), where i is fixed, and j is [0, n]
+    // = sum(cj * (xi - xj)) + sum(ck * (xk - xi)), j < i <= k
+    // = (sum(cj) - sum(ck)) * xi - sum(cj * xj) + sum(ck * xk)
+    // = a * xi - sum(cj * xj) + sum(ck * xk)
+    var a = -c;
+    var xi = a * xs[0] - 0 + xs.reduce((s, x) => s + xm[x] * x, 0);
+
+    var sx = {};
+    sx[xs[0]] = xi;
+    for (var i = 1; i < xs.length; i++) {
+        xi += (a + 2 * xm[xs[i - 1]]) * xs[i] - a * xs[i - 1]
+            - 2 * (xm[xs[i - 1]] * xs[i - 1]);
+        a += 2 * xm[xs[i - 1]];
+        sx[xs[i]] = xi;
+    }
+    return sx;
 }

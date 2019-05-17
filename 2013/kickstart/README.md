@@ -44,6 +44,9 @@ Shortest path. Floyd is nearly not able to solve the small set. But notice that 
 Simple.
 
 #### Problem B. Meet and party
+
+Check each point. But we can cache results grouped by x and y. And for each x or y, the sum of abs(xi - x) can be calculated in O(n).
+
 #### Problem C. Hex
 
 BFS to check. Too much difference between stone counts is impossible. More important, make sure the winner has at least 1 stone that can't be moved, and not less total stones. Don't worry. It is fast enough to remove each stone and check.
