@@ -24,6 +24,12 @@ Prepare results in advance. Increase the half of the square root gradually.
 
 Loop and check. A better way should be binary search.
 
+#### Problem B. Manage your Energy
+
+Easy to solve small test in DP with O(N * E^2).
+
+#### Problem C. Good Luck
+
 ### Round 1b
 
 #### Problem A. Osmos

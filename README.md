@@ -24,10 +24,10 @@ For interactive problem,
 |      | kickstart - a | 5/5                             |
 |      | kickstart - b | 5/5                             |
 |      | qualification | 3/4, not solve d                |
-|      | 1a            | 0/3, only a small               |
+|      | 1a            | 1/3, not solve b large/c        |
 |      | 1b            | 1/3, not solve b/c              |
 |      | 1c            | 0/3, only a small               |
-| 2014 | kickstart - a | 1/3, not solve a/c              |
+| 2014 | kickstart - a | 2/4, not solve c/d              |
 |      | qualification | 4/4                             |
 |      | 1b            | 1/3, not solve b large/c        |
 |      | 1c            | 1/3, not solve b large/c large  |
