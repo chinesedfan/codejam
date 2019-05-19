@@ -27,6 +27,7 @@ Loop and check. A better way should be binary search.
 #### Problem B. Manage your Energy
 
 Easy to solve small test in DP with O(N * E^2).
+Clever solution for large test, O(N), is that assigning energy without affecting the next more valuable activity reaches E.
 
 #### Problem C. Good Luck
 

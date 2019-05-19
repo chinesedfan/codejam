@@ -26,7 +26,8 @@ function solve(e, r, n, vs) {
     }
 
     var energy = e;
-    var value = 0;
+    var value = 0; // only save value % 10^15
+    var n15 = 0;
     for (var i = 0; i < vs.length; i++) {
         if (!next[i]) {
             value += energy * vs[i];
@@ -41,7 +42,17 @@ function solve(e, r, n, vs) {
             }
         }
         energy = Math.min(energy + r, e);
+
+        //
+        n15 += Math.floor(value / 1e15);
+        value = value % 1e15;
     }
 
+    if (n15) {
+        var s = String(value).split('');
+        while (s.length < 15) s.unshift(0);
+
+        return n15 + s.join('');
+    }
     return value;
 }
