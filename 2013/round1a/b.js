@@ -15,24 +15,33 @@ for (var i = 0; i < t; i++) {
 }
 
 function solve(e, r, n, vs) {
-    var dp = [];
-
-    // dp[i][j] means the max value if finished activities from i, with j energy at the beginning
-    for (var i = vs.length - 1; i >= 0; i--) {
-        dp[i] = [];
-        for (var j = 0; j <= e; j++) {
-            if (i == vs.length - 1) {
-                dp[i][j] = vs[i] * j;
-                continue;
-            }
-
-            var m = -Infinity;
-            for (var k = 0; k <= j; k++) {
-                m = Math.max(m, vs[i] * k + dp[i + 1][Math.min(e, j - k + r)]);
-            }
-            dp[i][j] = m;
+    var next = []; // next[i] means the index that has larger value than i
+    var stack = [];
+    for (var i = 0; i < vs.length; i++) {
+        while (stack.length && vs[stack[stack.length - 1]] < vs[i]) {
+            var j = stack.pop();
+            next[j] = i;
         }
+        stack.push(i);
     }
 
-    return dp[0][e];
+    var energy = e;
+    var value = 0;
+    for (var i = 0; i < vs.length; i++) {
+        if (!next[i]) {
+            value += energy * vs[i];
+            energy = 0;
+        } else {
+            var expected = r * (next[i] - i);
+            var usable = energy + expected - e;
+            if (usable > 0) {
+                usable = Math.min(usable, energy);
+                value += usable * vs[i];
+                energy -= usable;
+            }
+        }
+        energy = Math.min(energy + r, e);
+    }
+
+    return value;
 }
