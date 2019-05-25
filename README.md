@@ -25,7 +25,7 @@ For interactive problem,
 |      | kickstart - b | 5/5                             |
 |      | qualification | 3/4, not solve d                |
 |      | 1a            | 2/3, not solve c.               |
-|      | 1b            | 1/3, not solve b/c              |
+|      | 1b            | 2/3, not solve c                |
 |      | 1c            | 0/3, only a small               |
 | 2014 | kickstart - a | 2/4, not solve c/d              |
 |      | qualification | 4/4                             |

@@ -22,7 +22,7 @@ function solve(n, cx, cy) {
 
     var rh = h - 2;
     if (total == n) rh = h;
-    if (Math.abs(cx) <= rh - 1 && cy <= rh - 1) return 1;
+    if (cy <= cx + rh && cy <= -cx + rh) return 1;
 // console.log(n, total)
     var b = h - 1;
     if ((cy == cx + b || cy == -cx + b)) {

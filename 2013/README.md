@@ -35,7 +35,13 @@ Clever solution for large test, O(N), is that assigning energy without affecting
 
 #### Problem A. Osmos
 
-Not very remember what I did.
+Try to absorb every mote. If impossible, add a new one with n - 1 size (be careful if n = 1). Then check again whether it will be better if removing the mote directly.
+
+#### Problem B. Falling Diamonds
+
+Notice that diamonds will form triangles layer by layer. So determine the size of inner triangle first, then consider the probability of at least x diamonds will drop to the left/right side. It can be calculated by simulating droping of each diamond.
+
+#### Problem C. Garbled Email
 
 ### Round 1c
 
