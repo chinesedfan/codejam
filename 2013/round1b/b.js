@@ -28,32 +28,55 @@ function solve(n, cx, cy) {
     if ((cy == cx + b || cy == -cx + b)) {
         var side = cy + 1;
         if (side >= 1 && side <= h) {
-            if (side == h) side = 2 * h - 1;
             var rest = n - (total - (2 * h - 1));
             // console.log(`${side}/${rest}`);
-            var ans = calc(rest, side);
-            while (rest--) {
-                ans /= 2;
-            }
-            return ans;
+            return calc(rest, side, h);
         }
     }
 
     return 0;
 }
 
-function calc(n, m) {
-    var cm = [];
-    for (var i = 1; i <= n; i++) {
-        cm[i] = [];
-        for (var j = 1; j <= n; j++) {
-            cm[i][j] = i <= j ? 1 : cm[i - 1][j] + (j == 1 ? 1 : cm[i - 1][j - 1]);
+function calc(n, m, h) {
+    var states = {};
+    add(states, 0, 1, 0.5);
+    add(states, 1, 0, 0.5);
+
+    for (var i = 2; i <= n; i++) {
+        var next = {};
+        for (var left in states) {
+            left = +left;
+            for (var right in states[left]) {
+                right = +right;
+                var p = states[left][right];
+                if (left + 1 < h && right + 1 < h) {
+                    add(next, left + 1, right, p / 2);
+                    add(next, left, right + 1, p / 2);
+                } else if (left + 1 < h) {
+                    add(next, left + 1, right, p);
+                } else if (right + 1 < h) {
+                    add(next, left, right + 1, p);
+                }
+            }
         }
+        // for (var left in next) {
+        //     for (var right in next[left]) {
+        //         add(states, left, right, next[left][right]);
+        //     }
+        // }
+        states = next;
+        // console.log(states)
     }
 
-    var sum = 0;
-    for (var i = m; i <= n; i++) {
-        sum += cm[n][i];
+    var p = 0;
+    for (var left in states) {
+        for (var right in states[left]) {
+            if (+left >= m) p += states[left][right];
+        }
     }
-    return sum;
+    return p;
+}
+function add(cache, y, x, p) {
+    cache[y] = cache[y] || {};
+    cache[y][x] = (cache[y][x] || 0) + p;
 }
