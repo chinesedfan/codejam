@@ -48,3 +48,8 @@ Notice that diamonds will form triangles layer by layer. So determine the size o
 #### Problem A. Consonants
 
 Brute force to pass the small set.
+Find the first enough end index for each start index.
+
+#### Problem B. Pogo
+
+#### Problem C. The Great Wall

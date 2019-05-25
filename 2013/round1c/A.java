@@ -43,7 +43,7 @@ public class A {
 			}
 
 			
-			int result = 0;
+			long result = 0;
 			for (int i = 0; i < name.length(); i++) {
 				if (end[i] >= 0) {
 					result += name.length() - end[i];
