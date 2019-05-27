@@ -29,3 +29,13 @@ Sort first, then reduce as 0/1 knapsack problem.
 
 Small test set can be solved by a way much similar like Problem A.
 Large test can leverage segment tree.
+
+### Round C
+
+#### Problem A. Wiggle Walk
+
+Seems simple simulating, which is O(n^2) in fact. Need use intervals merging to achieve O(nlogn).
+
+#### Problem B. Circuit Board
+
+#### Problem C. Catch Some

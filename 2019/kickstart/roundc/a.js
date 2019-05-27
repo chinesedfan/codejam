@@ -27,6 +27,8 @@ function solve(r, c, sr, sc, instrs) {
         r: sr,
         c: sc
     };
+    // var visited = {};
+    // visited[p.r + '#' + p.c] = 1;
     for (var i = 0; i < instrs.length; i++) {
         var ch = instrs[i];
         switch (ch) {
@@ -47,9 +49,12 @@ function solve(r, c, sr, sc, instrs) {
             next(rm, p.r, p.c, 0);
             break;
         }
+        // var k = p.r + '#' + p.c;
+        // if (visited[k]) throw new Error(k);
+        // visited[k] = 1;
         // console.log('rm', rm);
         // console.log('cm', cm);
-        // console.log('p', p);
+        // console.log('p', p, '\n');
     }
 
     return p.r + ' ' + p.c;
@@ -98,13 +103,14 @@ function next(m, k, v, offset) {
         }
     } else {
         if (mk[ib].end + 2 == mk[ib + 1].beg) {
-            mk.splice(ib, 1);
-        } else if (v == mk[ib].beg - 1) {
-            return --mk[ib].beg;
-        } else if (v == mk[ib + 1].end + 1) {
-            return ++mk[ib + 1].end;
+            mk[ib].end = mk[ib + 1].end;
+            mk.splice(ib + 1, 1);
+        } else if (v == mk[ib + 1].beg - 1) {
+            return --mk[ib + 1].beg;
+        } else if (v == mk[ib].end + 1) {
+            return ++mk[ib].end;
         } else {
-            mk.unshift({beg: v, end: v});
+            mk.splice(ib + 1, 0, {beg: v, end: v});
         }
     }
     return v;
