@@ -46,9 +46,7 @@ function solve(r, c, k, grid) {
     for (var i = 0; i < grid.length; i++) {
         d[i] = [];
         for (var j = 0; j < grid[0].length; j++) {
-            var dl = binarySearch(0, j, (x) => valid(rmaxRMQs[i], rminRMQs[i], j - x, j, k));
-            var dr = binarySearch(0, grid[0].length - 1 - j, (x) => valid(rmaxRMQs[i], rminRMQs[i], j, j + x, k));
-            d[i][j] = [dl, dr];
+            d[i][j] = binarySearch(0, grid[0].length - 1 - j, (x) => valid(rmaxRMQs[i], rminRMQs[i], j, j + x, k));
             // var nsize = h[i][j] * (dl + dr);
             // if (nsize > size) size = nsize;
         }
@@ -56,16 +54,9 @@ function solve(r, c, k, grid) {
     var size = -Infinity;
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
-            var m = d[i][j];
-            var h1 = binarySearch(0, i, (x) => {
-                var o = d[i - x][j];
-                return o[0] >= m[0] && o[1] >= m[1];
-            });
-            var h2 = binarySearch(0, grid.length - 1 - i, (x) => {
-                var o = d[i + x][j];
-                return o[0] >= m[0] && o[1] >= m[1];
-            });
-            var nsize = (h1 + h2 + 1) * (m[0] + m[1] + 1);
+            var h1 = binarySearch(0, i, (x) => d[i - x][j] >= d[i][j]);
+            var h2 = binarySearch(0, grid.length - 1 - i, (x) => d[i + x][j] >= d[i][j]);
+            var nsize = (h1 + h2 + 1) * (d[i][j] + 1);
             if (nsize > size) size = nsize;
         }
     }
