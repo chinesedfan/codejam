@@ -31,33 +31,50 @@ function solve(r, c, k, grid) {
 
     var rminRMQs = grid.map((row) => prepareRMQ(row, Math.min));
     var rmaxRMQs = grid.map((row) => prepareRMQ(row, Math.max));
-    // var cminRMQs = grid.map((col) => prepareRMQ(col, Math.min));
-    // var cmaxRMQs = grid.map((col) => prepareRMQ(col, Math.max));
+    // var cminRMQs = cols.map((col) => prepareRMQ(col, Math.min));
+    // var cmaxRMQs = cols.map((col) => prepareRMQ(col, Math.max));
 
-    // var m = [];
+    // var h = [];
+    // for (var i = 0; i < grid.length; i++) {
+    //     h[i] = [];
+    //     for (var j = 0; j < grid[0].length; j++) {
+    //         h[i][j] = binarySearch(0, i, (x) => valid(cmaxRMQs[j], cminRMQs[j], i - x, i, k)) + 1;
+    //     }
+    // }
 
+    var d = [];
+    for (var i = 0; i < grid.length; i++) {
+        d[i] = [];
+        for (var j = 0; j < grid[0].length; j++) {
+            var dl = binarySearch(0, j, (x) => valid(rmaxRMQs[i], rminRMQs[i], j - x, j, k));
+            var dr = binarySearch(0, grid[0].length - 1 - j, (x) => valid(rmaxRMQs[i], rminRMQs[i], j, j + x, k));
+            d[i][j] = [dl, dr];
+            // var nsize = h[i][j] * (dl + dr);
+            // if (nsize > size) size = nsize;
+        }
+    }
     var size = -Infinity;
-    for (var bc = 0; bc < grid[0].length; bc++) {
-        for (var ec = bc; ec < grid[0].length; ec++) {
-            var mc = 0;
-            var c = 0; // how many continues rows
-            for (var i = 0; i < grid.length; i++) {
-                if (find(rmaxRMQs[i], bc, ec, Math.max) - find(rminRMQs[i], bc, ec, Math.min) > k) {
-                    c = 0;
-                } else {
-                    c++;
-                    mc = Math.max(mc, c);
-                }
-            }
-            // console.log(bc, ec, mc)
-            var nsize = mc * (ec - bc + 1);
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[0].length; j++) {
+            var m = d[i][j];
+            var h1 = binarySearch(0, i, (x) => {
+                var o = d[i - x][j];
+                return o[0] >= m[0] && o[1] >= m[1];
+            });
+            var h2 = binarySearch(0, grid.length - 1 - i, (x) => {
+                var o = d[i + x][j];
+                return o[0] >= m[0] && o[1] >= m[1];
+            });
+            var nsize = (h1 + h2 + 1) * (m[0] + m[1] + 1);
             if (nsize > size) size = nsize;
         }
     }
+
     return size;
 }
 
 function prepareRMQ(ds, fn) {
+    var def = fn === Math.max ? -Infinity : Infinity;
     var ret = [];
 
     var p = 0;
@@ -69,7 +86,7 @@ function prepareRMQ(ds, fn) {
             if (p == 0) {
                 ret[p][i] = ds[i];
             } else {
-                ret[p][i] = fn(ret[p - 1][i], i + step / 2 < ds.length ? ret[p - 1][i + step / 2] : -Infinity);
+                ret[p][i] = fn(ret[p - 1][i], i + step / 2 < ds.length ? ret[p - 1][i + step / 2] : def);
             }
         }
 
@@ -87,4 +104,19 @@ function find(m, l, r, fn) {
         step <<= 1;
     }
     return fn(m[p][l], m[p][r - step + 1]);
+}
+
+function valid(maxSt, minSt, l, r, k) {
+    return find(maxSt, l, r, Math.max) - find(minSt, l, r, Math.min) <= k;
+}
+function binarySearch(l, r, fn) { // for any [l, x], fn returns true
+    while (l <= r) {
+        var middle = Math.floor((l + r) / 2);
+        if (fn(middle)) {
+            l = middle + 1;
+        } else {
+            r = middle - 1;
+        }
+    }
+    return r;
 }
