@@ -1,9 +1,9 @@
-var t = 10;
+var t = 5;
 
 console.log(t);
 while (t--) {
-    var r = 3;
-    var c = 3;
+    var r = 10;
+    var c = 10;
     var k = rn(1000);
     console.log(r, c, k);
     while (r--) {

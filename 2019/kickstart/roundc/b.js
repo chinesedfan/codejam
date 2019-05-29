@@ -51,13 +51,28 @@ function solve(r, c, k, grid) {
             // if (nsize > size) size = nsize;
         }
     }
+
     var size = -Infinity;
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var h1 = binarySearch(0, i, (x) => d[i - x][j] >= d[i][j]);
-            var h2 = binarySearch(0, grid.length - 1 - i, (x) => d[i + x][j] >= d[i][j]);
-            var nsize = (h1 + h2 + 1) * (d[i][j] + 1);
-            if (nsize > size) size = nsize;
+    for (var j = 0; j <= grid[0].length; j++) {
+        var stack = [];
+        for (var i = 0; i <= grid.length; i++) {
+            var cur = i < grid.length ? d[i][j] : -1; // append for all asc
+
+            while (stack.length) {
+                var top = stack[stack.length - 1];
+                if (cur < d[top][j]) {
+                    stack.pop();
+
+                    var nsize = (d[top][j] + 1) * (stack.length ? i - stack[stack.length - 1] - 1 : i);
+                    if (nsize > size) {
+                        // console.log(top, j, nsize)
+                        size = nsize;
+                    }
+                } else {
+                    break;
+                }
+            }
+            stack.push(i);
         }
     }
 
