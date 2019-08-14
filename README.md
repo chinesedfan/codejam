@@ -46,10 +46,11 @@ For interactive problem,
 |      | 1c            | 3/3                             |
 | 2019 | kickstart - a | 2/3, not solve c                |
 |      | kickstart - b | 3/3                             |
+|      | kickstart - c | 2/3, not solve c                |
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 |      | 1b            | 3/3                             |
-|      | 1c            | 2/3, not solve c                |
+|      | 1c            | 3/3                             |
 
 ### Related Websites
 
