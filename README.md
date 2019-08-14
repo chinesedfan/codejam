@@ -50,7 +50,7 @@ For interactive problem,
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 |      | 1b            | 3/3                             |
-|      | 1c            | 2/3, not solve c                |
+|      | 1c            | 3/3                             |
 
 ### Related Websites
 

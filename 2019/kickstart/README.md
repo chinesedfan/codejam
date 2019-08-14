@@ -42,3 +42,5 @@ Find the max rectangle first. Try to extend to left/right as far as possible for
 For large test set, only extend to one direction, like right, with RMQs. And determine the height with a stack. In fact, it looks like calculating the max rectangle in histogram, which is O(C). So the total is O(RClogC).
 
 #### Problem C. Catch Some
+
+DP. Observe K dogs by the first C colors. And maintain both minimum distances of returning/not-returning home.

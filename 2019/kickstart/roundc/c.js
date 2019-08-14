@@ -32,6 +32,7 @@ function solve(N, K, dogs, colors) {
     var d = [];
     for (var i = 0; i < cs.length; i++) {
         d[i] = [];
+        m[cs[i]].sort((a, b) => a - b); // sort!
         for (var j = 0; j <= K; j++) {
             var a = Infinity;
             var b = Infinity;
