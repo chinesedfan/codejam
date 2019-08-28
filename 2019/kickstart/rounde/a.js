@@ -47,17 +47,29 @@ function solve(n, m, bs) {
         if (visited[r]) return;
         if (i) add++;
 
-        var q = [r];
-        while (q.length) {
-            var x = q.shift();
-            if (visited[x]) continue;
+        var q = {v: r};
+        var last = q;
+        while (q) {
+            var x = q.v;
+            if (visited[x]) {
+                q = q.n;
+                continue;
+            }
             visited[x] = 1;
 
-            if (!connected[x]) continue;
+            if (!connected[x]) {
+                q = q.n;
+                continue;
+            }
+
             for (var j = 0; j < connected[x].length; j++) {
                 var y = connected[x][j];
-                if (!visited[y]) q.push(y);
+                if (!visited[y]) {
+                    last.n = {v: y};
+                    last = last.n;
+                }
             }
+            q = q.n;
         }
     });
 
