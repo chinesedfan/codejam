@@ -53,7 +53,11 @@ function solve(n, m, bs) {
             if (visited[x]) continue;
             visited[x] = 1;
 
-            q = q.concat(connected[x] || []);
+            if (!connected[x]) continue;
+            for (var j = 0; j < connected[x].length; j++) {
+                var y = connected[x][j];
+                if (!visited[y]) q.push(y);
+            }
         }
     });
 
