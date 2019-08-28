@@ -26,31 +26,15 @@ rl.on('close', function() {
 function solve(n, m, bs) {
     if (!bs.length) return 2 * (n - 1);
 
-    var connected = []; // adjacency list
     var blacks = {};
     // set blacks
     bs.forEach((l) => {
         var a = l[0] - 1;
         var b = l[1] - 1;
-        connected[a] = connected[a] || [];
-        connected[b] = connected[b] || [];
-        connected[a].push(b);
-        connected[b].push(a);
         blacks[a] = 1;
         blacks[b] = 1;
     });
 
-    // bfs
-    var q = Object.keys(blacks);
-    var visited = {};
-    while (q.length) {
-        var x = q.shift();
-        if (visited[x]) continue;
-        visited[x] = 1;
-
-        q = q.concat(connected[x] || []);
-    }
-
-    var c = Object.keys(visited).length;
+    var c = Object.keys(blacks).length;
     return c - 1 + 2 * (n - c);
 }
