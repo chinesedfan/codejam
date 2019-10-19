@@ -39,9 +39,10 @@ function solve(n, m, arr) {
     while (q.length) {
         var state = q.shift();
 
+        var valid = false;
         var oneBits = ones[state.r];
         // if (oneBits >= arr.length / 2) {
-        if (1) {
+        if (!valid) {
             // use 1
             var sum = state.s + (arr.length - oneBits) * state.r;
             if (sum <= m) {
@@ -50,10 +51,11 @@ function solve(n, m, arr) {
                     continue;
                 }
                 q.push({r: state.r / 2, k: state.k + state.r, s: sum});
+                valid = true;
             }
         }
         // if (oneBits <= arr.length / 2) {
-        if (1) {
+        if (!valid) {
             // use 0
             var sum = state.s + oneBits * state.r;
             if (sum <= m) {
@@ -62,6 +64,8 @@ function solve(n, m, arr) {
                     continue;
                 }
                 q.push({r: state.r / 2, k: state.k, s: sum});
+            } else {
+                break;
             }
         }
     }
