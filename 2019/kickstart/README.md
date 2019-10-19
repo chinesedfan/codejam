@@ -44,3 +44,9 @@ For large test set, only extend to one direction, like right, with RMQs. And det
 #### Problem C. Catch Some
 
 DP. Observe K dogs by the first C colors. And maintain both minimum distances of returning/not-returning home.
+
+### Round E
+
+#### Problem A. Cherries Mesh
+
+MST is not efficient enough. Just create a spanning forest using only edges of weight 1.
