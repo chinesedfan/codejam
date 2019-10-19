@@ -24,6 +24,15 @@ function solve(n, h, aps, bps) {
     var c = 0;
     for (var i = 0; i < max; i++) {
         for (var j = 0; j < max; j++) {
+            var valid = true;
+            for (var k = 0; k < n; k++) {
+                if (!isHappy(i, k) && !isHappy(j, k)) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid) continue;
+
             var ap = aps.reduce((s, p, x) => s + (isHappy(i, x) ? p : 0), 0);
             var bp = bps.reduce((s, p, x) => s + (isHappy(j, x) ? p : 0), 0);
             if (ap >= h && bp >= h) c++;
