@@ -26,6 +26,7 @@ function solve(n, m, arr) {
         r <<= 1;
     }
     r >>= 1;
+    r = Math.max(r, 1);
 
     var ones = {}; // r -> c
     for (var i = r; i; i >>= 1) {
