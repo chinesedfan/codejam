@@ -25,21 +25,45 @@ function solve(n, m, arr) {
         max >>= 1;
         r <<= 1;
     }
-    r--;
+    r >>= 1;
 
-    return binarySearch(1, r, (x) => {
-        return arr.reduce((s, a) => s + (a ^ x), 0) < m;
-    });
-}
+    var ones = {}; // r -> c
+    for (var i = r; i; i >>= 1) {
+        ones[i] = arr.reduce((s, a) => s + ((a & i) ? 1 : 0), 0);
+    }
 
-function binarySearch(l, r, fn) { // for any [l, x], fn returns true
-    while (l <= r) {
-        var middle = Math.floor((l + r) / 2);
-        if (fn(middle)) {
-            l = middle + 1;
-        } else {
-            r = middle - 1;
+    // search bit by bit, left to right
+    var q = [{ r, k: 0, s: 0 }];
+    var res = -1;
+    while (q.length) {
+        var state = q.shift();
+
+        var oneBits = ones[state.r];
+        // if (oneBits >= arr.length / 2) {
+        if (1) {
+            // use 1
+            var sum = state.s + (arr.length - oneBits) * state.r;
+            if (sum <= m) {
+                if (state.r == 1) {
+                    res = Math.max(res, state.k + state.r);
+                    continue;
+                }
+                q.push({r: state.r / 2, k: state.k + state.r, s: sum});
+            }
+        }
+        // if (oneBits <= arr.length / 2) {
+        if (1) {
+            // use 0
+            var sum = state.s + oneBits * state.r;
+            if (sum <= m) {
+                if (state.r == 1) {
+                    res = Math.max(res, state.k);
+                    continue;
+                }
+                q.push({r: state.r / 2, k: state.k, s: sum});
+            }
         }
     }
-    return r;
+
+    return res;
 }
