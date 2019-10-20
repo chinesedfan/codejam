@@ -20,6 +20,7 @@ rl.on('close', function() {
 
 function solve(n, m, arr) {
     var max = Math.max.apply(Math, arr);
+    max = Math.max(max, Math.floor(m / n));
     var r = 1;
     while (max) {
         max >>= 1;
