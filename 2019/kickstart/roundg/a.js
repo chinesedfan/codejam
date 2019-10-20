@@ -24,10 +24,16 @@ function solve(n, ms, rs) {
     var sum = rs.reduce((s, r) => s + Math.floor(n / r), 0);
 
     var mm = ms.reduce((agg, r) => { agg[r] = 1; return agg; }, {});
-    rs.forEach((r) => {
+    var cache = {}; // i -> dec
+    for (var r = 1; r <= n; r++) {
+        cache[r] = 0;
         for (var i = r; i <= n; i += r) {
-            if (mm[i]) sum--;
+            if (mm[i]) cache[r]++;
         }
+    }
+
+    rs.forEach((r) => {
+        sum -= cache[r];
     });
 
     return sum;
