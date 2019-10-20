@@ -23,10 +23,11 @@ rl.on('close', function() {
 function solve(n, ms, rs) {
     var sum = rs.reduce((s, r) => s + Math.floor(n / r), 0);
 
-    ms.forEach((x) => {
-        rs.forEach((r) => {
-            if (!(x % r)) sum--;
-        });
+    var mm = ms.reduce((agg, r) => { agg[r] = 1; return agg; }, {});
+    rs.forEach((r) => {
+        for (var i = r; i <= n; i += r) {
+            if (mm[i]) sum--;
+        }
     });
 
     return sum;
