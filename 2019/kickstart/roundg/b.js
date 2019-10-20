@@ -19,6 +19,13 @@ rl.on('close', function() {
 });
 
 function solve(n, m, arr) {
+    for (var i = 127; i >= 0; i--) {
+        if (
+            arr.reduce((s, a) => s + (a ^ i), 0) <= m
+        ) return i;
+    }
+    return -1;
+ 
     var max = Math.max.apply(Math, arr);
     max = Math.max(max, Math.floor(m / n));
     var r = 1;
