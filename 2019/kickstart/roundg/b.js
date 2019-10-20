@@ -1,4 +1,5 @@
 var readline = require('readline');
+var BigInteger = require('biginteger').BigInteger; // replace with source to submit
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -35,15 +36,15 @@ function solve(n, m, arr) {
     }
 
     // precompute the min
-    var agg = 0;
+    var agg = BigInteger.ZERO;
     var min = {}; // r -> min
     for (var i = 1; i <= r; i <<= 1) {
-        agg += Math.min(ones[i], arr.length - ones[i]) * i;
+        agg = agg.add(BigInteger(i).multiply(Math.min(ones[i], arr.length - ones[i])));
         min[i] = agg;
     }
 
     // search bit by bit, left to right
-    var q = [{ r, k: 0, s: 0 }];
+    var q = [{ r, k: 0, s: BigInteger.ZERO }];
     var res = -1;
     while (q.length) {
         var state = q.shift();
@@ -53,8 +54,8 @@ function solve(n, m, arr) {
         // if (oneBits >= arr.length / 2) {
         if (!valid) {
             // use 1
-            var sum = state.s + (arr.length - oneBits) * state.r;
-            if (sum <= m && (state.r == 1 || sum + min[state.r / 2] <= m)) {
+            var sum = state.s.add(BigInteger(state.r) * (arr.length - oneBits));
+            if (sum.compare(m) <= 0 && (state.r == 1 || sum.add(min[state.r / 2]).compare(m) <= 0)) {
                 if (state.r == 1) {
                     res = Math.max(res, state.k + state.r);
                     continue;
@@ -66,8 +67,8 @@ function solve(n, m, arr) {
         // if (oneBits <= arr.length / 2) {
         if (!valid) {
             // use 0
-            var sum = state.s + oneBits * state.r;
-            if (sum <= m) {
+            var sum = state.s.add(BigInteger(state.r) * oneBits);
+            if (sum.compare(m) <= 0) {
                 if (state.r == 1) {
                     res = Math.max(res, state.k);
                     continue;
