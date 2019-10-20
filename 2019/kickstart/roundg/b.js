@@ -19,13 +19,6 @@ rl.on('close', function() {
 });
 
 function solve(n, m, arr) {
-    for (var i = 127; i >= 0; i--) {
-        if (
-            arr.reduce((s, a) => s + (a ^ i), 0) <= m
-        ) return i;
-    }
-    return -1;
- 
     var max = Math.max.apply(Math, arr);
     max = Math.max(max, Math.floor(m / n));
     var r = 1;
@@ -41,6 +34,14 @@ function solve(n, m, arr) {
         ones[i] = arr.reduce((s, a) => s + ((a & i) ? 1 : 0), 0);
     }
 
+    // precompute the min
+    var agg = 0;
+    var min = {}; // r -> min
+    for (var i = 1; i <= r; i <<= 1) {
+        agg += Math.min(ones[i], arr.length - ones[i]) * i;
+        min[i] = agg;
+    }
+
     // search bit by bit, left to right
     var q = [{ r, k: 0, s: 0 }];
     var res = -1;
@@ -53,7 +54,7 @@ function solve(n, m, arr) {
         if (!valid) {
             // use 1
             var sum = state.s + (arr.length - oneBits) * state.r;
-            if (sum <= m) {
+            if (sum <= m && (state.r == 1 || sum + min[state.r / 2] <= m)) {
                 if (state.r == 1) {
                     res = Math.max(res, state.k + state.r);
                     continue;
