@@ -25,7 +25,7 @@ function solve(n, m, arr) {
     var r = 1;
     while (max) {
         max = Math.floor(max / 2);
-        r <<= 1;
+        r *= 2;
     }
     r /= 2;
     r = Math.max(r, 1);
@@ -38,7 +38,7 @@ function solve(n, m, arr) {
     // precompute the min
     var agg = BigInteger.ZERO;
     var min = {}; // r -> min
-    for (var i = 1; i <= r; i <<= 1) {
+    for (var i = 1; i <= r; i *= 2) {
         agg = agg.add(BigInteger(i).multiply(Math.min(ones[i], arr.length - ones[i])));
         min[i] = agg;
     }
