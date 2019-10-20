@@ -1,14 +1,14 @@
-var t = 100;
+var t = 1;
 
 console.log(t);
 while (t--) {
-    var n = rn(10);
-    var m = rn(100);
+    var n = rn(1000);
+    var m = rn(1e15);
     console.log(n, m);
 
     var arr = [];
     while (n--) {
-        arr.push(rn(100));
+        arr.push(rn(1e15));
     }
     console.log(arr.join(' '));
 }

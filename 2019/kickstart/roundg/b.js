@@ -24,14 +24,14 @@ function solve(n, m, arr) {
     max = Math.max(max, Math.floor(m / n));
     var r = 1;
     while (max) {
-        max >>= 1;
+        max = Math.floor(max / 2);
         r <<= 1;
     }
-    r >>= 1;
+    r /= 2;
     r = Math.max(r, 1);
 
     var ones = {}; // r -> c
-    for (var i = r; i; i >>= 1) {
+    for (var i = r; i; i /= 2) {
         ones[i] = arr.reduce((s, a) => s + ((a & i) ? 1 : 0), 0);
     }
 
