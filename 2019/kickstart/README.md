@@ -44,3 +44,15 @@ For large test set, only extend to one direction, like right, with RMQs. And det
 #### Problem C. Catch Some
 
 DP. Observe K dogs by the first C colors. And maintain both minimum distances of returning/not-returning home.
+
+### Round G
+
+#### Problem A. Book Reading
+
+If check each page, it will be O(NQ).
+If check each reader, it will be O(Q * sum(N/r)). If precompute, it will be O(sum(N/i) + Q).
+
+#### Problem B. The Equation
+
+Precompute the minimum xor sum for all bits. Then determine bit by bit, from left to right.
+Try to set as 1 greedily, unless the current sum or the sum of remaining bits will exceed M.
