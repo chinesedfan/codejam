@@ -59,6 +59,7 @@ function getAllPairs(aps, bps) {
             } else {
                 b += bps[j];
             }
+            temp -= c;
             temp /= 3;
         }
         hp[a] = hp[a] || [];
