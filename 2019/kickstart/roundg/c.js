@@ -26,14 +26,28 @@ function solve(n, h, aps, bps) {
 
     var c = 0;
     for (var a1 in left) {
+        var bs = [];
         for (var a2 in right) {
             if (+a1 + +a2 < h) continue;
 
-            for (var i = 0; i < left[a1].length; i++) {
-                var b1 = left[a1][i];
-                var idx = binarySearch(0, right[a2].length - 1, (x) => b1 + right[a2][x] >= h);
-                c += idx + 1;
-            }
+            bs.push(right[a2]);
+        }
+
+        var idx = bs.map((b) => {
+            var j = 0;
+            while (j < b.length && left[a1][0] + b[j] < h) j++;
+            return j;
+        });
+        var prev = 0;
+        for (var i = left[a1].length - 1; i >= 0; i--) {
+            var b1 = left[a1][i];
+            bs.forEach((b, j) => {
+                while (idx[j] < b.length && b1 + b[idx[j]] >= h) {
+                    idx[j]++;
+                    prev++;
+                }
+            });
+            c += prev;
         }
     }
 

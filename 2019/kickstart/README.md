@@ -56,3 +56,8 @@ If check each reader, it will be O(Q * sum(N/r)). If precompute, it will be O(su
 
 Precompute the minimum xor sum for all bits. Then determine bit by bit, from left to right.
 Try to set as 1 greedily, unless the current sum or the sum of remaining bits will exceed M.
+
+#### Problem C. Shifts
+
+Brute-force can pass small set. For large set, it need divide into 2 halves.
+Group all pairs of each half by points A, and sort B descending order. For each pair of the left half, collect all Bs with valid A in the right half, and count valid Bs by scanning each group of B with a moving index.
