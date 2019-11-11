@@ -31,24 +31,49 @@ function solve(slots, days) {
         return kb - ka;
     });
 
+    var cs = []; // sum of c for slot [0,i]
+    var es = []; // sum of e for slot [0,i]
+    var sum = 0;
+    for (var s = 0; s < slots.length; s++) {
+        var c = slots[s][0];
+        var e = slots[s][1];
+        if (s) {
+            cs[s] = cs[s - 1] + c;
+            es[s] = es[s - 1] + e;
+        } else {
+            cs[s] = c;
+            es[s] = e;
+        }
+        sum += e;
+    }
+
     var ret = [];
     for (var d = 0; d < days.length; d++) {
         var mc = days[d][0];
         var me = days[d][1];
-        var sc = 0;
-        var se = 0;
-        for (var s = 0; s < slots.length; s++) {
-            var c = slots[s][0];
-            var e = slots[s][1];
-            if (sc < mc) {
-                var f = Math.min(1, (mc - sc) / c);
-                sc += f * c;
-                se += (1 - f) * e;
-            } else {
-                se += e;
-            }
+
+        var idx = binarySearch(0, slots.length - 1, (x) => cs[x] < mc);
+        if (idx === slots.length - 1) {
+            ret[d] = 'N';
+        } else {
+            var c = slots[idx + 1][0];
+            var e = slots[idx + 1][1];
+            var f = Math.max((mc - (idx < 0 ? 0 : cs[idx])) / c, 0);
+            var se = (sum - es[idx + 1]) + (1 - f) * e;
+            ret[d] = se >= me ? 'Y' : 'N';
         }
-        ret[d] = sc >= mc && se >= me ? 'Y' : 'N';
     }
     return ret.join('');
+}
+
+function binarySearch(l, r, fn) { // for any [l, x], fn returns true
+    while (l <= r) {
+        var middle = Math.floor((l + r) / 2);
+        if (fn(middle)) {
+            l = middle + 1;
+        } else {
+            r = middle - 1;
+        }
+    }
+    return r;
 }

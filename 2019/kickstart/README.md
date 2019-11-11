@@ -50,3 +50,8 @@ DP. Observe K dogs by the first C colors. And maintain both minimum distances of
 #### Problem A. Cherries Mesh
 
 MST is not efficient enough. Just create a spanning forest using only edges of weight 1.
+
+#### Problem B. Code-Eat Switcher
+
+Pick Coding/Eat greedily. And check the other condition can be satisfied. It will be O(D*S).
+If calculated the cumulative sum in advance, and find the slot index by binary search. It can be O(SlogS).
