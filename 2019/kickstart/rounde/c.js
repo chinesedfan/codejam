@@ -21,10 +21,13 @@ rl.on('close', function() {
 });
 
 function solve(left, right) {
+    var hasOne = left <= 1 && right >= 1;
     var hasEight = left <= 8 && right >= 8;
     var lower = Math.ceil((left - 2) / 4);
     var upper = Math.floor((right - 2) / 4);
-    return countPrimes(left, right) + (upper - lower + 1) + (hasEight ? 1 : 0);
+    return countPrimes(left, right) + (upper - lower + 1)
+        + (hasOne ? 1 : 0)
+        + (hasEight ? 1 : 0);
 }
 
 function countPrimes(left, right) {
