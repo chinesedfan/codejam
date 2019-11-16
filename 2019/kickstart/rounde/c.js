@@ -41,15 +41,29 @@ function solve(left, right) {
 function hasX(left, right, x) {
     return left <= x && right >= x ? 1 : 0;
 }
-function countOddPrimes(left, right) {
+function findPrimes(left, right, divisiors) {
+    if (left > right) return [];
+
     var flags = Array(right - left + 1).fill(1);
-    var sqrt = Math.sqrt(right);
-    for (var i = 2; i <= sqrt; i++) {
+    if (!divisiors) {
+        var sqrt = Math.floor(Math.sqrt(right));
+        divisiors = [];
+        for (var i = 2; i <= sqrt; i++) {
+            divisiors.push(i);
+        }
+    }
+    for (var i = 0; i < divisiors.length; i++) {
+        var x = divisiors[i];
         for (var j = left; j <= right; j++) {
-            if (j > i && !(j % i)) {
+            if (j > x && !(j % x)) {
                 flags[j - left] = 0;
             }
         }
     }
-    return flags.filter(Boolean).length - hasX(left, right, 1) - hasX(left, right, 2);
+    return flags.map((x, i) => (x ? left + i : 0)).filter(Boolean);
+}
+function countOddPrimes(left, right) {
+    var sqrt = Math.floor(Math.sqrt(right));
+    var divisiors = findPrimes(2, sqrt);
+    return findPrimes(left, right, divisiors).length - hasX(left, right, 1) - hasX(left, right, 2);
 }
