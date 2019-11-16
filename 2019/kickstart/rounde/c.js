@@ -54,10 +54,9 @@ function findPrimes(left, right, divisiors) {
     }
     for (var i = 0; i < divisiors.length; i++) {
         var x = divisiors[i];
-        for (var j = left; j <= right; j++) {
-            if (j > x && !(j % x)) {
-                flags[j - left] = 0;
-            }
+        var base = Math.max(x * x, left - left % x); // from x * x
+        for (var j = base; j <= right; j += x) {
+            flags[j - left] = 0;
         }
     }
     return flags.map((x, i) => (x ? left + i : 0)).filter(Boolean);

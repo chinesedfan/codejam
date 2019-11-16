@@ -47,7 +47,7 @@ For interactive problem,
 | 2019 | kickstart - a | 2/3, not solve c                |
 |      | kickstart - b | 3/3                             |
 |      | kickstart - c | 2/3, not solve c                |
-|      | kickstart - e | 2/3, not solve c                |
+|      | kickstart - e | 3/3                             |
 |      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 |      | 1b            | 3/3                             |

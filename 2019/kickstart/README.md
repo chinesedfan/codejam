@@ -55,3 +55,8 @@ MST is not efficient enough. Just create a spanning forest using only edges of w
 
 Pick Coding/Eat greedily. And check the other condition can be satisfied. It will be O(D*S).
 If calculated the cumulative sum in advance, and find the slot index by binary search. It can be O(SlogS).
+
+#### Problem C. Street Checkers
+
+Ah, number theory is hard. See my code comments or the offical solution, which gives a clear and accurate analysis.
+It makes me learn the real Sieve of Eratosthenes to find primes.
