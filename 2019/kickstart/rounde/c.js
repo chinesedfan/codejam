@@ -21,16 +21,27 @@ rl.on('close', function() {
 });
 
 function solve(left, right) {
-    var hasOne = left <= 1 && right >= 1;
-    var hasEight = left <= 8 && right >= 8;
     var lower = Math.ceil((left - 2) / 4);
     var upper = Math.floor((right - 2) / 4);
-    return countPrimes(left, right) + (upper - lower + 1)
-        + (hasOne ? 1 : 0)
-        + (hasEight ? 1 : 0);
+
+    // n = a * 2^x, where a is an odd number with k odd divisiors
+    // diff = abs(k - k * x) = abs(k(1 - x))
+    // - x = 0, k = 1 or 2, then n = 1 or odd primes
+    var n1 = hasX(left, right, 1) + countOddPrimes(left, right);
+    // - x = 1, k = any, then n = 2(2n + 1)
+    var n2 = upper - lower + 1;
+    // - x = 2, k = 1 or 2, then n = 4 * (1 or odd primes)
+    var n3 = hasX(left, right, 4) + countOddPrimes(Math.ceil(left / 4), Math.floor(right / 4));
+    // - x = 3, k = 1, then n = 8
+    var n4 = hasX(left, right, 8);
+
+    return n1 + n2 + n3 + n4;
 }
 
-function countPrimes(left, right) {
+function hasX(left, right, x) {
+    return left <= x && right >= x ? 1 : 0;
+}
+function countOddPrimes(left, right) {
     var flags = Array(right - left + 1).fill(1);
     var sqrt = Math.sqrt(right);
     for (var i = 2; i <= sqrt; i++) {
@@ -40,5 +51,5 @@ function countPrimes(left, right) {
             }
         }
     }
-    return flags.filter(Boolean).length;
+    return flags.filter(Boolean).length - hasX(left, right, 1) - hasX(left, right, 2);
 }
