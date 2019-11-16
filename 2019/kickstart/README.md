@@ -45,6 +45,22 @@ For large test set, only extend to one direction, like right, with RMQs. And det
 
 DP. Observe K dogs by the first C colors. And maintain both minimum distances of returning/not-returning home.
 
+### Round E
+
+#### Problem A. Cherries Mesh
+
+MST is not efficient enough. Just create a spanning forest using only edges of weight 1.
+
+#### Problem B. Code-Eat Switcher
+
+Pick Coding/Eat greedily. And check the other condition can be satisfied. It will be O(D*S).
+If calculated the cumulative sum in advance, and find the slot index by binary search. It can be O(SlogS).
+
+#### Problem C. Street Checkers
+
+Ah, number theory is hard. See my code comments or the offical solution, which gives a clear and accurate analysis.
+It makes me learn the real Sieve of Eratosthenes to find primes.
+
 ### Round G
 
 #### Problem A. Book Reading
