@@ -21,14 +21,28 @@ rl.on('close', function() {
 
 function solve(cs) {
     var h = 0;
+    var ns = []; // sorted asc
     return cs.map((n, i) => {
-        var c = 0;
-        for (var j = 0; j <= i; j++) {
-            if (cs[j] >= h + 1) c++;
-        }
-        if (c >= h + 1) {
-            h = h + 1;
+        var c = cs[i];
+        var idx = binarySearch(0, i - 1, (x) => ns[x] <= c);
+        ns.splice(idx + 1, 0, c);
+
+        var sep = binarySearch(0, i, (x) => ns[x] < h + 1);
+        if (ns.length - (sep + 1) >= h + 1) {
+            h++;
         }
         return h;
     }).join(' ');
+}
+
+function binarySearch(l, r, fn) { // for any [l, x], fn returns true
+    while (l <= r) {
+        var middle = Math.floor((l + r) / 2);
+        if (fn(middle)) {
+            l = middle + 1;
+        } else {
+            r = middle - 1;
+        }
+    }
+    return r;
 }
