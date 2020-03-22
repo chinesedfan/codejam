@@ -20,20 +20,28 @@ rl.on('close', function() {
 });
 
 function solve(n, b, costs) {
-    var dp = [];
+    costs.sort((c1, c2) => c1 - c2);
+
+    var sums = [];
     for (var i = 0; i < costs.length; i++) {
-        dp[i] = [];
-        for (var j = 0; j <= b; j++) {
-            if (i) {
-                if (j >= costs[i]) {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - costs[i]] + 1);
-                } else {
-                    dp[i][j] = dp[i - 1][j];
-                }
-            } else {
-                dp[i][j] = j >= costs[i] ? 1 : 0;
-            }
+        if (i) {
+            sums[i] = sums[i - 1] + costs[i];
+        } else {
+            sums[i] = costs[i];
         }
     }
-    return dp[n - 1][b];
+
+    return binarySeach(0, costs.length - 1, (x) => sums[x] <= b) + 1;
+}
+
+function binarySeach(left, right, fn) {
+    while (left <= right) {
+        var mid = Math.floor((left + right) / 2)
+        if (fn(mid)) {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+    }
+    return right
 }
