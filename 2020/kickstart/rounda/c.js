@@ -20,30 +20,36 @@ rl.on('close', function() {
 });
 
 function solve(n, k, costs) {
-    var top2 = [];
+    var diff = [];
+    var max = -Infinity;
     for (var i = 1; i < costs.length; i++) {
-        var diff = costs[i] - costs[i - 1];
-        if (i === 1) {
-            top2.push(diff);
-        } else if (i === 2) {
-            if (diff > top2[0]) {
-                top2.unshift(diff);
-            } else {
-                top2.push(diff);
-            }
-        } else {
-            if (diff > top2[0]) {
-                top2.unshift(diff);
-                top2.pop();
-            } else if (diff > top2[1]) {
-                top2[1] = diff;
-            }
-        }
+        var d = costs[i] - costs[i - 1];
+        diff.push(d);
+        max = Math.max(max, d);
     }
 
-    if (top2.length === 1) {
-        return Math.ceil(top2[0] / 2);
-    } else {
-        return Math.max(Math.ceil(top2[0] / 2), top2[1]);
+    return max - binarySeach(0, max - 1, (x) => {
+        x = max - x;
+
+        var sum = 0;
+        for (var i = 0; i < diff.length; i++) {
+            if (diff[i] > x) {
+                sum += Math.ceil(diff[i] / x) - 1;
+            }
+        }
+
+        return sum <= k;
+    });
+}
+
+function binarySeach(left, right, fn) {
+    while (left <= right) {
+        var mid = Math.floor((left + right) / 2)
+        if (fn(mid)) {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
     }
+    return right
 }
