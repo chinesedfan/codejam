@@ -53,6 +53,7 @@ For interactive problem,
 |      | 1a            | 3/3                             |
 |      | 1b            | 3/3                             |
 |      | 1c            | 3/3                             |
+| 2020 | kickstart - a | 3/4, not solve d                |
 
 ### Related Websites
 
