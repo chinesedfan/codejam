@@ -18,15 +18,24 @@ rl.on('close', function () {
 });
 
 function solve(n, k) {
+    var res;
+    var ok = getInits(n, k, n).some((inits) => {
+        var g = test(n, inits);
+        if (g) {
+            res = g;
+            return true;
+        }
+    });
+    return ok ? 'POSSIBLE\n' + res.map((row) => row.join(' ')).join('\n') : 'IMPOSSIBLE';
+}
+
+function test(n, inits) {
     var grid = Array(n).fill(0)
         .map((x) => Array(n).fill(0));
     var mask = Array(n).fill(0)
         .map((x) => Array(n).fill(0).map(x => [0, 0]));
-    
-    var d = Math.floor(k / n);
-    var r = k % n;
     for (var i = 0; i < n; i++) {
-        grid[i][i] = i < r ? d + 1 : d;
+        grid[i][i] = inits[i];
         setMask(grid, mask, i, i);
     }
     
@@ -77,12 +86,23 @@ function solve(n, k) {
     }
 
     if (p.r === n) {
-        return 'POSSIBLE\n' + grid.map((row) => row.join(' ')).join('\n');
+        return grid;
     }
-
-    return 'IMPOSSIBLE';
 }
 
+function getInits(n, k, x) { // set x values with 1 to n, and their sum is k
+    if (x === 1) return [k];
+
+    var res = [];
+    for (var i = 1; i <= n; i++) {
+        var r = k - i;
+        if (r >= x - 1 && r <= (x - 1) * (x - 1) * n) {
+            var others = getInits(n, r, x - 1).map((other) => [i].concat(other));
+            res = res.concat(others);
+        }
+    }
+    return res;
+}
 function next(n, p) {
     p.c++;
     if (p.c === n) {
@@ -90,13 +110,6 @@ function next(n, p) {
         p.r++;
     }
     delete p.val;
-}
-function prev(n, p) {
-    p.c--;
-    if (p.c < 0) {
-        p.c = 0;
-        p.r--;
-    }
 }
 function clone(grid, eleIsArray) {
     return grid.map((row) =>
