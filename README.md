@@ -54,6 +54,7 @@ For interactive problem,
 |      | 1b            | 3/3                             |
 |      | 1c            | 3/3                             |
 | 2020 | kickstart - a | 3/4, not solve d                |
+|      | qualification | 3/5, not solve d/e large        |
 
 ### Related Websites
 
