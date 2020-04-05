@@ -77,3 +77,9 @@ Try to set as 1 greedily, unless the current sum or the sum of remaining bits wi
 
 Brute-force can pass small set. For large set, it need divide into 2 halves.
 Group all pairs of each half by points A, and sort B descending order. For each pair of the left half, collect all Bs with valid A in the right half, and count valid Bs by scanning each group of B with a moving index.
+
+### Round H
+
+#### Problem A. H-index
+
+Trivial is O(n^2). How to count numbers that are larger than X? Maintain numbers sortable and use binary search. Then solved in O(nlogn).
