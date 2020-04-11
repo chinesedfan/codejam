@@ -17,27 +17,35 @@ rl.on('close', function () {
     }
 });
 
+var vals = getVals(500);
 function solve(n) {
-    var fp = [{r: 1, k: 1}];
-    fp.s = 1;
+    if (n === 1) return '1 1';
 
-    var q = [fp];
-    var visited = {}; // key -> v
-    var vals = getVals(1000);
-    var add = addFn.bind(this, q, visited, vals, n);
-    while (q.length) {
-        var path = q.shift();
-        if (path.s === n) {
-            return path.map((nd) => key(nd.r, nd.k)).join('\n');
+    var path = [{r: 1, k: 1, ns: getNexts(1, 1), p: 0}];
+    path.s = 1;
+
+    while (1) {
+        var nd = path[path.length - 1];
+        if (nd.p >= nd.ns.length || path.some((x, i) => nd.r === x.r && nd.k === x.k && i !== path.length - 1)) {
+            path.pop();
+            path[path.length - 1].p++;
+            continue;
         }
 
-        var nd = path[path.length - 1];
-        add(path, nd.r - 1, nd.k - 1);
-        add(path, nd.r - 1, nd.k);
-        add(path, nd.r, nd.k - 1);
-        add(path, nd.r, nd.k + 1);
-        add(path, nd.r + 1, nd.k);
-        add(path, nd.r + 1, nd.k + 1);
+        var next = nd.ns[nd.p];
+        var sum = path.s + vals[key(next.r, next.k)];
+        if (sum === n) {
+            path.push(next);
+            return path.map((nd) => key(nd.r, nd.k)).join('\n');
+        } else if (sum > n) {
+            path.pop();
+            path[path.length - 1].p++;
+        } else {
+            next.ns = getNexts(next.r, next.k);
+            next.p = 0;
+            path.push(next);
+            path.s = sum;
+        }
     }
 
     // impossible
@@ -56,21 +64,21 @@ function getVals(n) {
     }
     return ret;
 }
+function getNexts(r, k) {
+    var ns = [];
+    add(ns, r - 1, k - 1);
+    add(ns, r - 1, k);
+    add(ns, r, k - 1);
+    add(ns, r, k + 1);
+    add(ns, r + 1, k);
+    add(ns, r + 1, k + 1);
+    return ns;
+}
+function add(ns, r, k) {
+    if (r >= 1 && k >= 1 && r >= k) {
+        ns.push({r: r, k: k});
+    }
+}
 function key(r, k) {
     return r + ' ' + k;
-}
-function addFn(q, visited, vals, n, /**/ path, r, k) {
-    if (r >= 1 && k >= 1 && r >= k) {
-        var visited = path.some((nd) => nd.r === r && nd.k === k);
-        if (visited) return;
-
-        var v = vals[key(r, k)];
-        if (path.s + v > n) return;
-
-        var np = path.slice();
-        np.push({r: r, k: k});
-        np.s = path.s + v;
-
-        q.push(np);
-    }
 }
