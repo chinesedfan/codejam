@@ -22,7 +22,8 @@ function solve(ps) {
     var ls = [], rs = [];
     ps.forEach((p) => {
         var idx = p.indexOf('*');
-        ls.push('*' + p.slice(0, idx));
+        var lstr = p.slice(0, idx) + '*';
+        ls.push(lstr.split('').reverse().join(''));
         rs.push(p.slice(idx));
     });
 
@@ -30,7 +31,7 @@ function solve(ps) {
     var r2 = solve1(rs);
     if (r1 === '*' || r2 === '*') return '*';
 
-    return r1 + r2;
+    return r1.split('').reverse().join('') + r2;
 }
 
 function solve1(ps) { // the leftmost is *
