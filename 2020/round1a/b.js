@@ -24,27 +24,33 @@ function solve(n) {
     var path = [{r: 1, k: 1, ns: getNexts(1, 1), p: 0}];
     path.s = 1;
 
+    var back = () => {
+        var last = path.pop();
+        path.s -= vals[key(last.r, last.k)];
+        path[path.length - 1].p++;
+    };
+
     while (1) {
         var nd = path[path.length - 1];
-        if (nd.p >= nd.ns.length || path.some((x, i) => nd.r === x.r && nd.k === x.k && i !== path.length - 1)) {
-            path.pop();
-            path[path.length - 1].p++;
-            continue;
-        }
+        while (nd.p < nd.ns.length) {
+            var next = nd.ns[nd.p];
+            var sum = path.s + vals[key(next.r, next.k)];
 
-        var next = nd.ns[nd.p];
-        var sum = path.s + vals[key(next.r, next.k)];
-        if (sum === n) {
-            path.push(next);
-            return path.map((nd) => key(nd.r, nd.k)).join('\n');
-        } else if (sum > n) {
-            path.pop();
-            path[path.length - 1].p++;
-        } else {
-            next.ns = getNexts(next.r, next.k);
-            next.p = 0;
-            path.push(next);
-            path.s = sum;
+            if (sum > n || path.some((nd, i) => nd.r === next.r && nd.k === next.k)) {
+                nd.p++;
+            } else if (sum === n) {
+                path.push(next);
+                return path.map((nd) => key(nd.r, nd.k)).join('\n');
+            } else {
+                next.ns = getNexts(next.r, next.k);
+                next.p = 0;
+                path.push(next);
+                path.s = sum;
+                break;
+            }
+        }
+        if (nd.p >= nd.ns.length) {
+            back();
         }
     }
 
