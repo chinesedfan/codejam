@@ -22,3 +22,20 @@ For B = 10, collect each bits because the array will never change during 10 requ
 
 For small tests, loop all possible diagonal cases and search by backtracing.
 (TODO)
+
+### Round 1a
+
+#### Problem A. Pattern Matching
+
+Set 1, check from the end.
+Set 2, divide by the asterisk, and reverse the left part. It converts to 2 problems of Set 1.
+(TODO)
+
+#### Problem B. Pascal Walk
+
+Backtracing is enough to pass Set 1 & 2.
+(TODO)
+
+#### Problem C. Square Dance
+
+Simulate to pass Set 1.
