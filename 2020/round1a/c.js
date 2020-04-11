@@ -37,7 +37,7 @@ function solve(row, col, grid) {
     var el = {};
     var dec = 0;
     var calc = (r, c) => {
-        if (!valid(grid, r, c) || state[r][c].rm) return;
+        if (!valid(grid, r, c)) return;
 
         var ns = getNs(grid, state, r, c);
         var keep = !ns.count || (grid[r][c] >= ns.sum / ns.count);
@@ -77,10 +77,23 @@ function solve(row, col, grid) {
         pks.forEach((k) => {
             var item = pel[k];
             var s = state[item.r][item.c];
-            calc(item.r, s.l);
-            calc(item.r, s.r);
-            calc(s.t, item.c);
-            calc(s.b, item.c);
+
+            var i;
+            i = s.l;
+            while (valid(grid, item.r, i) && state[item.r][i].rm) i--;
+            calc(item.r, i);
+
+            i = s.r;
+            while (valid(grid, item.r, i) && state[item.r][i].rm) i++;
+            calc(item.r, i);
+
+            i = s.t;
+            while (valid(grid, i, item.c) && state[i][item.c].rm) i--;
+            calc(i, item.c);
+
+            i = s.b;
+            while (valid(grid, i, item.c) && state[i][item.c].rm) i++;
+            calc(i, item.c);
         });
         update();
     }
