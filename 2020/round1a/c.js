@@ -34,22 +34,27 @@ function solve(row, col, grid) {
             (col, c) => ({rm: false, l: c - 1, r: c + 1, t: r - 1, b: r + 1})
         )
     );
-    var el = [];
+    var el = {};
     var dec = 0;
     var calc = (r, c) => {
         if (!valid(grid, r, c) || state[r][c].rm) return;
 
         var ns = getNs(grid, state, r, c);
         var keep = !ns.count || (grid[r][c] >= ns.sum / ns.count);
-        if (!keep) {
-            el.push({r: r, c: c});
+        var k = key(r, c);
+        if (!keep && !el[k]) {
+            el[k] = {r: r, c: c};
             dec += grid[r][c];
         }
     }
     var update = () => {
-        if (!el.length) return;
-        
-        el.forEach((item) => state[item.r][item.c].rm = 1);
+        var ks = Object.keys(el);
+        if (!ks.length) return;
+
+        ks.forEach((k) => {
+            var item = el[k];
+            state[item.r][item.c].rm = 1;
+        });
         total -= dec;
         sum += total;
     }
@@ -62,12 +67,15 @@ function solve(row, col, grid) {
     update();
 
     while (1) {
-        if (!el.length) break;
+        var ks = Object.keys(el);
+        if (!ks.length) break;
 
+        var pks = ks;
         var pel = el;
-        el = [];
+        el = {};
         dec = 0;
-        pel.forEach((item) => {
+        pks.forEach((k) => {
+            var item = pel[k];
             var s = state[item.r][item.c];
             calc(item.r, s.l);
             calc(item.r, s.r);
@@ -79,6 +87,9 @@ function solve(row, col, grid) {
     return sum;
 }
 
+function key(r, c) {
+    return r + ' ' + c;
+}
 function getNs(grid, state, r, c) {
     var item = state[r][c];
     var ret = {sum: 0, count: 0};
