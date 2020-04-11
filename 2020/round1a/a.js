@@ -19,6 +19,21 @@ rl.on('close', function () {
 });
 
 function solve(ps) {
+    var ls = [], rs = [];
+    ps.forEach((p) => {
+        var idx = p.indexOf('*');
+        ls.push('*' + p.slice(0, idx));
+        rs.push(p.slice(idx));
+    });
+
+    var r1 = solve1(ls);
+    var r2 = solve1(rs);
+    if (r1 === '*' || r2 === '*') return '*';
+
+    return r1 + r2;
+}
+
+function solve1(ps) { // the leftmost is *
     var ret = ps[0].split('').slice(1); // remove the first *
     var failed = ps.some((p) => {
         for (var i = 0; i < p.length; i++) {
