@@ -26,9 +26,13 @@ function solve(x, y, ps) {
             y--;
         } else if (ch === 'N') {
             y++;
+        } else if (ch === 'E') {
+            x++;
+        } else if (ch === 'W') {
+            x--;
         }
 
-        if (x + Math.abs(y) <= i + 1) return i + 1;
+        if (Math.abs(x) + Math.abs(y) <= i + 1) return i + 1;
     }
     return 'IMPOSSIBLE';
 }
