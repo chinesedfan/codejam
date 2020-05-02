@@ -29,13 +29,24 @@ function solve(u, qs) {
     });
 
     var ps = {};
+    var add = (ch, p) => { // position of `ch` (starts from 0) must be <= `p`
+        ps[ch] = ps[ch] || 10;
+        ps[ch] = Math.min(ps[ch], p);
+    }
+
     qs.forEach(item => {
         var m = item[0];
+        if (m === '-1') return;
+
         var r = item[1];
-        if (m.length === 1) {
-            m = +m;
-            ps[r[0]] = ps[r[0]] || 10;
-            ps[r[0]] = Math.min(ps[r[0]], m)
+        if (m.length === r.length) {
+            for (var i = 0; i < r.length; i++) {
+                var ch = r[i];
+                if (i === 0) {
+                    add(ch, +m[i]);
+                    break;
+                }
+            }
         }
     });
 
