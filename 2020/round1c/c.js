@@ -24,6 +24,7 @@ function solve(n, d, ss) {
         return hasSame(ss) ? 0 : 1;
     } else if (d === 3) {
         if (hasThree(ss)) return 0;
+        if (hasTwice(ss)) return 1;
 
         if (hasSame(ss)) {
             var map = {};
@@ -38,7 +39,7 @@ function solve(n, d, ss) {
             return hasLarger ? 1 : 2;
         } else {
             // distinct with each other
-            return hasTwice(ss) ? 1 : 2;
+            return 2;
         }
     }
 }
