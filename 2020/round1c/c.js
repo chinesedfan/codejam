@@ -20,7 +20,24 @@ rl.on('close', function () {
 function solve(n, d, ss) {
     ss.sort((a, b) => a - b); // asc
 
-    var min = d - 1;
+    var map = {};
+    ss.forEach(s => {
+        map[s] = map[s] || 0;
+        map[s]++;
+    });
+    var max = -Infinity;
+    var smax;
+    for (var s in map) {
+        if (map[s] > max) {
+            max = map[s];
+            smax = s;
+        }
+    }
+    var t = Math.ceil(d / max); // cut 1 into `t`
+    var xt = Math.floor(d / t); // requires cut `xt` or +1
+    var min = xt * (t - 1) + (d - xt * t);
+
+    // var min = d - 1;
     ss.forEach(target => {
         var count = 0;
         var cut = 0;
