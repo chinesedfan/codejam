@@ -22,3 +22,18 @@ For B = 10, collect each bits because the array will never change during 10 requ
 
 For small tests, loop all possible diagonal cases and search by backtracing.
 (TODO)
+
+### Round 1c
+
+#### Problem A. Overexcited Fan
+
+Simulate and check at each point.
+
+#### Problem B. Overrandomized
+
+For test 1 & 2, if the first letter of R is X, it means the position of X (which starts from 0) is less than the first digit of M.
+
+#### Problem C. Oversized Pancake Choppers
+
+For D = 2, find 2 same parts, or divide one into 2 parts.
+For D = 3, find 3 same parts, or find a [X, 2X] pair, or find 2 same parts with another larger one. Otherwise, slice 3 different parts into same parts.
