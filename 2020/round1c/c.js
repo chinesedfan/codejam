@@ -20,13 +20,14 @@ rl.on('close', function () {
 function solve(n, d, ss) {
     ss.sort((a, b) => a - b); // asc
 
-    var min = Infinity;
+    var min = d - 1;
     ss.forEach(target => {
         var count = 0;
         var cut = 0;
         var done = ss.some(s => {
             if (s === target) {
                 count++;
+                if (count === d) return true;
             } else if (s > target) {
                 if (!(s % target)) {
                     var x = Math.min(s / target, d - count);
