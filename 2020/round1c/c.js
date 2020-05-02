@@ -35,7 +35,9 @@ function solve(n, d, ss) {
     }
     var t = Math.ceil(d / max); // cut 1 into `t`
     var xt = Math.floor(d / t); // requires cut `xt` or +1
+    var rest = d - xt * t;
     var min = xt * (t - 1) + (d - xt * t);
+    if (rest === t) min--;
 
     // var min = d - 1;
     ss.forEach(target => {
