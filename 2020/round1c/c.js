@@ -18,59 +18,43 @@ rl.on('close', function () {
 });
 
 function solve(n, d, ss) {
-    ss.sort((a, b) => b - a); // dec
+    ss.sort((a, b) => a - b); // asc
 
-    if (d === 2) {
-        return hasSame(ss) ? 0 : 1;
-    } else if (d === 3) {
-        if (hasThree(ss)) return 0;
-        if (hasTwice(ss)) return 1;
-
-        if (hasSame(ss)) {
-            var map = {};
-            var hasLarger = ss.some((s, i) => {
-                if (map[s]) {
-                    return i > 1;
-                } else {
-                    map[s] = 1;
-                    return false;
+    var min = Infinity;
+    ss.forEach(target => {
+        var count = 0;
+        var cut = 0;
+        var done = ss.some(s => {
+            if (s === target) {
+                count++;
+            } else if (s > target) {
+                if (!(s % target)) {
+                    var x = Math.min(s / target, d - count);
+                    cut += (x === s / target) ? x - 1 : x;
+                    count += x;
+                    if (count === d) return true;
                 }
-            });
-            return hasLarger ? 1 : 2;
-        } else {
-            // distinct with each other
-            return 2;
+            }
+        });
+        if (done) {
+            min = Math.min(min, cut);
+            return;
         }
-    }
-}
 
-function hasSame(ss) {
-    var map = {};
-    return ss.some(s => {
-        if (map[s]) {
-            return true;
-        } else {
-            map[s] = 1;
-            return false;
+        done = ss.some(s => {
+            if (s > target && (s % target)) {
+                var x = Math.floor(s / target);
+                x = Math.min(x, d - count);
+                cut += x;
+                count += x;
+                if (count === d) return true;
+            }
+        });
+        if (done) {
+            min = Math.min(min, cut);
+            return;
         }
     });
-}
-function hasTwice(ss) {
-    var map = {};
-    return ss.some(s => {
-        if (map[s * 2]) {
-            return true;
-        } else {
-            map[s] = 1;
-            return false;
-        }
-    });
-}
-function hasThree(ss) {
-    var map = {};
-    return ss.some(s => {
-        map[s] = map[s] || 0;
-        map[s]++;
-        return map[s] === 3;
-    });
+
+    return min;
 }
