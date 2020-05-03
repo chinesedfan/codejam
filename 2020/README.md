@@ -49,6 +49,7 @@ Simulate and check at each point.
 #### Problem B. Overrandomized
 
 For test 1 & 2, if the first letter of R is X, it means the position of X (which starts from 0) is less than the first digit of M.
+In fact, sort letters by occurrences of appearing as the first letter.
 
 #### Problem C. Oversized Pancake Choppers
 

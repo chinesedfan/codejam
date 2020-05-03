@@ -30,9 +30,7 @@ function solve(u, qs) {
         }
 
         var k = r[0];
-        if (m.length === r.length) {
-            count[k] = (count[k] || 0) + 1;
-        }
+        count[k] = (count[k] || 0) + 1;
     });
 
     var ret = Object.keys(count)
