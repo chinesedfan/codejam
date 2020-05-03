@@ -21,19 +21,34 @@ rl.on('close', function () {
 
 function solve(u, qs) {
     var chs = {};
+    var count = {};
     qs.forEach(item => {
-        var r = item[1];
+        var [m, r] = item;
+
         for (var i = 0; i < r.length; i++) {
-            chs[r[i]] = (chs[r[i]] || 0) + 1;
+            chs[r[i]] = 1;
+        }
+
+        var k = r[0];
+        if (m.length === r.length) {
+            count[k] = (count[k] || 0) + 1;
         }
     });
 
-    var ret = Object.keys(chs)
-        .map(k => ({k, v: chs[k]}))
+    var ret = Object.keys(count)
+        .map(k => ({k, v: count[k]}))
         .sort((a, b) => b.v - a.v)
         .map(o => o.k);
-    var last = ret.pop();
-    ret.unshift(last);
+
+    for (var k in count) {
+        chs[k] = 0;
+    }
+    for (var k in chs) {
+        if (chs[k]) {
+            ret.unshift(k);
+            break;
+        }
+    }
 
     return ret.join('');
 }
