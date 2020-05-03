@@ -24,42 +24,16 @@ function solve(u, qs) {
     qs.forEach(item => {
         var r = item[1];
         for (var i = 0; i < r.length; i++) {
-            chs[r[i]] = 1;
+            chs[r[i]] = (chs[r[i]] || 0) + 1;
         }
     });
 
-    var ps = {};
-    var add = (ch, p) => { // position of `ch` (starts from 0) must be <= `p`
-        ps[ch] = ps[ch] || 10;
-        ps[ch] = Math.min(ps[ch], p);
-    }
+    var ret = Object.keys(chs)
+        .map(k => ({k, v: chs[k]}))
+        .sort((a, b) => b.v - a.v)
+        .map(o => o.k);
+    var last = ret.pop();
+    ret.unshift(last);
 
-    qs.forEach(item => {
-        var m = item[0];
-        if (m === '-1') return;
-
-        var r = item[1];
-        if (m.length === r.length) {
-            for (var i = 0; i < r.length; i++) {
-                var ch = r[i];
-                if (i === 0) {
-                    add(ch, +m[i]);
-                    break;
-                }
-            }
-        }
-    });
-
-    var ret = [''];
-    for (var k in ps) {
-        ret[ps[k]] = k;
-        chs[k] = 0;
-    }
-    for (var k in chs) {
-        if (chs[k]) {
-            ret[0] = k;
-            break;
-        }
-    }
     return ret.join('');
 }
