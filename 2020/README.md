@@ -55,3 +55,6 @@ In fact, sort letters by occurrences of appearing as the first letter.
 
 For D = 2, find 2 same parts, or divide one into 2 parts.
 For D = 3, find 3 same parts, or find a [X, 2X] pair, or find 2 same parts with another larger one. Otherwise, slice 3 different parts into same parts.
+
+Set 2, try each target.
+Set 3, find the largest possible target, and use a map of target to find the maximal count of fully-usable slices.
