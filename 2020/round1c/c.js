@@ -20,27 +20,15 @@ rl.on('close', function () {
 function solve(n, d, ss) {
     ss.sort((a, b) => a - b); // asc
 
-    var map = {};
-    ss.forEach(s => {
-        map[s] = map[s] || 0;
-        map[s]++;
-    });
-    var max = -Infinity;
-    var smax;
-    for (var s in map) {
-        if (map[s] > max) {
-            max = map[s];
-            smax = s;
-        }
+    var ts = [];
+    for (var i = 1; i <= d; i++) {
+        ss.forEach(s => {
+            ts.push(s / i);
+        });
     }
-    var t = Math.ceil(d / max); // cut 1 into `t`
-    var xt = Math.floor(d / t); // requires cut `xt` or +1
-    var rest = d - xt * t;
-    var min = xt * (t - 1) + (d - xt * t);
-    if (rest === t) min--;
 
-    // var min = d - 1;
-    ss.forEach(target => {
+    var min = d - 1;
+    ts.forEach(target => {
         var count = 0;
         var cut = 0;
         var done = ss.some(s => {
@@ -48,8 +36,9 @@ function solve(n, d, ss) {
                 count++;
                 if (count === d) return true;
             } else if (s > target) {
-                if (!(s % target)) {
-                    var x = Math.min(s / target, d - count);
+                if (dividedBy(s, target)) {
+                    var x = Math.floor(s / target);
+                    x = Math.min(x, d - count);
                     cut += (x === s / target) ? x - 1 : x;
                     count += x;
                     if (count === d) return true;
@@ -62,7 +51,7 @@ function solve(n, d, ss) {
         }
 
         done = ss.some(s => {
-            if (s > target && (s % target)) {
+            if (s > target && !dividedBy(s, target)) {
                 var x = Math.floor(s / target);
                 x = Math.min(x, d - count);
                 cut += x;
@@ -77,4 +66,8 @@ function solve(n, d, ss) {
     });
 
     return min;
+}
+
+function dividedBy(a, b) {
+    return Math.abs(Math.floor(a / b) * b - a) < 1e-7;
 }
