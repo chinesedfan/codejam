@@ -36,3 +36,4 @@ Use a stack to do parentheses matching. Easy.
 #### Problem D. Wandering Robot
 
 O(W * H). Simulate row by row, and calculate the sum probability of hole's previous low/column.
+For set 2, hard to calculate n!, but we can calculate n!/2^n. Then we can choose a set of squares diagonally from the bottom-left/top-right corner of the hole as the **safe** target.

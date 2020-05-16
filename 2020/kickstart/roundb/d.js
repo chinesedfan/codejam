@@ -36,6 +36,7 @@ function solve(w, h, l, u, r, d) {
     }
     for (var row = u - 1; row >= 1; row--) {
         var col = r + u - row;
+        if (col > w) break;
         if (col >= 1) {
             prev = cal(row, col, lf);
         } else {
