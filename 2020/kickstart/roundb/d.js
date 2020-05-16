@@ -30,7 +30,7 @@ function solve(w, h, l, u, r, d) {
             prev = cal(row, col, lf);
         } else {
             var above = cal(row - 1, col, lf);
-            prev = (i === 1 ? 0 : prev) + above / 2;
+            prev = (col === 1 ? 0 : prev) + above / 2;
         }
         sum += prev;
     }
