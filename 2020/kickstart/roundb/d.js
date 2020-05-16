@@ -17,36 +17,38 @@ rl.on('close', function() {
 });
 
 function solve(w, h, l, u, r, d) {
-    var p = [];
-    for (var i = 1; i <= h; i++) {
-        p[i] = [];
-        for (var j = 1; j <= w; j++) {
-            if (i == 1 && j == 1) {
-                p[i][j] = 1;
-                continue;
-            }
-            if (i >= u && j >= l) continue;
-
-            p[i][j] = next(w, h, p, i - 1, j) + next(w, h, p, i, j - 1);
-        }
+    var lf = [0]; // log2(i!)
+    for (var i = 1; i <= w + h - 2; i++) {
+        lf[i] = i === 1 ? 0 : lf[i - 1] + Math.log2(i);
     }
 
     var sum = 0;
-    if (u - 1 >= 1) {
-        for (var i = l; i <= r; i++) {
-            sum += next(w, h, p, u - 1, i);
+    var prev;
+    for (var col = 1; col < l; col++) {
+        var row = d + l - col;
+        if (row <= h) {
+            prev = cal(row, col, lf);
+        } else {
+            var above = cal(row - 1, col, lf);
+            prev = (i === 1 ? 0 : prev) + above / 2;
         }
+        sum += prev;
     }
-    if (l - 1 >= 1) {
-        for (var i = u; i <= d; i++) {
-            sum += next(w, h, p, i, l - 1);
+    for (var row = u - 1; row >= 1; row--) {
+        var col = r + u - row;
+        if (col >= 1) {
+            prev = cal(row, col, lf);
+        } else {
+            prev /= 2;
         }
+        sum += prev;
     }
-    return 1 - sum;
+    return sum;
 }
 
-function next(w, h, p, i, j) {
-    if (i < 1 || j < 1) return 0;
-
-    return (i == h || j == w) ? p[i][j] : p[i][j] / 2;
+function cal(row, col, lf) {
+    var n = row + col - 2;
+    var k = row - 1;
+    // C(n, k) / 2^n
+    return Math.pow(2, lf[n] - lf[k] - lf[n - k] - n);
 }
