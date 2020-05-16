@@ -18,3 +18,13 @@ When k != 1, binary search.
 #### Problem D. Bundling
 
 (TODO)
+
+### Round B
+
+#### Problem A. Bike Tour
+
+Filter the peak and count.
+
+#### Problem B. Bus Routes
+
+Find all days of first bus. Then binary search, which is O(Nlog(D/X)).

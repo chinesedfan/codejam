@@ -21,13 +21,8 @@ rl.on('close', function() {
 
 function solve(n, d, xs) {
     var tf = Math.floor(d / xs[0]);
-    var first = [];
-    for (var i = 1; i <= tf; i++) {
-        first.push(xs[0] * i);
-    }
-
-    var idx = binarySeach(0, first.length - 1, (i) => {
-        var start = first[i];
+    var idx = binarySeach(1, tf, (i) => {
+        var start = i * xs[0];
         return xs.every(x => {
             if (start % x) {
                 start = Math.floor(start / x) * x + x;
@@ -37,7 +32,7 @@ function solve(n, d, xs) {
             }
         });
     });
-    return first[idx];
+    return idx * xs[0];
 }
 
 function binarySeach(left, right, fn) {
