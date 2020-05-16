@@ -32,3 +32,7 @@ Find all days of first bus. Then binary search, which is O(Nlog(D/X)).
 #### Problem C. Robot Path Decoding
 
 Use a stack to do parentheses matching. Easy.
+
+#### Problem D. Wandering Robot
+
+O(W * H). Simulate row by row, and calculate the sum probability of hole's previous low/column.
