@@ -26,21 +26,20 @@ function solve(w, h, l, u, r, d) {
     var prev;
     for (var col = 1; col < l; col++) {
         var row = d + l - col;
-        if (row <= h) {
+        if (row < h) {
             prev = cal(row, col, lf);
+            sum += prev;
         } else {
-            var above = cal(row - 1, col, lf);
+            var above = cal(h - 1, col, lf);
             prev = (col === 1 ? 0 : prev) + above / 2;
+            if (row === h) sum += prev;
         }
-        sum += prev;
     }
     for (var row = u - 1; row >= 1; row--) {
         var col = r + u - row;
         if (col > w) break;
         if (col >= 1) {
             prev = cal(row, col, lf);
-        } else {
-            prev /= 2;
         }
         sum += prev;
     }
