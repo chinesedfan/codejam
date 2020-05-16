@@ -28,3 +28,7 @@ Filter the peak and count.
 #### Problem B. Bus Routes
 
 Find all days of first bus. Then binary search, which is O(Nlog(D/X)).
+
+#### Problem C. Robot Path Decoding
+
+Use a stack to do parentheses matching. Easy.
