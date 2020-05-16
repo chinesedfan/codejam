@@ -20,7 +20,34 @@ rl.on('close', function() {
 });
 
 function solve(n, d, xs) {
-    var last = xs.map(x => Math.floor(d / x) * x);
-    var first = Math.min(...last);
-    return Math.floor(first / xs[0]) * xs[0];
+    var tf = Math.floor(d / xs[0]);
+    var first = [];
+    for (var i = 1; i <= tf; i++) {
+        first.push(xs[0] * i);
+    }
+
+    var idx = binarySeach(0, first.length - 1, (i) => {
+        var start = first[i];
+        return xs.every(x => {
+            if (start % x) {
+                start = Math.floor(start / x) * x + x;
+                return start <= d;
+            } else {
+                return true;
+            }
+        });
+    });
+    return first[idx];
+}
+
+function binarySeach(left, right, fn) {
+    while (left <= right) {
+        var mid = Math.floor((left + right) / 2)
+        if (fn(mid)) {
+            left = mid + 1
+        } else {
+            right = mid - 1
+        }
+    }
+    return right
 }
