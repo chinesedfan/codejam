@@ -23,25 +23,33 @@ function solve(w, h, l, u, r, d) {
     }
 
     var sum = 0;
-    var prev;
     for (var col = 1; col < l; col++) {
         var row = d + l - col;
         if (row < h) {
-            prev = cal(row, col, lf);
+            sum += cal(row, col, lf);
+        } else if (row == h) {
+            var prev = 0;
+            for (var k = 1; k <= col; k++) {
+                var above = cal(h - 1, k, lf);
+                prev += above / 2;
+            }
             sum += prev;
-        } else {
-            var above = cal(h - 1, col, lf);
-            prev = (col === 1 ? 0 : prev) + above / 2;
-            if (row === h) sum += prev;
         }
     }
     for (var row = u - 1; row >= 1; row--) {
         var col = r + u - row;
-        if (col > w) break;
-        if (col >= 1) {
-            prev = cal(row, col, lf);
+        if (col < w) {
+            sum += cal(row, col, lf);
+        } else if (col === w) {
+            var prev = 0;
+            for (var k = 1; k <= row; k++) {
+                var left = cal(k, w - 1, lf);
+                prev += left / 2;
+            }
+            sum += prev;
+        } else {
+            break;
         }
-        sum += prev;
     }
     return sum;
 }
