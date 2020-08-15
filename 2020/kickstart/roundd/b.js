@@ -20,6 +20,7 @@ rl.on('close', function() {
 function solve(n, hs) {
     let count = 0;
     let prev = 0;
+    hs = hs.filter((x, i) => (!i || x !== hs[i - 1]))
     return hs.reduce((s, x, i) => {
         if (i) {
             let cur = 0;

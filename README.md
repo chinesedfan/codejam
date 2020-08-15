@@ -60,6 +60,7 @@ For interactive problem,
 |      | 1c            | 3/3                             |
 | 2020 | kickstart - a | 3/4, not solve d                |
 |      | kickstart - b | 4/4                             |
+|      | kickstart - d | 2/4, not solve c/d              |
 |      | qualification | 3/5, not solve d/e large        |
 |      | 1a            | 0/3, not solve every large      |
 |      | 1c            | 3/3                             |
