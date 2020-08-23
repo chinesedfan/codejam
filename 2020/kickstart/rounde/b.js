@@ -19,8 +19,8 @@ rl.on('close', function() {
 function solve(n, a, b, c) {
     const hs = Array(n).fill(1);
     if (a + b <= n) {
-        const left = range(n - (a - 1), n);
-        const right = range(n - (b - 1), n - 1).reverse();
+        const left = rangeWithEnd(n, a);
+        const right = rangeWithEnd(n - 1, b - 1).reverse();
         fill(hs, left, 0);
         fill(hs, right, n - (b - 1));
     } else {
@@ -28,8 +28,8 @@ function solve(n, a, b, c) {
         if (common > c) {
             return 'IMPOSSIBLE';
         } else {
-            const left = range(n - 1 - (a - c), n - 1);
-            const right = range(n - 1 - (b - c), n - 1).reverse();
+            const left = range(n - 1, a - c);
+            const right = range(n - 1, b - c).reverse();
             fill(hs, left, 0);
             fill(hs, right, n - (b - c));
             const all = Array(c).fill(n);
@@ -39,6 +39,10 @@ function solve(n, a, b, c) {
     return hs.join(' ');
 }
 
+function rangeWithEnd(end, length) {
+    const start = end - length + 1;
+    return range(start, end);
+}
 function range(start, end) {
     var ret = [];
     for (var i = start; i <= end; i++) {
