@@ -21,6 +21,8 @@ rl.on('close', function() {
 });
 
 function solve(n, A, B, ps) {
+    if (n === 1) ps = []; // split always creates an array with at least 1 element
+
     const ns = buildTree(ps);
 
     mark(ns, A, B)
