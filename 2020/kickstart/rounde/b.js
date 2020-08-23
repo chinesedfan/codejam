@@ -17,8 +17,9 @@ rl.on('close', function() {
 });
 
 function solve(n, a, b, c) {
+    // console.log(n, a, b, c)
     const common = a + b - n;
-    if (common > c) {
+    if (common > c || (a == 1 && b == 1 && n > 1)) {
         return 'IMPOSSIBLE';
     }
 
