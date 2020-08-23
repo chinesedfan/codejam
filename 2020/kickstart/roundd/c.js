@@ -45,28 +45,31 @@ function buildTree(ps) {
 }
 function mark(ns, A, B) {
     const q = [ns[0]];
-    ns[0].ps = [];
+    const ps = [];
 
     while (q.length) {
         const node = q.pop();
-        if (node.visited) {
+        if (node.visited && node.visited >= node.children.length) {
             node.c1++;
             node.c2++;
 
-            if (A - 1 < node.ps.length) node.ps[A - 1].c1 += node.c1;
-            if (B - 1 < node.ps.length) node.ps[B - 1].c2 += node.c2;
-            delete node.ps;
+            ps.shift();
+            if (A - 1 < ps.length) ps[A - 1].c1 += node.c1;
+            if (B - 1 < ps.length) ps[B - 1].c2 += node.c2;
         } else {
-            node.visited = 1;
-            node.c1 = 0;
-            node.c2 = 0;
+            if (!node.visited) {
+                node.visited = 0;
+                node.c1 = 0;
+                node.c2 = 0;
+                ps.unshift(node);
+            }
 
-            const ps = [node].concat(node.ps || []); // parents, from near to far
-            q.push(node);
-            node.children.forEach(c => {
-                c.ps = ps;
-                q.push(c);
-            });
+            node.visited++;
+            if (node.children.length) {
+                q.push(node, node.children[node.visited - 1]);
+            } else {
+                q.push(node);
+            }
         }
     }
 }
