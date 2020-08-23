@@ -28,16 +28,21 @@ function solve(n, a, b, c) {
     const right = rangeWithEnd(n - 1, b - c).reverse();
     fill(hs, left, 0);
     fill(hs, right, n - (b - c));
+    // if (left.length != a - c || right.length != b - c) throw 'sb'
 
     const all = Array(c).fill(n);
     fill(hs, all, a - c);
 
     if (n > 2 && (!right.length || right[0] == 1)) {
         hs[a - 1] = 1;
-        hs[n - (b - c)] = n;
+        if (b == c) {
+            hs[n - 1] = n;
+        } else {
+            hs[n - (b - c)] = n;
+        }
     }
 
-    // check(hs, a, b, c);
+    // check(hs, n, a, b, c);
     return hs.join(' ');
 }
 
@@ -58,7 +63,11 @@ function fill(a, b, p) {
     }
 }
 
-function check(arr, ra, rb, rc) {
+function check(arr, n, ra, rb, rc) {
+    if (arr.length != n) {
+        console.log('wrong length');
+    }
+
     var m1 = -Infinity, m2 = -Infinity;
     var s1 = {}, s2 = {};
     for (let i = 0; i < arr.length; i++) {
