@@ -28,8 +28,8 @@ function solve(n, a, b, c) {
         if (common > c) {
             return 'IMPOSSIBLE';
         } else {
-            const left = range(n - 1, a - c);
-            const right = range(n - 1, b - c).reverse();
+            const left = rangeWithEnd(n - 1, a - c);
+            const right = rangeWithEnd(n - 1, b - c).reverse();
             fill(hs, left, 0);
             fill(hs, right, n - (b - c));
             const all = Array(c).fill(n);
