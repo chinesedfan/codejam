@@ -47,3 +47,13 @@ Easy to filter.
 #### Problem B. Alien Piano
 
 Greedy but better to filter adjacent equal values first.
+
+### Round E
+
+#### Problem A. Longest Arithmetic
+
+Simple in O(n).
+
+#### Problem B. High Buildings
+
+Determine A - C and C buildings from the left, and B - C buildings from the right. Then move the A-th building (height N) to a right-enough position.
