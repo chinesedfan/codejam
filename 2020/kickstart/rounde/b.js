@@ -17,25 +17,19 @@ rl.on('close', function() {
 });
 
 function solve(n, a, b, c) {
-    const hs = Array(n).fill(1);
-    if (a + b <= n) {
-        const left = rangeWithEnd(n, a);
-        const right = rangeWithEnd(n - 1, b - 1).reverse();
-        fill(hs, left, 0);
-        fill(hs, right, n - (b - 1));
-    } else {
-        const common = a + b - n;
-        if (common > c) {
-            return 'IMPOSSIBLE';
-        } else {
-            const left = rangeWithEnd(n - 1, a - c);
-            const right = rangeWithEnd(n - 1, b - c).reverse();
-            fill(hs, left, 0);
-            fill(hs, right, n - (b - c));
-            const all = Array(c).fill(n);
-            fill(hs, all, a - c);
-        }
+    const common = a + b - n;
+    if (common > c) {
+        return 'IMPOSSIBLE';
     }
+
+    const hs = Array(n).fill(1);
+    const left = rangeWithEnd(n - 1, a - c);
+    const right = rangeWithEnd(n - 1, b - c).reverse();
+    fill(hs, left, 0);
+    fill(hs, right, n - (b - c));
+
+    const all = Array(c).fill(n);
+    fill(hs, all, a - c);
     return hs.join(' ');
 }
 
