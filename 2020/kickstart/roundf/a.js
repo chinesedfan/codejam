@@ -22,9 +22,9 @@ rl.on('close', function() {
 });
 
 function solve(n, t, hs) {
-    return hs .map((v, i) => ({v, i})).sort((a, b) => {
-        var ma = Math.floor(a.v / t);
-        var mb = Math.floor(b.v / t);
+    return hs.map((v, i) => ({v, i})).sort((a, b) => {
+        var ma = Math.ceil(a.v / t);
+        var mb = Math.ceil(b.v / t);
         if (ma == mb) {
             return a.i - b.i;
         } else {
