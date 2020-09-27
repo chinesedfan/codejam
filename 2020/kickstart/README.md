@@ -57,3 +57,19 @@ Simple in O(n).
 #### Problem B. High Buildings
 
 Determine A - C and C buildings from the left, and B - C buildings from the right. Then move the A-th building (height N) to a right-enough position.
+
+### Round F
+
+#### Problem A. ATM Queue
+
+Sort by times of T and the initial index.
+
+#### Problem B. Metal Harvest
+
+Greedy.
+
+#### Problem C. Painters' Duel
+
+Search by different targets recursively.
+
+#### Problem D. Yeetzhee
