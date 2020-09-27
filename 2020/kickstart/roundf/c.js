@@ -102,7 +102,7 @@ function getAdj(grid, s, r, p) {
     var ret = [];
     add(ret, grid, s, r, p - 1);
     add(ret, grid, s, r, p + 1);
-    if (r & 1) {
+    if (p & 1) {
         add(ret, grid, s, r + 1, p + 1);
     } else {
         add(ret, grid, s, r - 1, p - 1);
