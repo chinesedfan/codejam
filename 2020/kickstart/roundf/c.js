@@ -81,7 +81,7 @@ function findNext(grid, isA, isAlone) {
 
 function getGrid(grid, r, p, isA) {
     const {ca, cb, pa, pb} = grid;
-    grid = [...grid];
+    grid = grid.map(arr => arr.slice());
     if (isA) {
         grid[r][p] = 1;
         grid.ca = ca + 1;
