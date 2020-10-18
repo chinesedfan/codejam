@@ -73,3 +73,21 @@ Greedy.
 Search by different targets recursively.
 
 #### Problem D. Yeetzhee
+
+### Round G
+
+#### Problem A. Kick_Start
+
+Find all apperences for each word. And calculate by 2 points moving.
+
+#### Problem B. Maximum Coins
+
+Check each diagonal line.
+
+#### Problem C. Combination Lock
+
+Trying every wheel as the target is O(W^2), which is enough to pass the first 2 test sets.
+
+#### Problem D. Merge Cards
+
+O(N!) to simulate each possible merge.
