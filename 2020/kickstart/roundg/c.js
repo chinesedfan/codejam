@@ -25,19 +25,21 @@ function solve(w, n, ns) {
     var min = Infinity
     // O(w^2)
     for (var i = 0; i < w; i++) {
-        var target = ns[i]
-
-        var sum = 0
-        for (var j = 0; j < w; j++) {
-            var val = ns[j]
-            if (target > val) {
-                sum += Math.min(target - val, val + n - target)
-            } else {
-                sum += Math.min(val - target, target + n - val)
-            }
-        }
-
+        var sum = sumIfTarget(w, n, ns, ns[i])
         min = Math.min(min, sum)
     }
     return min
+}
+
+function sumIfTarget(w, n, ns, target) {
+    var sum = 0
+    for (var j = 0; j < w; j++) {
+        var val = ns[j]
+        if (target > val) {
+            sum += Math.min(target - val, val + n - target)
+        } else {
+            sum += Math.min(val - target, target + n - val)
+        }
+    }
+    return sum
 }
