@@ -91,3 +91,13 @@ Trying every wheel as the target is O(W^2), which is enough to pass the first 2 
 #### Problem D. Merge Cards
 
 O(N!) to simulate each possible merge.
+
+### Round H
+
+#### Problem A. Retype
+
+Compare and return the smaller one.
+
+#### Problem B. Boring Numbers
+
+Calculate for 1 to N. Then subtract for the range.

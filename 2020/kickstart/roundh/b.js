@@ -20,6 +20,14 @@ rl.on('close', function() {
 function solve(left, right) {
     return cal(right, true) - cal(left, false)
 }
+function ok(n) {
+    n = '' + n
+
+    for (let i = 1; i <= n.length; i++) {
+        if ((i & 1) ^ (+n[i - 1] & 1)) return false
+    }
+    return true
+}
 function cal(n, include) {
     let sum = 0
     let len = n.length - 1
@@ -28,10 +36,10 @@ function cal(n, include) {
         len--
     }
     //
+    let valid = true
     for (let i = 1; i <= n.length; i++) {
         const x = +n[i - 1]
         let p
-        let valid
         if (i & 1) {
             // 2 3 -> 1
             p = Math.floor(x / 2)
@@ -44,9 +52,7 @@ function cal(n, include) {
         sum += p * full(n.length - i)
         if (!valid) break
     }
-    const last = +n[n.length - 1]
-    const lastValid = (n.length & 1) ? (last & 1) : !(last & 1)
-    if (include && lastValid) sum++
+    if (include && valid) sum++
     return sum
 }
 function full(len) {
