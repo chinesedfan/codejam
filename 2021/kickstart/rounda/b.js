@@ -23,6 +23,7 @@ rl.on('close', function() {
 
 function solve(r, c, grid) {
     var hs = []; // [row, start, end], both included
+    var hmap = {}
     for (let i = 0; i < r; i++) {
         let p = -1
         for (let j = 0; j < c; j++) {
@@ -33,6 +34,7 @@ function solve(r, c, grid) {
                     let k = p
                     while (j - k >= 1) {
                         hs.push([i, k, j]);
+                        hmap[key(i, k, j)] = 1;
                         k++;
                     }
                 }
@@ -42,6 +44,7 @@ function solve(r, c, grid) {
         }
     }
     var vs = [];
+    let count = 0;
     for (let j = 0; j < c; j++) {
         let p = -1
         for (let i = 0; i < r; i++) {
@@ -51,7 +54,8 @@ function solve(r, c, grid) {
                 } else {
                     let k = p
                     while (i - k >= 1) {
-                        vs.push([j, k, i]);
+                        const v = [j, k, i];
+                        count += test(v, hmap);
                         k++;
                     }
                 }
@@ -60,20 +64,31 @@ function solve(r, c, grid) {
             }
         }
     }
-    // console.log(hs, vs)
-    let count = 0;
-    hs.forEach(h => {
-        vs.forEach(v => {
-            if (check(h, v)) {
-                count++;
-                // console.log(h, v)
-            }
-        })
-    });
     return count;
 }
 
-function check(h, v) {
+function key(...args) {
+    return args.join('#');
+}
+function test(v, hmap) {
+    let count = 0;
+    const [c, r1, r2] = v;
+    const len = r2 - r1 + 1;
+    if (check([r1, c - len * 2 + 1, c], v, hmap)) count++;
+    if (check([r2, c - len * 2 + 1, c], v, hmap)) count++;
+    if (check([r1, c, c + len * 2 - 1], v, hmap)) count++;
+    if (check([r2, c, c + len * 2 - 1], v, hmap)) count++;
+    if (!(len & 1)) {
+        if (check([r1, c - len / 2 + 1, c], v, hmap)) count++;
+        if (check([r2, c - len / 2 + 1, c], v, hmap)) count++;
+        if (check([r1, c, c + len / 2 - 1], v, hmap)) count++;
+        if (check([r2, c, c + len / 2 - 1], v, hmap)) count++;
+    }
+    return count;
+}
+function check(h, v, hmap) {
+    if (!hmap[key(...h)]) return false;
+
     const [r, c1, c2] = h;
     const [c, r1, r2] = v;
     const hl = c2 - c1 + 1;
