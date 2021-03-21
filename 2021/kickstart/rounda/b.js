@@ -22,88 +22,44 @@ rl.on('close', function() {
 });
 
 function solve(r, c, grid) {
-    var hranges = [] // r -> [ranges], [start, end)
+    const top = []
+    const bottom = []
+    const left = []
+    const right = []
     for (let i = 0; i < r; i++) {
-        hranges[i] = []
-        let p = -1
+        top[i] = Array(c).fill(0)
+        bottom[i] = Array(c).fill(0)
+        left[i] = Array(c).fill(0)
+        right[i] = Array(c).fill(0)
         for (let j = 0; j < c; j++) {
-            if (grid[i][j]) {
-                if (p < 0) {
-                    p = j;
-                }
-            } else {
-                if (j - p >= 2 && p >= 0) hranges[i].push([p, j]);
-                p = -1
-            }
-        }
-        if (p >= 0 && c - p >= 2) {
-            hranges[i].push([p, c]);
+            if (!grid[i][j]) continue
+            top[i][j] = i ? top[i - 1][j] + 1 : 1
+            left[i][j] = j ? left[i][j - 1] + 1 : 1
         }
     }
+    for (let i = r - 1; i >= 0; i--) {
+        for (let j = c - 1; j >= 0; j--) {
+            if (!grid[i][j]) continue
+            bottom[i][j] = i < r - 1 ? bottom[i + 1][j] + 1 : 1
+            right[i][j] = j < c - 1 ? right[i][j + 1] + 1 : 1
+        }
+    }
+
     let count = 0;
-    for (let j = 0; j < c; j++) {
-        let p = -1
-        for (let i = 0; i < r; i++) {
-            if (grid[i][j]) {
-                if (p < 0) {
-                    p = i;
-                } else {
-                    let k = p
-                    while (i - k >= 1) {
-                        const v = [j, k, i];
-                        count += test(v, hranges);
-                        k++;
-                    }
-                }
-            } else {
-                p = -1
-            }
+    for (let i = 0; i < r; i++) {
+        for (let j = 0; j < c; j++) {
+            count += cal(top[i][j], left[i][j])
+            count += cal(bottom[i][j], left[i][j])
+            count += cal(top[i][j], right[i][j])
+            count += cal(bottom[i][j], right[i][j])
         }
     }
     return count;
 }
+function cal(a, b) {
+    if (!(a >= 2 && b >= 2)) return 0
 
-function test(v, hranges) {
-    let count = 0;
-    const [c, r1, r2] = v;
-    const len = r2 - r1 + 1;
-    if (check([r1, c - len * 2 + 1, c], v, hranges)) count++;
-    if (check([r2, c - len * 2 + 1, c], v, hranges)) count++;
-    if (check([r1, c, c + len * 2 - 1], v, hranges)) count++;
-    if (check([r2, c, c + len * 2 - 1], v, hranges)) count++;
-    if (!(len & 1)) {
-        if (check([r1, c - len / 2 + 1, c], v, hranges)) count++;
-        if (check([r2, c - len / 2 + 1, c], v, hranges)) count++;
-        if (check([r1, c, c + len / 2 - 1], v, hranges)) count++;
-        if (check([r2, c, c + len / 2 - 1], v, hranges)) count++;
-    }
-    return count;
-}
-function check(h, v, hranges) {
-    const [r, c1, c2] = h;
-    const [c, r1, r2] = v;
-    const ranges = hranges[r]
-    const rindex = binarySeach(0, ranges.length - 1, (idx) => {
-        return c1 >= ranges[idx][0]
-    })
-    if (rindex < 0) return false;
-    const [start, end] = ranges[rindex];
-    if (c2 >= end) return false;
-
-    const hl = c2 - c1 + 1;
-    const vl = r2 - r1 + 1;
-    if (hl < 2 || vl < 2) return false;
-    if (hl !== vl * 2 && hl !== vl / 2) return false
-    return (r === r1 || r === r2) && (c === c1 || c === c2)
-}
-function binarySeach(left, right, fn) {
-    while (left <= right) {
-        var mid = Math.floor((left + right) / 2)
-        if (fn(mid)) {
-            left = mid + 1
-        } else {
-            right = mid - 1
-        }
-    }
-    return right
+    return Math.min(a, Math.floor(b / 2))
+        + Math.min(b, Math.floor(a / 2))
+        - 2
 }
