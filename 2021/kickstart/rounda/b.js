@@ -22,7 +22,6 @@ rl.on('close', function() {
 });
 
 function solve(r, c, grid) {
-    var hs = []; // [row, start, end], both included
     var hmap = {}
     for (let i = 0; i < r; i++) {
         let p = -1
@@ -33,7 +32,6 @@ function solve(r, c, grid) {
                 } else {
                     let k = p
                     while (j - k >= 1) {
-                        hs.push([i, k, j]);
                         hmap[key(i, k, j)] = 1;
                         k++;
                     }
@@ -43,7 +41,6 @@ function solve(r, c, grid) {
             }
         }
     }
-    var vs = [];
     let count = 0;
     for (let j = 0; j < c; j++) {
         let p = -1
