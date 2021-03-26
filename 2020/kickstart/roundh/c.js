@@ -21,12 +21,16 @@ rl.on('close', function() {
 
 function solve(dots) {
     const startX = findMedium(dots.map((x, i) => x[0] - i))
+    const ys = dots.map(x => x[1])
+    const targetY = findMedium(ys)
+    return cal(dots, startX, targetY)
+}
+function cal(dots, startX, targetY) {
     const xs = dots.map(x => x[0])
     const s1 = xs.sort((a, b) => a - b)
         .reduce((s, x, i) => s + Math.abs(startX + i - x), 0)
 
     const ys = dots.map(x => x[1])
-    const targetY = findMedium(ys)
     const s2 = ys.reduce((s, y) => s + Math.abs(y - targetY), 0)
     return s1 + s2
 }
