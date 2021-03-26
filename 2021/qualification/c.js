@@ -35,7 +35,7 @@ function solve(n, cost) {
         cs.push(cur)
     }
 
-    for (let i = 0; i < lst.length - 1; i++) {
+    for (let i = lst.length - 2; i >= 0; i--) {
         const cur = cs[i]
         lst = lst.slice(0, i)
             .concat(lst.slice(i, i + cur).reverse())
