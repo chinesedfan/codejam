@@ -20,10 +20,19 @@ rl.on('close', function() {
 });
 
 function solve(dots) {
-    const startX = findMedium(dots.map((x, i) => x[0] - i))
+    const xs = dots.map(x => x[0])
+    const xmin = Math.min(...xs)
+    const xmax = Math.max(...xs)
     const ys = dots.map(x => x[1])
-    const targetY = findMedium(ys)
-    return cal(dots, startX, targetY)
+    const ymin = Math.min(...ys)
+    const ymax = Math.max(...ys)
+    let min = Infinity
+    for (let startX = xmin - (dots.length - 1); startX <= xmax; startX++) {
+        for (let targetY = ymin; targetY <= ymax; targetY++) {
+            min = Math.min(min, cal(dots, startX, targetY))
+        }
+    }
+    return min
 }
 function cal(dots, startX, targetY) {
     const xs = dots.map(x => x[0])
