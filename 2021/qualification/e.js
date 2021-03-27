@@ -66,9 +66,10 @@ function solve(lines) {
         failed.sort((a, b) => a - b)
         return {
             idx: idx + 1,
+            k: failed[parts - 1] - failed[0],
             failed
         }
-    }).sort((a, b) => a.failed[parts - 1] - b.failed[parts - 1])
+    }).sort((a, b) => a.k - b.k)
     return cp[0].idx
         // .slice(0, 10)
         // .map(o => JSON.stringify(o))
