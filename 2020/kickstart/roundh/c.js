@@ -21,6 +21,7 @@ rl.on('close', function() {
 
 function solve(dots) {
     const xs = dots.map(x => x[0])
+        .sort((a, b) => a - b)
     const xmin = Math.min(...xs)
     const xmax = Math.max(...xs)
     const ys = dots.map(x => x[1])
@@ -29,14 +30,13 @@ function solve(dots) {
     let min = Infinity
     for (let startX = xmin - (dots.length - 1); startX <= xmax; startX++) {
         for (let targetY = ymin; targetY <= ymax; targetY++) {
-            min = Math.min(min, cal(dots, startX, targetY))
+            min = Math.min(min, cal(dots, xs, startX, targetY))
         }
     }
     return min
 }
-function cal(dots, startX, targetY) {
-    const xs = dots.map(x => x[0])
-    const s1 = xs.sort((a, b) => a - b)
+function cal(dots, xs, startX, targetY) {
+    const s1 = xs
         .reduce((s, x, i) => s + Math.abs(startX + i - x), 0)
 
     const ys = dots.map(x => x[1])
