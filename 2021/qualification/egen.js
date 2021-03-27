@@ -19,7 +19,7 @@ while (t--) {
         var pp = Math.random() * 3 - 6
         var chs = []
         for (var j = 0; j < q; j++) {
-            chs[j] = Math.random() >= expected(pp - qp[j]) ? '1' : '0'
+            chs[j] = Math.random() <= expected(pp - qp[j]) ? '1' : '0'
             if (isCheater && Math.random() > 0.5) {
                 chs[j] = '1'
             }
@@ -27,7 +27,7 @@ while (t--) {
         console.log(chs.join(''))
     }
 }
-require('fs').writeFileSync('e.ans.out', ans.join('\n'))
+require('fs').writeFileSync('e.ans.out', ans.join('\n') + '\n')
 
 function expected(diff) {
     return 1 / (1 + Math.pow(Math.E, -diff))

@@ -66,13 +66,24 @@ function solve(lines) {
         failed.sort((a, b) => a - b)
         return {
             idx: idx + 1,
-            k: failed[parts - 1] - failed[0],
-            failed
+            k: findK(failed.map((x, i) => ({x: i, y: x})))
         }
     }).sort((a, b) => a.k - b.k)
     return cp[0].idx
-        // .slice(0, 10)
-        // .map(o => JSON.stringify(o))
+}
+
+function findK(points) {
+    let sx, sy, sx2, sxy
+    sx = sy = sx2 = sxy = 0
+    points.forEach(({ x, y }) => {
+        sx += x
+        sy += y
+        sx2 += x * x
+        sxy += x * y
+    })
+    const avgx = sx / points.length
+    const avgy = sy / points.length
+    return (sxy - avgx * avgy * points.length) / (sx2 - avgx * avgx * points.length)
 }
 
 function expected(diff) {
