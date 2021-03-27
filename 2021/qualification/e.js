@@ -54,20 +54,22 @@ function solve(lines) {
         map[q] = i
     })
 
-    // index sum of right questions for each player
+    // count of last x% failed questions for each player
+    const parts = 35
     const cp = lines.map((line, idx) => {
-        let sum = 0
+        const failed = Array(parts).fill(0)
         for (let i = 0; i < line.length; i++) {
-            if (line[i] === '1') {
-                sum += map[i]
+            if (line[i] === '0') {
+                failed[Math.ceil(map[i] / (1e4 / parts)) - 1]++
             }
         }
+        failed.sort((a, b) => a - b)
         return {
             idx: idx + 1,
-            sum
+            failed
         }
-    })
-    return cp.sort((a, b) => b.sum - a.sum)[0].idx
+    }).sort((a, b) => a.failed[parts - 1] - b.failed[parts - 1])
+    return cp[0].idx
         // .slice(0, 10)
         // .map(o => JSON.stringify(o))
 }
