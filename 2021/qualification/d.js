@@ -20,7 +20,10 @@ rl.on('line', (input) => {
         g = solve(n);
         console.log(g.next().value);
     } else {
-        var obj = g.next(+input);
+        input = +input
+        if (input === -1) process.exit()
+
+        var obj = g.next(input);
         if (Array.isArray(obj.value)) {
             // answer
             console.log(obj.value.join(' '));
@@ -44,14 +47,7 @@ function* solve(N) {
     let next
     while (sorted.length < N) {
         if (sorted.length) {
-            const mid = yield ask(sorted[0], sorted[1], next)
-            if (mid === sorted[0]) {
-                sorted.unshift(next)
-            } else if (mid === sorted[1]) {
-                yield* insert(sorted, 1, sorted.length - 1, next)
-            } else if (mid === next) {
-                sorted.splice(1, 0, next)
-            }
+            yield* insert(sorted, next)
             next++
         } else {
             const mid = yield ask(1, 2, 3)
@@ -67,7 +63,44 @@ function* solve(N) {
     }
     return sorted
 }
-function* insert(sorted, left, right, value) {
+function* insert(sorted, value) {
+    let left = 0
+    let right = sorted.length - 1
+    if (right - left < 3) {
+        yield* insertBinarySearch(sorted, left, right, value)
+        return
+    }
+
+    while (right - left >= 3) {
+        const i1 = Math.floor(left + (right - left) / 3)
+        const i2 = Math.floor(left + (right - left) * 2 / 3)
+        const v1 = sorted[i1]
+        const v2 = sorted[i2]
+
+        const m = yield ask(v1, v2, value)
+        if (m === v2) {
+            left = i2 + 1
+            if (right - left < 3) {
+                yield* insertBinarySearch(sorted, left - 1, right, value)
+                return
+            }
+        } else if (m === value) {
+            left = i1 + 1
+            right = i2 - 1
+            if (right - left < 3) {
+                yield* insertBinarySearch(sorted, left - 1, right + 1, value)
+                return
+            }
+        } else if (m === v1) {
+            right = i1 - 1
+            if (right - left < 3) {
+                yield* insertBinarySearch(sorted, left, right + 1, value)
+                return
+            }
+        }
+    }
+}
+function* insertBinarySearch(sorted, left, right, value) {
     while (left < right) {
         if (left === right - 1) {
             const m = yield ask(sorted[left], sorted[right], value)
