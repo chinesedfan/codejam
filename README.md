@@ -64,7 +64,7 @@ For interactive problem,
 |      | kickstart - e | 2/4, not solve c/d              |
 |      | kickstart - f | 3/4, not solve d                |
 |      | kickstart - g | 2/4, not solve c large/d large  |
-|      | kickstart - h | 2/4, not solve c/d              |
+|      | kickstart - h | 3/4, not solve d                |
 |      | qualification | 3/5, not solve d/e large        |
 |      | 1a            | 0/3, not solve every large      |
 |      | 1c            | 3/3                             |

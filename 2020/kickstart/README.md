@@ -101,3 +101,7 @@ Compare and return the smaller one.
 #### Problem B. Boring Numbers
 
 Calculate for 1 to N. Then subtract for the range.
+
+#### Problem C. Rugby
+
+Note that the medium of an array is the best target to move together. And the range problem can also be converted to this kind of problem by finding the start point.

@@ -21,30 +21,26 @@ rl.on('close', function() {
 
 function solve(dots) {
     const xs = dots.map(x => x[0])
-        .sort((a, b) => a - b)
-    const xmin = Math.min(...xs)
-    const xmax = Math.max(...xs)
     const ys = dots.map(x => x[1])
-    const ymin = Math.min(...ys)
-    const ymax = Math.max(...ys)
-    let min = Infinity
-    for (let startX = xmin - (dots.length - 1); startX <= xmax; startX++) {
-        for (let targetY = ymin; targetY <= ymax; targetY++) {
-            min = Math.min(min, cal(dots, xs, startX, targetY))
-        }
-    }
-    return min
+    const prev = dots.map((x, i) => [x[0], i])
+        .sort((a, b) => a[0] - b[0])
+        .reduce((o, [x, idx], i) => {
+            o[idx] = i
+            return o
+        }, {})
+    const startX = findMedium(dots.map((x, i) => x[0] - prev[i]))
+    const targetY = findMedium(ys)
+    return cal(xs, ys, startX, targetY)
 }
-function cal(dots, xs, startX, targetY) {
-    const s1 = xs
+function cal(xs, ys, startX, targetY) {
+    const s1 = [...xs].sort((a, b) => a - b)
         .reduce((s, x, i) => s + Math.abs(startX + i - x), 0)
 
-    const ys = dots.map(x => x[1])
     const s2 = ys.reduce((s, y) => s + Math.abs(y - targetY), 0)
     return s1 + s2
 }
 function findMedium(xs) {
-    xs.sort((a, b) => a - b)
+    xs = [...xs].sort((a, b) => a - b)
     return xs.length & 1
         // 3 -> 1
         ? xs[Math.floor(xs.length / 2)]
