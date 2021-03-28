@@ -21,3 +21,4 @@ For each new element, binary search to insert. But it is not efficient enough fo
 #### Problem E. Cheating Detection
 
 Always selecting the highest correctness player can pass set 1.
+The cheater will be exposed when compared with "same" skilled players, especially for the extreme questions (very easy or hard).

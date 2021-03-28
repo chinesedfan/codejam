@@ -54,24 +54,56 @@ function solve(lines) {
         map[q] = i
     })
 
-    // count of last x% failed questions for each player
-    const parts = 35
+    // correct count of each player
+    const qcount = 1e4
+    const rate = 0.05
     const cp = lines.map((line, idx) => {
-        const failed = Array(parts).fill(0)
+        let easy = 0
+        let hard = 0
+        let total = 0
         for (let i = 0; i < line.length; i++) {
-            if (line[i] === '0') {
-                failed[Math.ceil(map[i] / (1e4 / parts)) - 1]++
+            if (line[i] === '0') continue
+
+            if (map[i] < qcount * rate) {
+                easy++
             }
+            if (map[i] > qcount * (1 - rate)) {
+                hard++
+            }
+            total++
         }
-        failed.sort((a, b) => a - b)
         return {
             idx: idx + 1,
-            k: findK(failed.map((x, i) => ({x: i, y: x})))
+            easy,
+            hard,
+            total,
         }
-    }).sort((a, b) => a.k - b.k)
-    return cp[0].idx
+    }).sort((a, b) => a.total - b.total)
+
+    const data = cp.map(({ idx, easy, hard, total }, i) => {
+        const prev = i && cp[i - 1]
+        const next = (i !== cp.length - 1) && cp[i + 1]
+        const deasy = diff(prev, next, 'easy', easy)
+        const dhard = diff(prev, next, 'hard', hard)
+        return {
+            idx,
+            sum: deasy + dhard
+        }
+    }).sort((a, b) => b.sum - a.sum)
+    return data[0].idx
 }
 
+function diff(prev, next, key, val) {
+    const dprev = prev ? Math.abs(prev[key] - val) : 0
+    const dnext = next ? Math.abs(next[key] - val) : 0
+    if (prev && next) {
+        return (dprev + dnext) / 2
+    } else if (prev) {
+        return dprev
+    } else if (next) {
+        return dnext
+    } // else error
+}
 function findK(points) {
     let sx, sy, sx2, sxy
     sx = sy = sx2 = sxy = 0
