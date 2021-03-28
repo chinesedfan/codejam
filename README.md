@@ -69,6 +69,7 @@ For interactive problem,
 |      | 1a            | 0/3, not solve every large      |
 |      | 1c            | 3/3                             |
 | 2021 | kickstart - a | 3/4, not solve d                |
+|      | qualification | 5/5                             |
 
 ### Related Websites
 

@@ -5,6 +5,7 @@
 *.in
 *.out
 *.log
+*.txt
 *.class
 testing_tool.py
 interactive_runner.py
