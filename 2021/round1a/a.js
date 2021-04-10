@@ -53,9 +53,9 @@ function solve(n, nums) {
                         let x = +cur[j]
                         if (carry) {
                             x++
-                            carry = x >= 10
-                            add.unshift(x % 10)
                         }
+                        carry = x >= 10
+                        add.unshift(x % 10)
                     }
                     cur = nums[i] + add.join('')
                     append += diff
