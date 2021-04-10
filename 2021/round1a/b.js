@@ -20,16 +20,17 @@ rl.on('close', function() {
 });
 
 function solve(n, ps) {
-    const sum = ps.reduce((s, [p, c]) => s + p * c, 0)
-    for (let i = sum; i > 2; i--) {
-        if (able(ps, sum, i)) return i
+    const sum = ps.reduce((s, [p, c]) => s + BigInt(p * c), 0n)
+    const lower = sum - 60n * 499n
+    for (let i = sum; i >= lower; i--) {
+        if (able(ps, sum, i)) return i.toString()
     }
     return 0
 }
 
 function getPrimes() {
     const str = '2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499'
-    return str.split(' ').map(Number)
+    return str.split(' ').map(x => BigInt(+x))
 }
 function able(ps, sum, target) {
     const primes = getPrimes()
@@ -39,22 +40,22 @@ function able(ps, sum, target) {
         const p = primes[i]
         if (p > x) break
 
-        while ((x % p) === 0) {
+        while ((x % p) === 0n) {
             x /= p
             ds[p] = (ds[p] || 0) + 1
         }
     }
-    if (x !== 1) return false
+    if (x !== 1n) return false
 
-    let rest = 0
+    let rest = 0n
     for (let i = 0; i < ps.length; i++) {
         const [p, c] = ps[i]
         if (ds[p]) {
             if (ds[p] > c) return false
-            rest += p * (c - ds[p])
+            rest += BigInt(p) * BigInt(c - ds[p])
             delete ds[p]
         } else {
-            rest += p * c
+            rest += BigInt(p) * BigInt(c)
         }
     }
     if (Object.keys(ds).length !== 0) return false

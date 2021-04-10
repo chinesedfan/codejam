@@ -11,6 +11,7 @@ Before 2018, `node a.js a.in > a.out`.
 Start from 2018, `node a.js < a.in > a.out`. And it must obey syntax rules in Node.js 4.8.2.
 
   - Seems to have been upgrade to Node.js 11.14.0 from 2020.
+  - And becomes Node.js 12.19.0 from 2021. Another good news is that now provides test data.
 
 For interactive problem,
 
@@ -70,6 +71,7 @@ For interactive problem,
 |      | 1c            | 3/3                             |
 | 2021 | kickstart - a | 3/4, not solve d                |
 |      | qualification | 5/5                             |
+|      | 1a            | 2/3, not solve c large          |
 
 ### Related Websites
 
