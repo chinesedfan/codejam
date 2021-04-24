@@ -20,6 +20,10 @@ Convert the 2D problem into 1D. Scan the array until becomes decreasing, which m
 
 ### Round A
 
+#### Problem A. Increasing Substring
+
+Basic DP.
+
 #### Problem B. Longest Progression
 
 Calculate the gap between each element. Every single change will affect 2 continuous gap values. It takes a while to handle those corner cases.
