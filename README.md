@@ -79,4 +79,5 @@ For interactive problem,
 - [Google Kick Start](http://g.co/kickstart), the top competitors may be invited to interview at Google
 
 - [Codejam Tools](http://a2oj.com/CodeJamTools/), used to find all [personal history](http://a2oj.com/CodeJamTools/Contestant.jsp?Nickname=chinesedfan)
-- [Codejam Statistics](https://www.go-hero.net/jam/), used to find solutions
+- [Codejam Statistics](https://www.go-hero.net/jam/), used to find solutions for 2008-2017
+- [Codejam Portal](https://vstrimaitis.github.io/google_codejam_stats/#/), better portal than the offical archive page, and is open source
