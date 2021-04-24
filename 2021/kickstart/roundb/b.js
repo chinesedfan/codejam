@@ -26,22 +26,32 @@ function solve(arr) {
         if (item && d === item.pd) {
             item.pc++
         } else {
-            item = { pd: d, pc: i === 1 ? 2 : 1 }
+            item = { pd: d, pc: 1 }
             ds.push(item)
         }
     }
 
     let max = 2
     ds.forEach(({ pd, pc }, i) => {
-        max = Math.max(max, Math.min(arr.length, pc + 1))
+        max = Math.max(max, Math.min(arr.length, 1 + pc + 1))
 
         if (i + 2 < ds.length
                 && ds[i + 1].pd + ds[i + 2].pd === 2 * pd
-                && ds[i + 1].pc === 1 && ds[i + 2].pc === 1) {
-            const connected = pc + 2
-                + (i + 3 < ds.length && ds[i + 3].pd === pd ? ds[i + 3].pc : 0)
+                && ds[i + 1].pc === 1) {
+            let connected = 1 + pc + 2
+            if (ds[i + 2].pc === 1
+                && i + 3 < ds.length && ds[i + 3].pd === pd
+            ) {
+                connected += ds[i + 3].pc
+            }
             max = Math.max(max, connected)
         }
     })
+    // forward
+    if (ds.length > 2
+            && ds[0].pd + ds[1].pd === 2 * ds[2].pd
+            && ds[1].pc === 1) {
+        max = Math.max(max, 1 + ds[2].pc + 2)
+    }
     return max
 }

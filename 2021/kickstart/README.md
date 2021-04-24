@@ -17,3 +17,9 @@ Consider from the shared cell. We need to calculate the maximum valid length to 
 Convert the 2D problem into 1D. Scan the array until becomes decreasing, which means we find a maximum value. Then go back to fix the previous elements. When decreasing, we can fix at the same time.
 
 #### Problem D. Checksum
+
+### Round A
+
+#### Problem B. Longest Progression
+
+Calculate the gap between each element. Every single change will affect 2 continuous gap values. It takes a while to handle those corner cases.
