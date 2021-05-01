@@ -36,3 +36,9 @@ Check each sum. For set 3, important to find the lower limit and handle those bi
 #### Problem C. Hacked Exam
 
 For set 1, loop over all answers to find possible correct answers. Then try all answers again to calculate the maximum expected score.
+
+### Round 1c
+
+#### Problem A. Closest Pick
+
+If pick both the start and the end of the same slot, then the slot is covered. If only pick the start or the end of different slots, then half of each slot is coverd. But for open slots, whose end is 1 or k, it can be covered with one pick.

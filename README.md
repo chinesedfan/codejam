@@ -73,6 +73,7 @@ For interactive problem,
 |      | kickstart - b | 2/4, not solve c/d              |
 |      | qualification | 5/5                             |
 |      | 1a            | 2/3, not solve c large          |
+|      | 1c            | 1/3, not solve b/c              |
 
 ### Related Websites
 
