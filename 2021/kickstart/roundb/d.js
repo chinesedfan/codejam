@@ -23,7 +23,7 @@ rl.on('close', function() {
 
 function solve(ps, qs) {
     const nodes = buildTree(ps)
-    const route = bfs(nodes[1]) // id -> [other node]
+    const route = dfs(nodes[1]) // id -> [other node]
 
     qs = groupBy(qs)
     const result = []
@@ -52,18 +52,30 @@ function buildTree(ps) {
     })
     return nodes
 }
-function bfs(r) {
+function dfs(r) {
     const ret = []
     const q = [[r, []]]
     while (q.length) {
-        const [node, ps, p] = q.shift()
-        ret[node.id] = ps
-
-        node.ns.forEach(item => { // [node, l, t]
-            if (p === item[0].id) return
+        const cur = q.pop()
+        let [node, ps, p] = cur
+        if (node.idx === undefined) {
+            ret[node.id] = ps
+            node.idx = 0
+            if (node.idx < node.ns.length) {
+                q.push(cur)
+            }
+        } else if (node.idx < node.ns.length) {
+            let item = node.ns[node.idx++] // [node, l, t]
+            if (p === item[0].id) {
+                if (node.idx >= node.ns.length) continue
+                item = node.ns[node.idx++]
+            }
+            if (node.idx < node.ns.length) {
+                q.push(cur)
+            }
 
             q.push([item[0], [...ps, item], node.id])
-        })
+        }
     }
     return ret
 }
