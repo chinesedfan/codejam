@@ -13,7 +13,7 @@ rl.on('close', function() {
     var l = 1;
     for (var i = 0; i < t; i++) {
         const [n, q] = lines[l++].split(' ').map(Number)
-        const ps = lines.slice(l, l + n - 1).map(str => str.split(' ').map(Number))
+        const ps = lines.slice(l, l + n - 1).map(str => str.split(' ').map(BigInt))
         l += n - 1
         const qs = lines.slice(l, l + q).map(str => str.split(' ').map(Number))
         l += q
@@ -77,7 +77,7 @@ function groupBy(qs) {
 }
 
 function buildST(ns) { // [[node, l, t]]
-    const arr = ns.sort((a, b) => a[1] - b[1])
+    const arr = ns.sort((a, b) => Number(a[1] - b[1]))
         // FIXME: merge same l
 
     return createNode(arr, 0, arr.length - 1)
@@ -109,6 +109,8 @@ function updateST(n, p, v) {
 function gcd(a, b) {
     if (a === 0) return b
     if (b === 0) return a
+    if (!(isBig(a) && isBig(b))
+        && (a > 1e15 || b > 1e15)) return parseInt(gcd(BigInt(a), BigInt(b)))
 
     while (a) {
         const r = b % a
@@ -116,4 +118,7 @@ function gcd(a, b) {
         a = r
     }
     return b
+}
+function isBig(n) {
+    return Object.getPrototypeOf(n) === BigInt.prototype
 }
