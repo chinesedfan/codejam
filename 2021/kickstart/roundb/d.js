@@ -23,23 +23,24 @@ rl.on('close', function() {
 
 function solve(ps, qs) {
     const nodes = buildTree(ps)
-    const route = dfs(nodes[1]) // id -> [other node]
 
     qs = groupBy(qs)
+
     const result = []
-    for (let id in qs) {
-        const st = buildST(route[id])
-        let p = 0
-        qs[id].sort((a, b) => a.l - b.l)
-            .forEach(({i, l}) => {
-                while (p < route[id].length && l >= route[id][p][1]) {
-                    updateST(st, p, route[id][p][2])
-                    p++
-                }
-                result[i] = p ? st.v : 0
-            })
-    }
+    dfs(nodes[1], qs, result) // id -> [other node]
     return result.join(' ')
+}
+function updateResult(result, qs, id, ps) {
+    const st = buildST(ps)
+    let p = 0
+    qs[id].sort((a, b) => a.l - b.l)
+        .forEach(({i, l}) => {
+            while (p < ps.length && l >= ps[p][1]) {
+                updateST(st, p, ps[p][2])
+                p++
+            }
+            result[i] = p ? st.v : 0
+        })
 }
 
 function buildTree(ps) {
@@ -52,14 +53,15 @@ function buildTree(ps) {
     })
     return nodes
 }
-function dfs(r) {
-    const ret = []
+function dfs(r, qs, result) {
     const q = [[r, []]]
     while (q.length) {
         const cur = q.pop()
         let [node, ps, p] = cur
         if (node.idx === undefined) {
-            ret[node.id] = ps
+            if (qs[node.id]) {
+                updateResult(result, qs, node.id, ps)
+            }
             node.idx = 0
             if (node.idx < node.ns.length) {
                 q.push(cur)
@@ -77,7 +79,6 @@ function dfs(r) {
             q.push([item[0], [...ps, item], node.id])
         }
     }
-    return ret
 }
 
 function groupBy(qs) {
