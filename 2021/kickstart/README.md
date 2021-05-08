@@ -27,3 +27,7 @@ Basic DP.
 #### Problem B. Longest Progression
 
 Calculate the gap between each element. Every single change will affect 2 continuous gap values. It takes a while to handle those corner cases.
+
+#### Problem D. Truck Delivery
+
+DFS to find the way and sort by pay limit. And group by queries by cities. Build a segement tree to update and query the pay.
