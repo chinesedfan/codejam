@@ -18,34 +18,57 @@ rl.on('close', function() {
 });
 
 const PRIMES = primes(1e6)
+const FACTORS = {}
 function solve(n) {
     let max = 1
     for (let i = 3; i <= n; i++) {
-        const subs = getSubs(i)
-        const count = isValid(subs, n)
-        if (count) {
-            max = Math.max(max, count)
-        }
+        const subsList = getDiffSubs(i)
+        const count = countValid(subsList, n)
+        max = Math.max(max, count)
     }
     return max
 }
 
-function getSubs(num) {
-    const subs = [num]
+function getUniqFactors(num) {
+    const factors = []
 
     let n = num
     PRIMES.some(p => {
+        let flag = true
         while (!(n % p)) {
             n /= p
-            if (n < 3) return true
-
-            subs.push(n)
+            if (flag) {
+                flag = false
+                factors.push(p)
+            }
+            if (n === 1) return true
         }
         return false
     })
-    return subs
+    return factors
+}
+function getDiffSubs(num) {
+    const result = []
+    const factors = FACTORS[num] = FACTORS[num] || getUniqFactors(num)
+    if (factors.length === 1) return [[num]]
+
+    factors.forEach(f => {
+        const after = num / f
+        if (after < 3) return
+
+        getDiffSubs(after).forEach(subs => {
+            result.push([num, ...subs])
+        })
+    })
+    return result
+}
+function countValid(subsList, n) {
+    return subsList.reduce((c, subs) => {
+        return Math.max(c, isValid(subs, n))
+    }, 0)
 }
 function isValid(subs, n) {
+    let max = 0
     const limit = Math.pow(2, subs.length)
     for (let i = 0; i < limit; i++) {
         let sum = 0
@@ -56,9 +79,17 @@ function isValid(subs, n) {
                 count++
             }
         }
-        if (sum === n) return count
+        if (sum === n) max = Math.max(max, count)
     }
-    return 0
+    return max
+}
+function getArranges(arr) {
+    if (arr.length === 1) return [arr]
+    return getArranges(arr.slice(1))
+        .reduce((all, other) => {
+            all.push([arr[0], ...other])
+            return all
+        }, [])
 }
 function primes(n) {
     const flag = Array(n + 1).fill(true)
