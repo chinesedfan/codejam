@@ -50,7 +50,7 @@ function getUniqFactors(num) {
 function getDiffSubs(num) {
     const result = []
     const factors = FACTORS[num] = FACTORS[num] || getUniqFactors(num)
-    if (factors.length === 1) return [[num]]
+    if (factors.length === 1 && factors[0] === num) return [[num]]
 
     factors.forEach(f => {
         const after = num / f
@@ -60,6 +60,7 @@ function getDiffSubs(num) {
             result.push([num, ...subs])
         })
     })
+    if (!result.length) return [[num]]
     return result
 }
 function countValid(subsList, n) {
