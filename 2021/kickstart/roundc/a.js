@@ -31,24 +31,25 @@ function solve(n, k, str) {
 
     let cur = 0 // with prefix str[i]
     let any = 0 // any but not str[i]
-    let fix = n === 1 || (n === 2 && str[0] === str[1])
+    const expected = []
     for (let i = mid - 1; i >= 0; i--) {
         const j = str.length - 1 - i
         const a = str[i]
-        const b = str[j]
+        expected[i] = a
+        expected[j] = a
+
         const count = ch2num(str[i])
         if (i === mid - 1) {
             cur = 1
         } else {
             cur = add(any, cur)
         }
-        if (a > b) {
-            fix = true
-        }
         any = mul(count - 1, ps[i])
     }
-    if (fix) cur--
 
+    if (expected.join('') >= str) {
+        cur--
+    }
     return add(any, cur)
 }
 
