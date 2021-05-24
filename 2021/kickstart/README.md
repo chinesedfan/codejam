@@ -31,3 +31,13 @@ Calculate the gap between each element. Every single change will affect 2 contin
 #### Problem D. Truck Delivery
 
 DFS to find the way and sort by pay limit. And group by queries by cities. Build a segement tree to update and query the pay.
+
+### Round C
+
+#### Problem A. Smaller Strings
+
+DP. The end case is special and hard to see at the beginning. 
+
+#### Problem B. Alien Generator
+
+Find all factors and filter.

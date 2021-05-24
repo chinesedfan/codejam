@@ -19,31 +19,38 @@ rl.on('close', function() {
 
 const limit = 1e9 + 7
 function solve(n, k, str) {
-    const S = 'abcde'
+    const mid = Math.ceil(n / 2)
 
-    const total = Math.pow(k, n)
-    let chs
-    let count = 0
-    for (let i = 0; i < total; i++) {
-        chs = []
-        let x = i
-        for (let j = 0; j < n; j++) {
-            const r = x % k
-            chs.push(S[r])
-
-            x -= r
-            x /= k
-        }
-
-        const cur = chs.join('')
-        if (cur < str && isValid(cur, 0, n - 1)) count++
+    // if confirmed [0, i], then the all possible
+    const ps = []
+    let base = 1
+    for (let i = mid - 1; i >= 0; i--) {
+        ps[i] = base
+        base = mul(base, k)
     }
-    return count
-}
 
-function isValid(str, i, j) {
-    return j - i + 1 <= 1 ? true
-        : (str[i] === str[j] && isValid(str, i + 1, j - 1))
+    let cur = 0 // with prefix str[i]
+    let any = 0 // any but not str[i]
+    const expected = []
+    for (let i = mid - 1; i >= 0; i--) {
+        const j = str.length - 1 - i
+        const a = str[i]
+        expected[i] = a
+        expected[j] = a
+
+        const count = ch2num(str[i])
+        if (i === mid - 1) {
+            cur = 1
+        } else {
+            cur = add(any, cur)
+        }
+        any = mul(count - 1, ps[i])
+    }
+
+    if (expected.join('') >= str) {
+        cur--
+    }
+    return add(any, cur)
 }
 
 function ch2num(ch) {
