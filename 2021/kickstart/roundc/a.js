@@ -21,31 +21,35 @@ const limit = 1e9 + 7
 function solve(n, k, str) {
     const mid = Math.ceil(n / 2)
 
-    let cur = 0
+    // if confirmed [0, i], then the all possible
+    const ps = []
     let base = 1
-    const expected = []
+    for (let i = mid - 1; i >= 0; i--) {
+        ps[i] = base
+        base = mul(base, k)
+    }
+
+    let cur = 0 // with prefix str[i]
+    let any = 0 // any but not str[i]
+    let fix = n === 1 || (n === 2 && str[0] === str[1])
     for (let i = mid - 1; i >= 0; i--) {
         const j = str.length - 1 - i
         const a = str[i]
         const b = str[j]
-        expected[i] = a
-        expected[j] = a
-        if (a > b) {
-            cur = 0
+        const count = ch2num(str[i])
+        if (i === mid - 1) {
+            cur = 1
         } else {
-            const count = Math.min(k, ch2num(a))
-            if (i === mid - 1) {
-                cur = count
-            } else {
-                cur = add(cur, mul(count - 1, base))
-            }
+            cur = add(any, cur)
         }
-        base = mul(base, k)
+        if (a > b) {
+            fix = true
+        }
+        any = mul(count - 1, ps[i])
     }
-    if (expected.join('') === str) {
-        return (cur + limit - 1) % limit
-    }
-    return cur
+    if (fix) cur--
+
+    return add(any, cur)
 }
 
 function ch2num(ch) {
