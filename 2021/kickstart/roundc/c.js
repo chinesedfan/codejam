@@ -42,7 +42,7 @@ function solve(w, e) {
                     const p = total === 0 ? 0 : noPrev ? -Infinity : ['R', 'S', 'P'].reduce((sum, expect, ei) => {
                         const c = count[(ei + 1) % 3]
                         const percent = total > 1 ? c / (total - 1) : 1 / 3
-                        return sum + getTotalPoint(w, expect, actual, percent)
+                        return sum + getPoint(w, e, expect, actual) * percent
                     }, dp[count[0]][count[1]][count[2]].p)
                     return { actual, p, i, j, k }
                 })

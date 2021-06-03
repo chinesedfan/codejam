@@ -41,3 +41,7 @@ DP. The end case is special and hard to see at the beginning.
 #### Problem B. Alien Generator
 
 Find all factors and filter.
+
+#### Problem C. Rock Paper Scissors
+
+Greedy can pass set 1. DP to solve all.

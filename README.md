@@ -71,7 +71,7 @@ For interactive problem,
 |      | 1c            | 3/3                             |
 | 2021 | kickstart - a | 3/4, not solve d                |
 |      | kickstart - b | 2/4, not solve c/d large        |
-|      | kickstart - c | 2/4, not solve c/d              |
+|      | kickstart - c | 3/4, not solve   d              |
 |      | qualification | 5/5                             |
 |      | 1a            | 2/3, not solve c large          |
 |      | 1c            | 1/3, not solve b/c              |
