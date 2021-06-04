@@ -20,19 +20,26 @@ rl.on('close', function() {
 
 let K
 const ONE = BigInt(1)
+const TWO = BigInt(2)
+const FNS = [
+    (a, b) => (a + ONE) * (b + TWO) + ONE,
+    (a, b) => (a + TWO) * (b + ONE) + TWO,
+    (a, b) => (a + TWO) * (b + ONE + TWO) + ONE + TWO,
+]
 const FMAP = {
     '+': (a, b) => a + b,
     '*': (a, b) => a * b,
-    '#': (a, b) => K * a + b,
+    '#': (a, b) => FNS[K](a, b),
 }
 function solve(n, exps) {
     const roots = exps.map(parse)
 
-    K = BigInt(3)
-    const hashes = Array(exps.length).fill('')
-    while (K-- > ONE) {
+    K = FNS.length
+    const hashes = []
+    while (K--) {
         roots.forEach((r, i) => {
-            hashes[i] += postTravel(r)
+            hashes[i] = hashes[i] || []
+            hashes[i].push(postTravel(r))
         })
     }
 
@@ -40,6 +47,7 @@ function solve(n, exps) {
     let g = 1
     const visited = {}
     hashes.forEach(h => {
+        h = h.join(',')
         if (visited[h]) {
             groups.push(visited[h])
         } else {
