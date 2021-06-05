@@ -19,13 +19,14 @@ rl.on('close', function() {
 });
 
 let K
-const ONE = BigInt(1)
-const TWO = BigInt(2)
-const FNS = [
-    (a, b) => (a + ONE) * (b + TWO) + ONE,
-    (a, b) => (a + TWO) * (b + ONE) + TWO,
-    (a, b) => (a + TWO) * (b + ONE + TWO) + ONE + TWO,
-]
+const FNS = [1].map(() => {
+    const cache = {}
+    return (a, b) => {
+        const key = a + '#' + b
+        if (!(key in cache)) cache[key] = rn()
+        return cache[key]
+    }
+})
 const FMAP = {
     '+': (a, b) => a + b,
     '*': (a, b) => a * b,
@@ -99,7 +100,7 @@ function parse(str) {
     return root || str
 }
 function postTravel(root) {
-    if (isString(root))  return BigInt(root)
+    if (isString(root)) return BigInt(root)
     root.poped = false
 
     const stack = [root]
@@ -131,4 +132,9 @@ function cal({ op, left, right }) {
         isString(left) ? BigInt(left) : left.val,
         isString(right) ? BigInt(right) : right.val
     )
+}
+
+function rn() {
+    const x = Math.ceil(Math.random() * (1e9 + 7));
+    return BigInt(x)
 }

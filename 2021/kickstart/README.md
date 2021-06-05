@@ -45,3 +45,7 @@ Find all factors and filter.
 #### Problem C. Rock Paper Scissors
 
 Greedy can pass set 1. DP to solve all.
+
+#### Problem D. Binary Operator
+
+Parse as tree and use post-order travel to calculate the value as hash. For `a#b`, use a random but fixed return value.
