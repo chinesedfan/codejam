@@ -27,6 +27,7 @@ function solve(n) {
         dp[i] = {}
         dp[i][i] = 1
     }
+    let max = 1
     for (let i = 3; i <= n; i++) {
         for (let j = i + i; j <= n; j += i) {
             Object.keys(dp[i]).forEach(k1 => {
@@ -35,12 +36,9 @@ function solve(n) {
                 if (k1 + k2 > n) return
                 dp[j][k1 + k2] = Math.max(dp[j][k1 + k2] || 1, 1 + dp[i][k1])
             })
+            max = Math.max(max, dp[j][n] || 1)
         }
-    }
-    
-    let max = 1
-    for (let i = 3; i <= n; i++) {
-        max = Math.max(max, dp[i][n] || 1)
+        delete dp[i]
     }
     return max
 }

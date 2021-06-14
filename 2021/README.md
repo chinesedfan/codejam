@@ -52,3 +52,4 @@ Selection sort.
 #### Problem B. Matrygons
 
 For set 1, loop all possible numbers as the largest size, and find prime factors of it. Then use recursive method to calculate rest sizes. Notice that not every sub-sizes should be selected. 
+If update the count from the bottom to the top, it will be much faster, which skips to calculate the dividers.
