@@ -17,14 +17,30 @@ rl.on('close', function() {
     }
 });
 
-const PRIMES = primes(1e6)
+// const PRIMES = primes(1e6)
 const FACTORS = {}
 function solve(n) {
+    // f(i, n) = 1 + max(f(d, n - d))
+    // `i` is the largest one's sides, and `d` is divider of `i`
+    const dp = []
+    for (let i = 3; i <= n; i++) {
+        dp[i] = {}
+        dp[i][i] = 1
+    }
+    for (let i = 3; i <= n; i++) {
+        for (let j = i + i; j <= n; j += i) {
+            Object.keys(dp[i]).forEach(k1 => {
+                k1 = +k1
+                const k2 = j
+                if (k1 + k2 > n) return
+                dp[j][k1 + k2] = Math.max(dp[j][k1 + k2] || 1, 1 + dp[i][k1])
+            })
+        }
+    }
+    
     let max = 1
     for (let i = 3; i <= n; i++) {
-        const subsList = getDiffSubs(i)
-        const count = countValid(subsList, n)
-        max = Math.max(max, count)
+        max = Math.max(max, dp[i][n] || 1)
     }
     return max
 }
@@ -99,7 +115,7 @@ function primes(n) {
 
     const limit = Math.floor(Math.sqrt(n))
     for (let i = 2; i <= limit; i++) {
-        for (let j = i * 2; j <= n; j += i) {
+        for (let j = i * i; j <= n; j += i) {
             flag[j] = false
         }
     }
