@@ -17,32 +17,36 @@ rl.on('close', function() {
     }
 });
 
-// const PRIMES = primes(1e6)
-const FACTORS = {}
-function solve(n) {
-    // f(i, n) = 1 + max(f(d, n - d))
-    // `i` is the largest one's sides, and `d` is divider of `i`
-    const dp = []
-    for (let i = 3; i <= n; i++) {
-        dp[i] = {}
-        dp[i][i] = 1
-    }
-    let max = 1
-    for (let i = 3; i <= n; i++) {
-        for (let j = i + i; j <= n; j += i) {
-            Object.keys(dp[i]).forEach(k1 => {
-                k1 = +k1
-                const k2 = j
-                if (k1 + k2 > n) return
-                dp[j][k1 + k2] = Math.max(dp[j][k1 + k2] || 1, 1 + dp[i][k1])
-            })
-            max = Math.max(max, dp[j][n] || 1)
+// inspired by @tourist, with explaination by @Thallium54,
+// https://blog.tgc-thallium.com/gcj2021_r2_matrygons/
+const N_MAX = 1e6 + 10
+const DP = precompute(N_MAX)
+function precompute(n) {
+    // n = k1 + k2 + ...
+    // n = k * (1 + k1 + k2 + ...) = k * i
+    // dp[i] means the sum is n / k
+    // i = 1 + k1 + k2 + ...
+    // i = 1 + k' * (k11 + k12 + ...)
+    // dp[1 + k' * i] = max(1 + dp[i]), k' changes
+    const dp = Array(n).fill(1)
+    for (let i = 1; i < n; i++) {
+        for (let j = 2 * i + 1; j < n; j += i) {
+            dp[j] = Math.max(dp[j], dp[i] + 1)
         }
-        delete dp[i]
     }
-    return max
+    return dp
+}
+function solve(n) {
+    let ans = 1
+    for (let i = 3; i <= n; i++) {
+        if (!(n % i)) {
+            ans = Math.max(ans, DP[n / i])
+        }
+    }
+    return ans
 }
 
+// useless but as future templates
 function getUniqFactors(num) {
     const factors = []
 

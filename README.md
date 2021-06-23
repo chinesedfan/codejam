@@ -75,7 +75,7 @@ For interactive problem,
 |      | qualification | 5/5                             |
 |      | 1a            | 2/3, not solve c large          |
 |      | 1c            | 1/3, not solve b/c              |
-|      | 2             | 1/4, not solve b large/c/d      |
+|      | 2             | 2/4, not solve c/d              |
 
 ### Related Websites
 
