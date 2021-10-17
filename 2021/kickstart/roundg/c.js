@@ -23,6 +23,7 @@ rl.on('close', () => {
 // })()
 })
 
+let cache
 function solve(n, k, arr) {
     const sum = []
     for (let i = 0; i < arr.length; i++) {
@@ -32,50 +33,63 @@ function solve(n, k, arr) {
     const f = (i, x) => sum[x] - (i ? sum[i - 1] : 0)
 
     let min = Infinity
+    cache = {}
     for (let i = 0; i < arr.length; i++) {
+        cache[i] = {}
         for (let j = i; j < arr.length; j++) {
             const a = f(i, j)
-            if (a < k) {
-                const ra = getRange(arr, j + 1, arr.length, k - a, f)
-                if (!ra) continue
-
-                const [l, r] = ra
-                min = Math.min(min, j - i + 1 + r - l + 1)
-            } else if (a === k) {
-                min = Math.min(min, j - i + 1)
+            if (a in cache[i]) {
+                cache[i][a] = Math.min(cache[i][a], j - i + 1)
+            } else {
+                cache[i][a] = j - i + 1
             }
+            // if (a < k) {
+            //     const ra = getRange(arr, j + 1, arr.length, k - a, f)
+            //     if (!ra) continue
+
+            //     const [l, r] = ra
+            //     min = Math.min(min, j - i + 1 + r - l + 1)
+            // } else if (a === k) {
+            //     min = Math.min(min, j - i + 1)
+            // }
         }
     }
-    // for (let i = 0; i <= k; i++) {
-    //     const ra = getRange(arr, 0, arr.length, i, f)
-    //     if (!ra) continue
+    // console.log(cache)
+    for (let i = 0; i <= k; i++) {
+        const ra = getRange(arr, 0, arr.length, i, f)
+        if (!ra) continue
 
-    //     const [l, r] = ra
-    //     if (i === k && r - l + 1 < min) {
-    //         min = r - l + 1
-    //     }
-    //     const rb = getRange(arr, r + 1, arr.length, k - i, f)
-    //     if (!rb) continue
+        const [l, r] = ra
+        if (i === k && r - l + 1 < min) {
+            min = r - l + 1
+        }
+        const rb = getRange(arr, r + 1, arr.length, k - i, f)
+        if (!rb) continue
 
-    //     const [l2, r2] = rb
-    //     const c = r - l + 1 + r2 - l2 + 1
-    //     if (c < min) min = c
-    // }
+        const [l2, r2] = rb
+        const c = r - l + 1 + r2 - l2 + 1
+        if (c < min) min = c
+    }
     return min === Infinity ? -1 : min
 }
 function getRange(arr, begin, end, k, f) {
     let ans
     let min = Infinity
     for (let i = begin; i < end; i++) {
-        const idx = binarySearch(i, end - 1, x => {
-            return f(i, x) < k
-        }) + 1
-        // console.log(`found ${k}, [${i}, ${idx}]`)
-        const len = idx - i + 1
-        if (f(i, idx) === k && (!ans || len < min)) {
-            ans = [i, idx]
-            min = len
+        if ((k in cache[i]) && (!ans || cache[i][k] < min)) {
+            min = cache[i][k]
+            ans = [i, i + min - 1]
         }
+
+        // const idx = binarySearch(i, end - 1, x => {
+        //     return f(i, x) < k
+        // }) + 1
+        // // console.log(`found ${k}, [${i}, ${idx}]`)
+        // const len = idx - i + 1
+        // if (f(i, idx) === k && (!ans || len < min)) {
+        //     ans = [i, idx]
+        //     min = len
+        // }
     }
     return ans
 }
