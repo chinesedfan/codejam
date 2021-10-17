@@ -49,3 +49,17 @@ Greedy can pass set 1. DP to solve all.
 #### Problem D. Binary Operator
 
 Parse as tree and use post-order travel to calculate the value as hash. For `a#b`, use a random but fixed return value.
+
+### Round G
+
+#### Problem A. Dogs and Cats
+
+Simulate.
+
+#### Problem B. Staying Hydrated
+
+Find the best x and y independently. Sort and check each endpoint. Use prefix sum to calculate all distances.
+
+#### Problem C. Banana Bunches
+
+Divide K into 2 parts, then fix the start and find the end by binary search. Only enough to pass set 1.
