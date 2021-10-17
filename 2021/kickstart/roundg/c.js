@@ -32,21 +32,35 @@ function solve(n, k, arr) {
     const f = (i, x) => sum[x] - (i ? sum[i - 1] : 0)
 
     let min = Infinity
-    for (let i = 0; i <= k; i++) {
-        const ra = getRange(arr, 0, arr.length, i, f)
-        if (!ra) continue
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i; j < arr.length; j++) {
+            const a = f(i, j)
+            if (a < k) {
+                const ra = getRange(arr, j + 1, arr.length, k - a, f)
+                if (!ra) continue
 
-        const [l, r] = ra
-        if (i === k && r - l + 1 < min) {
-            min = r - l + 1
+                const [l, r] = ra
+                min = Math.min(min, j - i + 1 + r - l + 1)
+            } else if (a === k) {
+                min = Math.min(min, j - i + 1)
+            }
         }
-        const rb = getRange(arr, r + 1, arr.length, k - i, f)
-        if (!rb) continue
-
-        const [l2, r2] = rb
-        const c = r - l + 1 + r2 - l2 + 1
-        if (c < min) min = c
     }
+    // for (let i = 0; i <= k; i++) {
+    //     const ra = getRange(arr, 0, arr.length, i, f)
+    //     if (!ra) continue
+
+    //     const [l, r] = ra
+    //     if (i === k && r - l + 1 < min) {
+    //         min = r - l + 1
+    //     }
+    //     const rb = getRange(arr, r + 1, arr.length, k - i, f)
+    //     if (!rb) continue
+
+    //     const [l2, r2] = rb
+    //     const c = r - l + 1 + r2 - l2 + 1
+    //     if (c < min) min = c
+    // }
     return min === Infinity ? -1 : min
 }
 function getRange(arr, begin, end, k, f) {
