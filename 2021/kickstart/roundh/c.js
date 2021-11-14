@@ -26,21 +26,23 @@ rl.on('close', () => {
 function solve(str) {
     let cur = str.split('').map(Number)
     while (1) {
-        const next = [cur[0]]
         let changed = false
-        for (let i = 1; i < cur.length; i++) {
-            if (next[next.length - 1] + 1 === cur[i]) {
-                next[next.length - 1] = (cur[i] + 1) % 10
-                changed = true
-            } else if (next[next.length - 1] === 9 && cur[i] === 0) {
-                next[next.length - 1] = (1)
-                changed = true
-            } else {
-                next.push(cur[i])
+        for (let j = 0; j <= 9; j++) {
+            const j2 = (j + 1) % 10
+            const jn = (j + 2) % 10
+            const next = [cur[0]]
+            for (let i = 1; i < cur.length; i++) {
+                if (cur[i - 1] === j && cur[i] === j2) {
+                    next[next.length - 1] = jn
+                    changed = true
+                } else {
+                    next.push(cur[i])
+                }
             }
+            cur = next
+            // console.log(cur)
         }
         if (!changed) break
-        cur = next
         // console.log(next)
     }
     return cur.join('')
