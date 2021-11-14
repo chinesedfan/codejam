@@ -63,3 +63,17 @@ Find the best x and y independently. Sort and check each endpoint. Use prefix su
 #### Problem C. Banana Bunches
 
 Divide K into 2 parts, then fix the start and find the end by binary search. Only enough to pass set 1.
+
+### Round H
+
+#### Problem A. Transform the String
+
+Check each characters and select the best.
+
+#### Problem B. Painter
+
+Linear DP. Maintain whether the previous square contains the required Red/Yellow/Blue.
+
+#### Problem C. Silly Substitutions
+
+Brute-force to pass set 1. Remember the interested places and use linked list to update, instead of scanning the whole string every time.
