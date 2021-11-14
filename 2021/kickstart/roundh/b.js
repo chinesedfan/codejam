@@ -55,25 +55,30 @@ function solve(str) {
             b = 1
             break
         case 'O':
-            if (!r || !y) ans++
+            if (!r) ans++
+            if (!y) ans++
             r = 1
             y = 1
             b = 0
             break
         case 'P':
-            if (!r || !b) ans++
+            if (!r) ans++
+            if (!b) ans++
             r = 1
             y = 0
             b = 1
             break
         case 'G':
-            if (!b || !y) ans++
+            if (!y) ans++
+            if (!b) ans++
             r = 0
             y = 1
             b = 1
             break
         case 'A':
-            if (!r || !y || !b) ans++
+            if (!r) ans++
+            if (!y) ans++
+            if (!b) ans++
             r = 1
             y = 1
             b = 1
