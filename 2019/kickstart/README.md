@@ -82,4 +82,6 @@ Group all pairs of each half by points A, and sort B descending order. For each 
 
 #### Problem A. H-index
 
-Trivial is O(n^2). How to count numbers that are larger than X? Maintain numbers sortable and use binary search. Then solved in O(nlogn).
+Trivial is O(n^2). How to count numbers that are larger than X? Maintain numbers sortable and use binary search. Seems solved in O(nlogn). In fact, insertions don't cost constant time.
+
+The official tutorial stores numbers larger than the current answer by heap. And you can also solve it by BIT.

@@ -88,5 +88,6 @@ function add(q, visited, grid, x, y, color) {
     }
 }
 function key(n) {
-    return n.x + '#' + n.y;
+    // return n.x + '#' + n.y;
+    return n.x * 101 + n.y
 }
