@@ -45,7 +45,8 @@ For interactive problem,
 | 2017 | qualification | 3/4, not solve d                |
 |      | 1a            | 1/3, not solve b/c              |
 |      | 1c            | 2/3, not solve c large          |
-| 2018 | qualification | 4/4                             |
+| 2018 | kickstart - e | 1/3, not solve a/c              |
+|      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 |      | 1b            | 2/3, not solve c                |
 |      | 1c            | 3/3                             |

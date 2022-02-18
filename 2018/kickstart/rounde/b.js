@@ -46,7 +46,7 @@ function solve(p, arr, ban) {
             return [i, arr.length - x, 1]
         }
     })
-        .filter(([i, x]) => x !== arr.length / 2)
+        // .filter(([i, x]) => x !== arr.length / 2)
         .sort((a, b) => a[1] - b[1])
 // console.log(sorted)
     let min = 0
@@ -57,9 +57,11 @@ function solve(p, arr, ban) {
     })
     const h = new Heap((a, b) => a[1] - b[1])
     h.push([now, min])
-    while (1) {
+// const sb = {}
+    while (h.size()) {
         const [u, d] = h.pop()
         const k = u.join('')
+// sb[k] = 1
 // console.log(k, d)
         if (!map[k]) return d
 
@@ -67,10 +69,11 @@ function solve(p, arr, ban) {
             const [idx, x, ch] = sorted[i]
             if (ch === u[idx]) {
                 const next = u.slice()
-                next[idx] ^= 1 // fixme:
+                next[idx] ^= 1
                 h.push([next, d - x + (arr.length - x)])
             }
         }
     }
+// console.log(Object.keys(sb).length)
     throw 'sb'
 }
