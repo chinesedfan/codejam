@@ -79,6 +79,7 @@ For interactive problem,
 |      | 1a            | 2/3, not solve c large          |
 |      | 1c            | 1/3, not solve b/c              |
 |      | 2             | 2/4, not solve c/d              |
+| 2022 | kickstart - a | 2/4, not solve c large/d large  |
 
 ### Related Websites
 
