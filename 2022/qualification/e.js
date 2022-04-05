@@ -1,3 +1,5 @@
+/* Paste https://github.com/chinesedfan/tstl/blob/rollup/src/container/TreeMultiSet.ts here */
+
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -26,12 +28,18 @@ function* main() {
 }
 
 function* solve(n, k) {
+    const set = new TreeMultiSet((a, b) => a < b)
+    for (let u = 1; u <= n; u++) {
+        set.insert(u)
+    }
+
     const visited = {}
     const adj = {}
     let asked = 0
     while (asked < k) {
         let u, d
         ;[u, d] = yield* read()
+        set.erase(u)
         while (!visited[u]) {
             visited[u] = d
             if (asked >= k) break
@@ -48,16 +56,20 @@ function* solve(n, k) {
         }
         if (asked >= k) break
         //
-        let found = false
-        for (let v = 1; v <= n; v++) {
-            if (!visited[v]) {
-                found = true
-                teleport(v)
-                asked++
-                break
-            }
-        }
-        if (!found) break
+        if (!set.size()) break
+        const iter = set.begin()
+        teleport(iter.value)
+        asked++
+        // let found = false
+        // for (let v = 1; v <= n; v++) {
+        //     if (!visited[v]) {
+        //         found = true
+        //         teleport(v)
+        //         asked++
+        //         break
+        //     }
+        // }
+        // if (!found) break
     }
     //
     let unknown = 0 // unknown vertice
