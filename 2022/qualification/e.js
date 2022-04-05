@@ -1,5 +1,3 @@
-/* Paste https://github.com/chinesedfan/tstl/blob/rollup/src/container/TreeMultiSet.ts here */
-
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -27,67 +25,35 @@ function* main() {
     process.exit(0)
 }
 
+// inspired by https://codeforces.com/blog/entry/101509?#comment-901387
 function* solve(n, k) {
-    const set = new TreeMultiSet((a, b) => a < b)
-    for (let u = 1; u <= n; u++) {
-        set.insert(u)
-    }
-
+    const half = Math.floor((k - 1) / 2)
     const visited = {}
-    const adj = {}
-    let asked = 0
-    while (asked < k) {
-        let u, d
+    let u, d
+    let sumT = 0
+    let sumW = 0
+    ;[u, d] = yield* read()
+    // waste the first
+    // sumT += d
+    // visited[u] = 1
+    for (let i = 0; i < half; i++) {
+        walk()
         ;[u, d] = yield* read()
-        set.erase(u)
-        while (!visited[u]) {
-            visited[u] = d
-            if (asked >= k) break
-            //
-            walk()
-            asked++
-            const v = u
-            ;[u, d] = yield* read()
-            // addEdge(u, v)
-            adj[u] = adj[u] || {}
-            adj[v] = adj[v] || {}
-            adj[u][v] = 1
-            adj[v][u] = 1
+        if (!visited[u]) {
+            sumW += d
         }
-        if (asked >= k) break
+        visited[u] = 1
         //
-        if (!set.size()) break
-        const iter = set.begin()
-        teleport(iter.value)
-        asked++
-        // let found = false
-        // for (let v = 1; v <= n; v++) {
-        //     if (!visited[v]) {
-        //         found = true
-        //         teleport(v)
-        //         asked++
-        //         break
-        //     }
-        // }
-        // if (!found) break
+        teleport(rn(n))
+        ;[u, d] = yield* read()
+        sumT += d
+        visited[u] = 1
     }
-    //
-    let unknown = 0 // unknown vertice
-    let missing = 0 // missing edges
-    let total = 0
-    for (let u = 1; u <= n; u++) {
-        if (visited[u]) {
-            missing += visited[u] - Object.keys(adj[u] || {}).length
-            total += visited[u]
-        } else {
-            unknown++
-        }
-    }
-    const min = Math.ceil(total / 2) + unknown - (missing % 2)
-    const max = Math.ceil(total / 2) + unknown * (unknown + 1) / 2
-debug('solve:', visited)
-debug('solve:', missing, unknown, '-', min, max)
-    estimate(Math.floor((min + max) / 2))
+    const degree = sumT / half * n + sumW
+    estimate(Math.floor(degree / 2))
+}
+function rn(n) {
+    return Math.ceil(Math.random() * n);
 }
 function walk() {
     console.log('W')

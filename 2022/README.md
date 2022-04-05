@@ -20,4 +20,4 @@ DP on tree. For each node, select the smallest child as the trigger source.
 
 #### Problem E. Twisty Little Passages
 
-(TODO)
+Teleport and walk. k / 2 times. It makes sense that the average is enough and nodes with large degree are visited.

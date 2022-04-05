@@ -80,7 +80,7 @@ For interactive problem,
 |      | 1c            | 1/3, not solve b/c              |
 |      | 2             | 2/4, not solve c/d              |
 | 2022 | kickstart - a | 2/4, not solve c large/d large  |
-|      | qualification | 4/5, not solve e                |
+|      | qualification | 5/5                             |
 
 ### Related Websites
 
