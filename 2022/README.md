@@ -21,3 +21,15 @@ DP on tree. For each node, select the smallest child as the trigger source.
 #### Problem E. Twisty Little Passages
 
 Teleport and walk. k / 2 times. It makes sense that the average is enough and nodes with large degree are visited.
+
+### Round 1a
+
+#### Problem A. Double or One Thing
+
+Divide into groups and only double when the next group is greater than the current.
+
+#### Problem B. Equal Sum
+
+It requires O(N * a_max) to divide an array into same sum if possible. But will result in MLE.
+
+Notice the difference of the second array is less than 1e9 by sorting and assigning greedily. We can use binary numbers to express the gap. Just reverse 2's powers and assign greedily the same.

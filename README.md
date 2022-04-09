@@ -81,6 +81,7 @@ For interactive problem,
 |      | 2             | 2/4, not solve c/d              |
 | 2022 | kickstart - a | 2/4, not solve c large/d large  |
 |      | qualification | 5/5                             |
+|      | 1a            | 2/3, not solve c                |
 
 ### Related Websites
 
