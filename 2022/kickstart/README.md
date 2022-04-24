@@ -40,3 +40,16 @@ Brute-force to pass set 1. Loop over all 2^N possible cases and use DP to find t
 
 Brute-force to pass set 1.
 
+### Round B
+
+#### Problem A. Infinity Area
+
+Simulate.
+
+#### Problem B. Palindromic Factor
+
+A number X has X^(1/2) factors. Be careful with the square number.
+
+#### Problem C. Unlock the Padlock
+
+Count continous 1s to pass set 1.
