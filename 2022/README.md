@@ -33,3 +33,13 @@ Divide into groups and only double when the next group is greater than the curre
 It requires O(N * a_max) to divide an array into same sum if possible. But will result in MLE.
 
 Notice the difference of the second array is less than 1e9 by sorting and assigning greedily. We can use binary numbers to express the gap. Just reverse 2's powers and assign greedily the same.
+
+### Round 1b
+
+#### Problem A. Pancake Deque
+
+Select the smaller side greedy.
+
+#### Problem B. Controlled Inflation
+
+Sort products for each person, then DP. The state contains the minimum cost if ends with the min/max product of the current person.
