@@ -21,13 +21,25 @@ rl.on('close', () => {
 // })()
 })
 
-function help(arr, use, r) {
+function help(map, arr, use, r) {
     const ans = []
     ans.push(arr[r])
     use[r] = 1
     let first = arr[r][0]
     let last = arr[r].slice(-1)
     while (1) {
+        if (map[first] && !use[map[first][0]]) {
+            map[first].forEach(i => {
+                ans.unshift(arr[i])
+                use[i] = 1
+            })
+        }
+        if (map[last] && !use[map[last][0]]) {
+            map[last].forEach(i => {
+                ans.push(arr[i])
+                use[i] = 1
+            })
+        }
         let ok = false
         for (let i = 0; i < arr.length; i++) {
             if (use[i]) continue
@@ -51,11 +63,21 @@ function help(arr, use, r) {
     return ans
 }
 function solve(n, arr) {
+    const map = {}
+    for (let i = 0; i < arr.length; i++) {
+        const s = arr[i]
+        if (s[0] === s.slice(-1)) {
+            const x = s[0]
+            map[x] = map[x] || []
+            map[x].push(i)
+        }
+    }
+    //
     let ans = []
     const use = {}
     for (let i = 0; i < arr.length; i++) {
         if (!use[i]) {
-            const temp = help(arr, use, i)
+            const temp = help(map, arr, use, i)
             ans = ans.concat(temp)
         }
     }
