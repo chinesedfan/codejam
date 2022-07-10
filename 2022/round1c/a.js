@@ -28,14 +28,16 @@ function help(map, arr, use, r) {
     let first = arr[r][0]
     let last = arr[r].slice(-1)
     while (1) {
-        if (map[first] && !use[map[first][0]]) {
+        if (map[first]) {
             map[first].forEach(i => {
+                if (use[i]) return
                 ans.unshift(arr[i])
                 use[i] = 1
             })
         }
-        if (map[last] && !use[map[last][0]]) {
+        if (map[last]) {
             map[last].forEach(i => {
+                if (use[i]) return
                 ans.push(arr[i])
                 use[i] = 1
             })
