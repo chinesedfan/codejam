@@ -72,3 +72,25 @@ Every ant will exchange with ants that it is facing to and have opposite directi
 
 BFS or recursion to pass set 1.
 For set 2, loop palindromics by length, which can by calculated by O(N^3) DP. Each palindromic, say length K, will contribute to the answer by (N-K)! * K!.
+
+### Round D
+
+#### Problem A. Image Labeler
+
+For the top M - 1, select each one as catorgies. And the rest belongs to another category.
+
+#### Problem B. Maximum Gain
+
+Consider task A and B independently. For a single task, loop all possible [left, right] pairs and use prefix sums to calculate fast.
+
+#### Problem C. Touchbar Typing
+
+DP. The state is [i, last], which means the i-th character is typed and the last position on the keyboard. Native transform is O(M), which checks each possible position of the next character. Now it is enough to pass set 1 and 2.
+
+We can just check the adjacent two positions. Use binary search to find or maintain two pointers.
+
+#### Problem D. Suspects and Witnesses
+
+If a guest A is proved by another guest B, then in set 1, A must be innocent. If not, then both A and B will be stealer. Because words of B is not correct.
+
+For set 2, use SCC to check. If the size of SCC is at least K, then all of them are innocent. And we should also check nodes belong to different SCC, whether the node is reached by at least K nodes.

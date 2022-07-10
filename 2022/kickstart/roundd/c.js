@@ -35,16 +35,20 @@ function solve(sa, sb) {
     ps[sa[0]].forEach(u => {
         prev[u] = 0
     })
-    for (let i = 1; i < sa.length; i++) {
-        const dp = []
-        const p = sa[i - 1]
-        const x = sa[i]
-        ps[x].forEach(u => {
-            let min = Infinity
-            ps[p].forEach(v => {
-                min = Math.min(min, prev[v] + Math.abs(u - v))
-            })
-            dp[u] = min
+    for (let i = 0; i < sa.length - 1; i++) {
+        const dp = Array(sb.length).fill(Infinity)
+        const p = sa[i]
+        const x = sa[i + 1]
+        ps[p].forEach(u => {
+            const idx = binarySearch(0, ps[x].length - 1, j => ps[x][j] < u)
+            if (idx >= 0) {
+                const v = ps[x][idx]
+                dp[v] = Math.min(dp[v], prev[u] + Math.abs(u - v))
+            }
+            if (idx + 1 < ps[x].length) {
+                const v = ps[x][idx + 1]
+                dp[v] = Math.min(dp[v], prev[u] + Math.abs(u - v))
+            }
         })
         prev = dp
     }
@@ -54,4 +58,15 @@ function solve(sa, sb) {
         ans = Math.min(ans, prev[u])
     })
     return ans
+}
+function binarySearch(l, r, fn) {
+    while (l <= r) {
+        const m = Math.floor((l + r) / 2)
+        if (fn(m)) {
+            l = m + 1
+        } else {
+            r = m - 1
+        }
+    }
+    return r
 }
