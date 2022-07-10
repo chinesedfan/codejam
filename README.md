@@ -38,7 +38,8 @@ For interactive problem,
 |      | 1c            | 1/3, not solve b large/c large  |
 |      | 2             | 1/3, not solve b/c              |
 | 2015 | 1a            | 3/3                             |
-| 2016 | qualification | 4/4                             |
+| 2016 | kickstart - b | 1/4, not solve b/c/d            |
+|      | qualification | 4/4                             |
 |      | 1a            | 3/3                             |
 |      | 1b            | 2/3, not solve c                |
 |      | 1c            | 2/3, not solve c                |

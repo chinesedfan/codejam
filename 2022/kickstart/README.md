@@ -22,6 +22,27 @@ See Problem C of 2013 Kickstart Round B.
 
 See Problem B of 2018 Kickstart Round E.
 
+### Practice Session #2
+
+#### Problem A. Sample Problem
+
+Return the reminder.
+
+#### Problem B. Sherlock and Parentheses
+
+See Problem A of 2016 Kickstart Round B.
+
+#### Problem C. Building Palindromes
+
+See Problem A of 2019 Kickstart Round B.
+
+#### Problem D. Irregular Expressions
+
+
+#### Problem E. Parcels
+
+See Problem B of 2019 Kickstart Round A.
+
 ### Round A
 
 #### Problem A. Speed Typing
