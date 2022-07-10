@@ -43,3 +43,15 @@ Select the smaller side greedy.
 #### Problem B. Controlled Inflation
 
 Sort products for each person, then DP. The state contains the minimum cost if ends with the min/max product of the current person.
+
+### Round 1c
+
+#### Problem A. Letter Blocks
+
+If the head is the same with the tail, connect these blocks first. Then start from any block and find others. Do a double check at last.
+
+#### Problem B. Squary
+
+For K=1, just solve the equation.
+
+#### Problem C. Intranets
