@@ -115,3 +115,17 @@ We can just check the adjacent two positions. Use binary search to find or maint
 If a guest A is proved by another guest B, then in set 1, A must be innocent. If not, then both A and B will be stealer. Because words of B is not correct.
 
 For set 2, use SCC to check. If the size of SCC is at least K, then all of them are innocent. And we should also check nodes belong to different SCC, whether the node is reached by at least K nodes.
+
+### Round E
+
+#### Problem A. Coloring Game
+
+The bot picks position 0, then the player can pick position 3. So the answer is floor(n / 5).
+
+#### Problem B. Students and Mentors
+
+Sort and binary search the find the best mentor. Notice that if the mentor is student self, select the previous one if possible.
+
+#### Problem C. Matching Palindrome
+
+#### Problem D. Pizza Delivery
