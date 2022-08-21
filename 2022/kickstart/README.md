@@ -129,3 +129,5 @@ Sort and binary search the find the best mentor. Notice that if the mentor is st
 #### Problem C. Matching Palindrome
 
 #### Problem D. Pizza Delivery
+
+BFS will lead to MLE or WA, because you can't update greedily.

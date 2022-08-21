@@ -27,7 +27,7 @@ function solve(args, fns) {
     const [n, p, m, ar, ac] = args
     if (p) return 0 // remove for set 2
     let ans = 0
-    let q = [[ar, ac, 0]]
+    let q = [[ar - 1, ac - 1, 0]]
     let k = 0
     const best = Array(n).fill(0)
         .map(() => Array(n).fill(0))
