@@ -28,10 +28,21 @@ rl.on('close', () => {
 })
 
 function solve(rs, rh, sa, sb) {
-    const a = sa.filter(([x, y]) => ok(x, y)).length
-    const b = sb.filter(([x, y]) => ok(x, y)).length
-    return a >= b ? [a - b, 0] : [0, b - a]
-    function ok(x, y) {
-        return x * x + y * y <= (rs + rh) ** 2
+    sa = sa.map(([x, y]) => x * x + y * y)
+        .sort((a, b) => a - b)
+    sb = sb.map(([x, y]) => x * x + y * y)
+        .sort((a, b) => a - b)
+    const fa = sa.length ? sa[0] : Infinity
+    const fb = sb.length ? sb[0] : Infinity
+    let limit = (rs + rh) ** 2
+    let x = 0
+    if (fa < fb) {
+        if (fb < limit) limit = fb
+        while (x < sa.length && sa[x] <= limit) x++
+        return [x, 0]
+    } else {
+        if (fa < limit) limit = fa
+        while (x < sb.length && sb[x] <= limit) x++
+        return [0, x]
     }
 }
