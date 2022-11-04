@@ -131,3 +131,20 @@ Sort and binary search the find the best mentor. Notice that if the mentor is st
 #### Problem D. Pizza Delivery
 
 BFS will lead to MLE or WA, because you can't update greedily.
+
+### Round G
+
+#### Problem A. Walktober
+
+Find the maximum value of each column.
+
+#### Problem B. Curling
+
+Find the nearest as limit.
+
+#### Problem C. Happy Subarrays
+
+For segments start from position 1, we need calculate prefix sum and find the largest right position. It can be solved by binary search and minimum prefix sum in range.
+For segments start from position i, we should find the largest right position where minimum prefix sum in range is not less than the prefix sum of [1, i - 1]. To calculate the sum of these segments, we can use prefix sum of prefix sum, and minus the part of [0, i-1]. Note the answer of set 2, O(N^3 * A_i), needs BigInt.
+
+#### Problem D. Cute Little Butterfly
