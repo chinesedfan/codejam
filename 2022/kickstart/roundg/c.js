@@ -147,13 +147,13 @@ function solve(n, arr) {
         e: () => Infinity,
     })
     //
-    let ans = 0
+    let ans = 0n
     for (let i = 0; i < arr.length; i++) {
         const prev = (sum[i - 1] || 0)
         const j = seg.maxRight(i, x => x >= prev)
         if (j - 1 < i) continue
-        const len = j - 1 - i + 1
-        ans += range(i, j - 1) - len * (sum[i - 1] || 0)
+        const len = BigInt(j - 1 - i + 1)
+        ans += BigInt(range(i, j - 1)) - len * BigInt(sum[i - 1] || 0)
     }
     return ans
 
