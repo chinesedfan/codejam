@@ -148,3 +148,19 @@ For segments start from position 1, we need calculate prefix sum and find the la
 For segments start from position i, we should find the largest right position where minimum prefix sum in range is not less than the prefix sum of [1, i - 1]. To calculate the sum of these segments, we can use prefix sum of prefix sum, and minus the part of [0, i-1]. Note the answer of set 2, O(N^3 * A_i), needs BigInt.
 
 #### Problem D. Cute Little Butterfly
+
+### Round H
+
+#### Problem A. Running in Circles
+
+Maintain the current position and last direction. Be careful with cases that the current position is 0.
+
+#### Problem B. Magical Well Of Lilies
+
+Use DP to calculate. Toss 1 coin once, or 4 coins once and 2 coins several times.
+
+#### Problem C. Electricity
+
+Find the largest connected component. BFS from every vertice to pass set 1. If cache results, we can pass set 2.
+
+#### Problem D. Level Design

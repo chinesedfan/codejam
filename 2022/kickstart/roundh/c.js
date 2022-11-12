@@ -36,12 +36,13 @@ function solve(n, arr, edges) {
         adj[b].push(a)
     })
     let r = 1
+    const dp = Array(n + 1)
     for (let u = 1; u <= n; u++) {
-        r = Math.max(r, dfs(adj, u, arr))
+        r = Math.max(r, dfs(adj, u, arr, dp))
     }
     return r
 }
-function dfs(adj, r, arr) {
+function dfs(adj, r, arr, dp) {
     const stack = [[r, 0, -1]]
     let c = 0
     while (stack.length) {
@@ -58,12 +59,17 @@ function dfs(adj, r, arr) {
             const v = nb[i]
             // if (!visited[v]) { // has circle
             if (v !== p && arr[u] > arr[v]) {
-                stack.push([v, 0, u])
+                if (dp[v]) {
+                    c += dp[v]
+                } else {
+                    stack.push([v, 0, u])
+                }
             }
         } else {
             // last visited
             stack.pop()
         }
     }
+    dp[r] = c
     return c
 }

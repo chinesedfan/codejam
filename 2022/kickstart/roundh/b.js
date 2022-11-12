@@ -22,17 +22,17 @@ rl.on('close', () => {
 })
 
 function solve(n) {
-    let r = Infinity
+    const dp = Array(n + 1)
     for (let i = 0; i <= n; i++) {
-        const p = n - i
-        const limit = Math.floor(Math.sqrt(p))
-        for (let j = 1; j <= limit; j++) {
-            if (p % j) continue
-            const x = p / j
+        const limit = Math.floor(Math.sqrt(i))
+        dp[i] = i === 1 ? 1 : dp[i - 1] + 1
+        for (let j = 2; j <= limit; j++) {
+            if (i % j) continue
+            const x = i / j
             const y = j - 1
-            const t = x + (y ? 4 + 2 * y : 0) + i
-            r = Math.min(r, t)
+            const t = dp[x] + (y ? 4 + 2 * y : 0)
+            dp[i] = Math.min(dp[i], t)
         }
     }
-    return r
+    return dp[n]
 }
