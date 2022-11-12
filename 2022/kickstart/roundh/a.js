@@ -32,10 +32,11 @@ function solve(l, n, arr) {
         if (c === prev) {
             const need = c === 'C' ? l - p : p
             if (d >= need) {
-                r += 1 + Math.floor((d - need) / l)
+                r += (need ? 1 : 0) + Math.floor((d - need) / l)
             }
         } else {
-            const need = c === 'C' ? l - p : p
+            let need = c === 'C' ? l - p : p
+            if (!p) need = 0
             if (d >= need) {
                 r += Math.floor((d - need) / l)
                 prev = c
