@@ -2,7 +2,9 @@
 
 I am not an ACMer, and I'm old. But I still keep attending [Google Codejam](https://code.google.com/codejam/).
 
-My dream is just to win a T-shirt. :)
+~~My dream is just to win a T-shirt.~~ :)
+
+Due to the sad news that Google determines to shut down the website in 2023, this dream will never come true.
 
 ### Usage
 
@@ -102,3 +104,4 @@ For interactive problem,
 - [Codejam Tools](http://a2oj.com/CodeJamTools/), used to find all [personal history](http://a2oj.com/CodeJamTools/Contestant.jsp?Nickname=chinesedfan)
 - [Codejam Statistics](https://www.go-hero.net/jam/), used to find solutions for 2008-2017
 - [Codejam Portal](https://vstrimaitis.github.io/google_codejam_stats/#/), better portal than the offical archive page, and is open source
+- [Google Code Jam Archive](https://zibada.guru/gcj/), all of the 185 scoreboards, 679 problems, editorials, test data, and all of submitted code (3483170 total files) where it's still available.
